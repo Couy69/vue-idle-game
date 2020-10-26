@@ -1,0 +1,8 @@
+[
+  {"cameraName":"108","id":"2c92808a6eaa5a1a016eafedcb4b0043","cameraIp":"192.168.1.108","cameraPort":"37777","cameraCode":"6","cameraModel":"半球机","cameraNum":"6","username":"admin","password":"admin","eqModel":"dh","havePtz":false},
+  {"cameraName":"海康枪机","id":"2c92808a6eaa5a1a016eafed49c50042","cameraIp":"192.168.1.40","cameraPort":"554","cameraCode":"5","cameraModel":"枪机","cameraNum":"5","username":"admin","password":"abc12345","eqModel":"hk","havePtz":false},
+  {"cameraName":"217","id":"2c92808a6eaa5a1a016eafdbf0e50041","cameraIp":"192.168.1.217","cameraPort":"554","cameraCode":"4","cameraModel":"半球机","cameraNum":"4","username":"","password":"","eqModel":"qa","havePtz":false},
+  {"cameraName":"乔安球机","id":"2c92808a6ea6dbf2016ea6f0df710001","cameraIp":"192.168.1.218","cameraPort":"554","cameraCode":"3","cameraModel":"球机","cameraNum":"3","username":"","password":"","eqModel":"qa","havePtz":false},
+  {"cameraName":"宇世球机","id":"2c92808a6ea6dbf2016ea6ef516f0000","cameraIp":"192.168.1.36","cameraPort":"554","cameraCode":"2","cameraModel":"球机","cameraNum":"2","username":"admin","password":"abc12345","eqModel":"ys","havePtz":false},
+  {"cameraName":"大华球机","id":"2c92808a6ea5c623016ea5d732d80005","cameraIp":"192.168.1.110","cameraPort":"37777","cameraCode":"1","cameraModel":"球机","cameraNum":"1","username":"admin","password":"abc12345","eqModel":"dh","havePtz":true}
+]
