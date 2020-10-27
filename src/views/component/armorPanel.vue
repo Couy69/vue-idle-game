@@ -1,35 +1,35 @@
 <template>
-  <div class="weapon">
+  <div class="armor">
     <!-- <div class="btn" style="position:relative;z-index:999;">
-      <button @click="createNewWeapon">随机生成</button>
+      <button @click="createNewarmor">随机生成</button>
     </div> -->
-    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}">
+    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+weapon.quality.color}">
-          <img :src="weapon.iconSrc" alt="">
+        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+armor.quality.color}">
+          <img :src="armor.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:weapon.quality.color}">{{weapon.quality.name}}的{{weapon.type.name}}</div>
+        <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
       </div>
       <div class='type'>
-        <div :style="{color:weapon.quality.color}">{{weapon.quality.name}}</div>
+        <div :style="{color:armor.quality.color}">{{armor.quality.name}}</div>
         <div>武器</div>
       </div>
       <div class='lv'>
-        <div>lv{{weapon.lv}}</div>
+        <div>lv{{armor.lv}}</div>
       </div>
       <div class="entry">
-        <div v-for="v in weapon.type.entry" :key="v.id">
+        <div v-for="v in armor.type.entry" :key="v.id">
           <div>{{v.name}} : {{v.showVal}}</div>
         </div>
       </div>
       <div class="extraEntry">
-        <div v-for="v in weapon.extraEntry" :key="v.id">
+        <div v-for="v in armor.extraEntry" :key="v.id">
           <div>{{v.name}} : {{v.showVal}}</div>
         </div>
       </div>
       <div class="des">
         <div>
-         {{weapon.type.des}}
+         {{armor.type.des}}
         </div>
       </div>
     </div>
@@ -38,10 +38,10 @@
 </template>
 <script>
 export default {
-  name: "weaponPanel",
+  name: "armorPanel",
   data() {
     return {
-      weapon: {
+      armor: {
         "iconSrc": "./icons/W_Sword020.png",
         "lv": 35,
         "quality": {
@@ -185,17 +185,17 @@ export default {
     };
   },
   mounted() {
-    // this.createNewWeapon()
+    // this.createNewarmor()
 
   },
   methods: {
-    createNewWeapon() {
-      this.weapon.iconSrc = this.createIconSrc()
-      this.weapon.quality = this.createQua()
-      this.weapon.lv = this.createLv()
-      this.weapon.type = this.createType()
-      this.weapon.extraEntry = this.createExtraEntry(this.weapon)
-      console.log(this.weapon)
+    createNewarmor() {
+      this.armor.iconSrc = this.createIconSrc()
+      this.armor.quality = this.createQua()
+      this.armor.lv = this.createLv()
+      this.armor.type = this.createType()
+      this.armor.extraEntry = this.createExtraEntry(this.armor)
+      console.log(this.armor)
     },
     createIconSrc() {
       var count = parseInt(Math.random() * 20) + 1
@@ -210,36 +210,36 @@ export default {
     },
     createType() {
       var index = Math.floor((Math.random() * this.category.length));
-      let type = this.category[index], lv = this.weapon.lv
+      let type = this.category[index], lv = this.armor.lv
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 10)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random + '%'
             break;
@@ -281,31 +281,31 @@ export default {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 2)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 10)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * this.armor.quality.qualityCoefficient)
             item.val = random
             item.showVal = '+' + random + '%'
             break;
@@ -329,7 +329,7 @@ export default {
   font-family: "Lato-Regular";
   src: url(../../assets/fonts/Lato-Regular.ttf);
 }
-.weaponPanel {
+.armorPanel {
   font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
     "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
