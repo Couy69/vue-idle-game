@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    sysInfo: [{
+      type: '',
+      msg: "欢迎你，菜鸟勇士。"
+    }],
     playerAttribute: {
       GOLD: 0,
       weapon: {
@@ -61,7 +65,7 @@ export default new Vuex.Store({
           "value": 10,
           "showVal": "+10",
           "name": "生命值"
-        },]
+        }, ]
       },
       acc: {
         "lv": 8,
@@ -93,11 +97,6 @@ export default new Vuex.Store({
       },
     }
   },
-  mutations: {
-    set_alarm_data(state, data) {
-      this.state.alarmData = data;
-    }
-  },
   getters: {
     calculatePlayerAttribute: state => {
       var p = state.playerAttribute
@@ -115,7 +114,7 @@ export default new Vuex.Store({
           showValue: '',
         },
         ATK: {
-          value:0,
+          value: 0,
           showValue: '',
         },
         DEF: {
@@ -158,13 +157,16 @@ export default new Vuex.Store({
             break;
         }
       })
-      attribute.MAXHP.value+=100
+      attribute.MAXHP.value += 100
       attribute.CURHP = attribute.MAXHP
       // state.playerAttribute.attribute=attribute
       return attribute
     }
-  },
-  actions: {
 
-  }
+  },
+  mutations: {
+    set_sys_info(state, data) {
+      this.state.sysInfo.push(data);
+    }
+  },
 })

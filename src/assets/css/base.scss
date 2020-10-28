@@ -1,0 +1,74 @@
+/**
+ * 基础样式
+ * @author couy（couy69@gmail.com）
+ */
+
+
+//基础样式
+* {
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  box-sizing: border-box !important;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+i {
+  font-style: normal;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  min-width: 1024px;
+  font-size: 14px;
+}
+
+
+/* 滚动条 */
+::-webkit-scrollbar-thumb:horizontal {
+  /*水平滚动条的样式*/
+  width: 5px;
+  background-color: #999;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+  /*滚动条的背景颜色*/
+  border-radius: 0;
+  /*滚动条的圆角宽度*/
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  /*滚动条的宽度*/
+  height: 8px;
+  /*滚动条的高度*/
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  /*垂直滚动条的样式*/
+  height: 20px;
+  background-color: #999;
+  border-radius: 4px;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  border: 2px solid transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  /*滚动条的hover样式*/
+  height: 20px;
+  background-color: #9f9f9f;
+  border-radius: 4px;
+}

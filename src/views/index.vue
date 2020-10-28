@@ -63,8 +63,11 @@
       </div>
     </div>
     <div class="sys-info">
-      <div class="info enter">系统：<span> 你已进入史莱姆森林</span></div>
-      <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
+      <div id='sysInfo'>
+        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统：<span>{{v.msg}}</span></div>
+      </div>
+
+      <!-- <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
       <div class="info win">系统：<span> 击杀了史莱姆（lv1）</span></div>
       <div class="info trophy">系统：<span> 获得：金币+33</span></div>
       <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
@@ -73,13 +76,13 @@
       <div class="info battle">系统：<span> 遭遇了史莱姆王（lv5）</span></div>
       <div class="info win">系统：<span> 击杀了史莱姆王（lv5）</span></div>
       <div class="info trophy">系统：<span> 获得：金币+33</span></div>
-      <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div>
+      <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div> -->
     </div>
     <div class="map">
       <div class="plan">
         <zones></zones>
       </div>
-      <div class="icon" style="top:170px;left:323px"></div>
+      <div class="icon" @click="setSysInfo" style="top:170px;left:323px"></div>
       <div class="icon" style="top:670px;left:483px"></div>
       <div class="icon" style="top: 231px;left: 846px;"></div>
     </div>
@@ -99,17 +102,18 @@ export default {
   name: "index",
   data() {
     return {
+      sysInfo: {},
       weaponShow: false,
       armorShow: false,
       accShow: false,
       weapon: '',
       armor: '',
       acc: '',
-      userGold:'',
+      userGold: '',
       attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel,zones },
+  components: { weaponPanel, armorPanel, accPanel, zones },
   mounted() {
     // 从store中加载装备与人物数据
     this.weapon = this.$store.state.playerAttribute.weapon
@@ -117,9 +121,21 @@ export default {
     this.acc = this.$store.state.playerAttribute.acc
     this.userGold = this.$store.state.playerAttribute.GOLD
     this.attribute = this.$store.getters.calculatePlayerAttribute
+
+    this.sysInfo = this.$store.state.sysInfo
+  },
+  watch: {
+    sysInfo() {
+      var element = document.getElementById('sysInfo')
+      //渲染完成后滚至最下端
+      this.$nextTick(()=>{
+        element.scrollTop = element.scrollHeight + 20
+      })
+      
+    }
   },
   methods: {
-    contextmenu(e){
+    contextmenu(e) {
       // 鼠标右键
     },
     showItemInfo(type) {
@@ -140,8 +156,13 @@ export default {
     closeItemInfo() {
       this.weaponShow = this.armorShow = this.accShow = false
     },
-    calculatePlayerAttribute() {
-
+    setSysInfo() {
+      this.$store.commit("set_sys_info", {
+        msg: `
+              副本探索成功！
+            `,
+        type: 'win'
+      });
     }
   }
 };
@@ -314,6 +335,35 @@ a {
     width: 810px;
     bottom: 10px;
     left: 10px;
+
+    transition: 0.2s;
+    padding: 20px;
+
+    & > div {
+      overflow-y: auto;
+      transition: 0.2s;
+      width: 100%;
+      height:100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    .info {
+      margin: 3px 0;
+    }
+    .enter > span {
+      color: #f90202;
+    }
+    .battle > span {
+      color: #de8618;
+    }
+    .win > span {
+      color: #24c4de;
+    }
+    .trophy > span {
+      color: #2fe20f;
+    }
   }
   .map {
     position: absolute;
@@ -367,27 +417,5 @@ a {
   top: 277px;
   left: 798px;
   display: flex;
-}
-.sys-info {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  .info {
-    margin: 3px 0;
-  }
-  .enter > span {
-    color: #f90202;
-  }
-  .battle > span {
-    color: #de8618;
-  }
-  .win > span {
-    color: #24c4de;
-  }
-  .trophy > span {
-    color: #2fe20f;
-  }
 }
 </style>
