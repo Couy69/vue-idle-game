@@ -64,7 +64,7 @@
     </div>
     <div class="sys-info">
       <div id='sysInfo'>
-        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统：<span>{{v.msg}}</span></div>
+        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:12px" v-if="v.time">({{v.time}})</i>：<span>{{v.msg}}</span></div>
       </div>
 
       <!-- <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
@@ -102,6 +102,7 @@ export default {
   name: "index",
   data() {
     return {
+      time:'00:00:00',
       sysInfo: {},
       weaponShow: false,
       armorShow: false,
@@ -126,6 +127,9 @@ export default {
   },
   watch: {
     sysInfo() {
+      var time = +new Date()
+      var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
+      this.sysInfo[this.sysInfo.length-1].time =date.toJSON().substr(11, 8).replace('T', ' ')
       var element = document.getElementById('sysInfo')
       //渲染完成后滚至最下端
       this.$nextTick(()=>{

@@ -139,7 +139,7 @@ export default {
         case 'battle':
           this.$store.commit("set_sys_info", {
             msg: `
-              你遭遇了${event.name}(lv:${this.zones.lv}),正在战斗中...
+              你遭遇了${event.name}(lv${this.zones.lv}),正在战斗中...
             `,
             type: 'battle'
           });

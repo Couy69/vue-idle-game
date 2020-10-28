@@ -40,7 +40,7 @@ export default new Vuex.Store({
         }]
       },
       armor: {
-        "lv": 30,
+        "lv": 1,
         "quality": {
           name: '破旧',
           qualityCoefficient: 0.7,
@@ -68,7 +68,7 @@ export default new Vuex.Store({
         }, ]
       },
       acc: {
-        "lv": 8,
+        "lv": 1,
         "quality": {
           name: '破旧',
           qualityCoefficient: 0.7,
