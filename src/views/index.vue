@@ -1,61 +1,62 @@
 <template>
-  <div class="main">
+  <div class="main" @contextmenu.prevent="contextmenu($event)">
     <div class="user-status">
       <div class="hp" title="血量">
         <img src="../assets/icons/S_Holy01.png" alt="">
         <div class="value">
-          1006/1006
+          {{attribute.CURHP.value}}/{{attribute.MAXHP.value}}
         </div>
       </div>
       <div class="other">
         <div class="item" title="攻击力">
           <img src="../assets/icons/S_Sword06.png" alt="">
           <div class="value">
-            120
+            {{attribute.ATK.value}}
           </div>
         </div>
         <div class="item" title="防御力">
           <img src="../assets/icons/icon_11.png" alt="">
           <div class="value">
-            33
+            {{attribute.DEF.value}}
           </div>
         </div>
         <div class="item" title="暴击几率">
           <img src="../assets/icons/icon_78.png" alt="">
           <div class="value">
-            8%
+            {{attribute.CRIT.value}}%
           </div>
         </div>
         <div class="item" title="暴击伤害">
           <img src="../assets/icons/S_Sword01.png" alt="">
           <div class="value">
-            150%
+            {{attribute.CRITDMG.value}}%
           </div>
         </div>
 
       </div>
     </div>
     <div class="user-item">
+      <div class="gold">GOLD: <span>{{userGold}}</span></div>
       <div class="weapon" @mouseover="showItemInfo('weapon')" @mouseleave="closeItemInfo">
-        <div class="title">
+        <div class="title" v-if="weapon">
           <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="weapon.iconSrc" alt="">
+            <img :src="weapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:weapon.quality.color}">{{weapon.quality.name}}的{{weapon.type.name}}</div>
         </div>
       </div>
-      <div class="armor">
-        <div class="title">
+      <div class="armor" @mouseover="showItemInfo('armor')" @mouseleave="closeItemInfo">
+        <div class="title" v-if="armor">
           <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="armor.iconSrc" alt="">
+            <img :src="armor.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
         </div>
       </div>
-      <div class="acc">
-        <div class="title">
+      <div class="acc" @mouseover="showItemInfo('acc')" @mouseleave="closeItemInfo">
+        <div class="title" v-if="acc">
           <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="acc.iconSrc" alt="">
+            <img :src="acc.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:acc.quality.color}">{{acc.quality.name}}的{{acc.type.name}}</div>
         </div>
@@ -72,98 +73,75 @@
       <div class="info battle">系统：<span> 遭遇了史莱姆王（lv5）</span></div>
       <div class="info win">系统：<span> 击杀了史莱姆王（lv5）</span></div>
       <div class="info trophy">系统：<span> 获得：金币+33</span></div>
-      <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵护甲</a></span></div>
+      <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div>
     </div>
     <div class="map">
-      <div class="plan">副本进度条</div>
+      <div class="plan">
+        <zones></zones>
+      </div>
       <div class="icon" style="top:170px;left:323px"></div>
       <div class="icon" style="top:670px;left:483px"></div>
       <div class="icon" style="top: 231px;left: 846px;"></div>
     </div>
-    <div class="dialog" :class="{weaponShow:weaponShow}">
-      <weaponPanel></weaponPanel>
+    <div class="dialog" :class="{weaponShow:weaponShow,armorShow:armorShow,accShow:accShow}">
+      <weaponPanel :item="weapon" v-if="weaponShow"></weaponPanel>
+      <armorPanel :item="armor" v-if="armorShow"></armorPanel>
+      <accPanel :item="acc" v-if="accShow"></accPanel>
     </div>
   </div>
 </template>
 <script>
 import weaponPanel from './component/weaponPanel'
+import armorPanel from './component/armorPanel'
+import accPanel from './component/accPanel'
+import zones from './component/zones'
 export default {
-  name: "login",
+  name: "index",
   data() {
     return {
       weaponShow: false,
-      weapon: {
-        "iconSrc": "./icons/W_Sword020.png",
-        "lv": 35,
-        "quality": {
-          "name": "史诗",
-          "qualityCoefficient": 2,
-          "probability": "0.05",
-          "color": "#f78918",
-          "extraEntryNum": 4
-        },
-        "type": {
-          "name": "赤柳血刃",
-          "des": "似乎会给使用者提供生命气息",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "val": 88,
-            "showVal": "+88",
-            "type": "ATK",
-            "name": "攻击力"
-          }, {
-            "type": "HP",
-            "valCoefficient": 1.4,
-            "val": 1006,
-            "showVal": "+1006",
-            "name": "生命值"
-          }]
-        },
-        "extraEntry": [{ "val": 32, "showVal": "+32", "type": "ATK", "name": "攻击力" }, { "type": "CRIT", "val": 8, "showVal": "+8%", "name": "暴击率" }, { "type": "CRIT", "val": 12, "showVal": "+12%", "name": "暴击率" }, { "type": "CRIT", "val": 12, "showVal": "+12%", "name": "暴击率" }]
-      },
-      armor: {
-        "iconSrc": "./icons/A_Armor04.png",
-        "lv": 35,
-        "quality": {
-          "name": "普通",
-          "qualityCoefficient": 2,
-          "probability": "0.05",
-          "color": "#fff",
-          "extraEntryNum": 4
-        },
-        "type": {
-          "name": "士兵护甲",
-          "des": "似乎会给使用者提供生命气息",
-        },
-      },
-      acc: {
-        "iconSrc": "./icons/Ac_9.png",
-        "lv": 35,
-        "quality": {
-          "name": "普通",
-          "qualityCoefficient": 2,
-          "probability": "0.05",
-          "color": "#fff",
-          "extraEntryNum": 4
-        },
-        "type": {
-          "name": "生命戒指",
-          "des": "似乎会给使用者提供生命气息",
-        },
-      },
+      armorShow: false,
+      accShow: false,
+      weapon: '',
+      armor: '',
+      acc: '',
+      userGold:'',
+      attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel },
+  components: { weaponPanel, armorPanel, accPanel,zones },
   mounted() {
+    // 从store中加载装备与人物数据
+    this.weapon = this.$store.state.playerAttribute.weapon
+    this.armor = this.$store.state.playerAttribute.armor
+    this.acc = this.$store.state.playerAttribute.acc
+    this.userGold = this.$store.state.playerAttribute.GOLD
+    this.attribute = this.$store.getters.calculatePlayerAttribute
   },
   methods: {
+    contextmenu(e){
+      // 鼠标右键
+    },
     showItemInfo(type) {
-      if (type == 'weapon') {
-        this.weaponShow = true
+      switch (type) {
+        case 'weapon':
+          this.weaponShow = true
+          break;
+        case 'armor':
+          this.armorShow = true
+          break;
+        case 'acc':
+          this.accShow = true
+          break;
+        default:
+          break;
       }
     },
     closeItemInfo() {
-      this.weaponShow = false
+      this.weaponShow = this.armorShow = this.accShow = false
+    },
+    calculatePlayerAttribute() {
+
     }
   }
 };
@@ -264,11 +242,49 @@ a {
     align-items: center;
     justify-content: space-around;
     padding: 40px 0;
+    padding-top: 10px;
     cursor: pointer;
     & > div {
       background: rgba(0, 0, 0, 0.7);
       width: calc(100% - 40px);
       margin: 0 20px;
+    }
+    .gold {
+      // margin: 0;
+      // background: transparent;
+      // font-size: 24px;
+      // text-align: left;
+      // padding: 0 20px;
+      // width: 100%;
+      // display: flex;
+      // align-items: center;
+      // span{
+      //   border:2px solid #fff;
+      //   text-align: right;
+      //   font-size: 20px;
+      //   display: inline-block;
+      //   padding: 6px;
+      //   margin-left: 10px;
+      //   width: calc(100% - 40px);
+      // }
+
+      cursor: pointer;
+      height: 70px;
+      margin: 20px;
+      margin-top: 8px;
+      width: calc(100% -40px);
+      display: flex;
+      border: 2px solid #ccc;
+      align-items: center;
+      padding-left: 20px;
+      font-size: 26px;
+      span {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: right;
+        flex: 1;
+        padding: 10px 20px;
+      }
     }
     .title {
       display: flex;
@@ -339,6 +355,16 @@ a {
 }
 .weaponShow {
   top: 67px;
+  left: 798px;
+  display: flex;
+}
+.armorShow {
+  top: 177px;
+  left: 798px;
+  display: flex;
+}
+.accShow {
+  top: 277px;
   left: 798px;
   display: flex;
 }

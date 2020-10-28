@@ -6,7 +6,7 @@
     <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+weapon.quality.color}">
-          <img :src="weapon.iconSrc" alt="">
+          <img :src="weapon.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:weapon.quality.color}">{{weapon.quality.name}}的{{weapon.type.name}}</div>
       </div>
@@ -42,7 +42,6 @@ export default {
   data() {
     return {
       weapon: {
-        "iconSrc": "./icons/W_Sword020.png",
         "lv": 35,
         "quality": {
           "name": "史诗",
@@ -54,21 +53,22 @@ export default {
         "type": {
           "name": "赤柳血刃",
           "des": "似乎会给使用者提供生命气息",
+          "iconSrc": "./icons/W_Sword019.png",
           "entry": [{
             "valCoefficient": 0.9,
-            "val": 88,
+            "value": 88,
             "showVal": "+88",
             "type": "ATK",
             "name": "攻击力"
           }, {
             "type": "HP",
             "valCoefficient": 1.4,
-            "val": 1006,
+            "value": 1006,
             "showVal": "+1006",
             "name": "生命值"
           }]
         },
-        "extraEntry": [{ "val": 32, "showVal": "+32", "type": "ATK", "name": "攻击力" }, { "type": "CRIT", "val": 8, "showVal": "+8%", "name": "暴击率" }, { "type": "CRIT", "val": 12, "showVal": "+12%", "name": "暴击率" }, { "type": "CRIT", "val": 12, "showVal": "+12%", "name": "暴击率" }]
+        "extraEntry": [{ "value": 32, "showVal": "+32", "type": "ATK", "name": "攻击力" }, { "type": "CRIT", "value": 8, "showVal": "+8%", "name": "暴击率" }, { "type": "CRIT", "value": 12, "showVal": "+12%", "name": "暴击率" }, { "type": "CRIT", "value": 12, "showVal": "+12%", "name": "暴击率" }]
       },
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
@@ -83,7 +83,7 @@ export default {
         probability: '0.55',
         color: '#fff', extraEntryNum: 2,
       }, {
-        name: '神话',
+        name: '神器',
         qualityCoefficient: 1.5,
         probability: '0.15',
         color: '#ff00ff', extraEntryNum: 3,
@@ -96,16 +96,17 @@ export default {
       category: [{
         name: '狱岩石太刀',
         des:'用狱岩石制作的太刀，据说拥有让使用者潜力爆发的神秘力量',
+        iconSrc:'./icons/W_Sword016.png',
         entry: [{
           'valCoefficient': 0.9,
-          'val': '11',
+          'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'CRIT',
           'valCoefficient': 1.3,
-          'val': '8',
+          'value': '8',
           'showVal': '+8%',
           'name': '暴击率'
         }]
@@ -113,33 +114,35 @@ export default {
       {
         name: '战士长剑',
         des:'六级战士使用的长剑',
+        iconSrc:'./icons/W_Sword007.png',
         entry: [{
           'valCoefficient': 1.1,
-          'val': '11',
+          'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'DEF',
           'valCoefficient': 0.4,
-          'val': '8',
+          'value': '8',
           'showVal': '8',
-          'name': '护甲'
+          'name': '防御力'
         }]
       },
       {
         name: '赤柳血刃',
         des:'似乎会给使用者提供生命气息',
+        iconSrc:'./icons/W_Sword019.png',
         entry: [{
           'valCoefficient': 0.9,
-          'val': '11',
+          'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'HP',
           'valCoefficient': 1.4,
-          'val': '8',
+          'value': '8',
           'showVal': '8',
           'name': '生命值'
         }]
@@ -147,9 +150,10 @@ export default {
       {
         name: '普通长剑',
         des:'朴实无华普通长剑，有的只有强力的攻击力',
+        iconSrc:'./icons/W_Sword001.png',
         entry: [{
           'valCoefficient': 1.5,
-          'val': '11',
+          'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
@@ -157,53 +161,44 @@ export default {
       }
       ],
       extraEntry: [{
-        'val': '11',
+        'value': '11',
         'showVal': '+11',
         type: 'ATK',
         'name': '攻击力'
       }, {
         type: 'CRIT',
-        'val': '8',
+        'value': '8',
         'showVal': '+8%',
         'name': '暴击率'
       }, {
         type: 'CRITDMG',
-        'val': '20',
+        'value': '20',
         'showVal': '+20%',
         'name': '暴击伤害'
       }, {
         type: 'HP',
-        'val': '20',
+        'value': '20',
         'showVal': '+20',
         'name': '生命值'
       }, {
         type: 'DEF',
-        'val': '8',
+        'value': '8',
         'showVal': '+8%',
-        'name': '护甲'
+        'name': '防御力'
       }]
     };
   },
+  props:['item'],
   mounted() {
-    // this.createNewWeapon()
-
+    this.weapon = this.item
   },
   methods: {
     createNewWeapon() {
-      this.weapon.iconSrc = this.createIconSrc()
       this.weapon.quality = this.createQua()
       this.weapon.lv = this.createLv()
       this.weapon.type = this.createType()
       this.weapon.extraEntry = this.createExtraEntry(this.weapon)
       console.log(this.weapon)
-    },
-    createIconSrc() {
-      var count = parseInt(Math.random() * 20) + 1
-      if (count < 10) {
-        count = '0' + count
-      }
-      var src = './icons/W_Sword0' + count + '.png'
-      return src
     },
     createLv(Max) {
       return parseInt(Math.random() * (Max || 39)) + 1
@@ -216,31 +211,31 @@ export default {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 10)
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random + '%'
             break;
           default:
@@ -273,7 +268,7 @@ export default {
     createExtraEntry(v) {
       var n = v.quality.extraEntryNum, extraEntry = [], lv = v.lv
       for (let i = 0; i < n; i++) {
-        var index = Math.floor((Math.random() * this.qualityProbability.length));
+        var index = Math.floor((Math.random() * this.extraEntry.length));
         extraEntry.push(this.extraEntry[index])
       }
       var b = JSON.parse(JSON.stringify(extraEntry))
@@ -282,31 +277,31 @@ export default {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 2)
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 10)
             random = parseInt(random * this.weapon.quality.qualityCoefficient)
-            item.val = random
+            item.value = random
             item.showVal = '+' + random + '%'
             break;
           default:

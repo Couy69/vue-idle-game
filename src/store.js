@@ -5,64 +5,163 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    openTab:[],//所有打开的路由
-    activeRouterPath:'/main', //激活状态
-    currentCamera:{}, //当前选择的摄像头
-    currentGarage:{}, //当前选择的车库
-    alarmData:{}, //报警记录
+    playerAttribute: {
+      GOLD: 0,
+      weapon: {
+        "lv": 1,
+        "quality": {
+          name: '破旧',
+          qualityCoefficient: 0.7,
+          probability: '0.25',
+          color: '#a1a1a1',
+          extraEntryNum: 1,
+        },
+        "type": {
+          "name": "新手短剑",
+          "des": "新手菜鸡使用的短剑",
+          "iconSrc": "./icons/W_Sword001.png",
+          "entry": [{
+            "valCoefficient": 0.9,
+            "value": 1,
+            "showVal": "+1",
+            "type": "ATK",
+            "name": "攻击力"
+          }]
+        },
+        "extraEntry": [{
+          "value": 1,
+          "showVal": "+1",
+          "type": "ATK",
+          "name": "攻击力"
+        }]
+      },
+      armor: {
+        "lv": 30,
+        "quality": {
+          name: '破旧',
+          qualityCoefficient: 0.7,
+          probability: '0.25',
+          color: '#a1a1a1',
+          extraEntryNum: 1,
+        },
+        "type": {
+          "name": "新手布衣",
+          "des": "新手菜鸡穿的普通衣物",
+          "iconSrc": "./icons/A_A3.png",
+          "entry": [{
+            "valCoefficient": 0.9,
+            "value": 1,
+            "showVal": "+1",
+            "type": "DEF",
+            "name": "防御力"
+          }]
+        },
+        "extraEntry": [{
+          "type": "HP",
+          "value": 10,
+          "showVal": "+10",
+          "name": "生命值"
+        },]
+      },
+      acc: {
+        "lv": 8,
+        "quality": {
+          name: '破旧',
+          qualityCoefficient: 0.7,
+          probability: '0.25',
+          color: '#a1a1a1',
+          extraEntryNum: 1,
+        },
+        "type": {
+          "name": "新手指环",
+          "des": "一个普通的指环",
+          "iconSrc": "./icons/Ac_10.png",
+          "entry": [{
+            "valCoefficient": 0.9,
+            "value": 20,
+            "showVal": "+20",
+            "type": "HP",
+            "name": "生命值"
+          }]
+        },
+        "extraEntry": [{
+          "type": "DEF",
+          "value": 1,
+          "showVal": "+1",
+          "name": "防御力"
+        }]
+      },
+    }
   },
   mutations: {
-    // 添加tabs
-    add_tabs (state, data) {
-      this.state.openTab.push(data);
-    },
-    // 删除单个tabs
-    delete_tabs (state, route) {
-      let index = 0;
-      for (let option of state.openTab) {
-        if (option.route === route) {
-          break;
-        }
-        index++;
-      }
-      this.state.openTab.splice(index, 1);
-    },
-    // 删除所有tabs
-    delete_all_tabs (state) {
-      this.state.openTab=[{route:'/main',name:'首页'}];
-    },
-    // 重置tabs(重新登录)
-    reset_all_tabs (state) {
-      this.state.openTab=[];
-    },
-    // 删除其他tabs
-    delete_other_tabs (state,route) {
-      var tag
-      if(route == '/main'){
-        this.state.openTab=[{route:'/main',name:'首页'}]
-        return
-      }
-      for (let option of state.openTab) {
-        if (option.route === route) {
-          tag = JSON.parse(JSON.stringify(option))
-          break;
-        }
-      }
-      this.state.openTab=[{route:'/main',name:'首页'}].concat(tag);
-    },
-    // 设置当前激活的tab
-    set_active_index (state, index) {
-      this.state.activeRouterPath = index;
-    },
-    // 
-    set_current_camera(state,data){
-      this.state.currentCamera = data;
-    },
-    set_current_garage(state,data){
-      this.state.currentGarage = data;
-    },
-    set_alarm_data(state,data){
+    set_alarm_data(state, data) {
       this.state.alarmData = data;
+    }
+  },
+  getters: {
+    calculatePlayerAttribute: state => {
+      var p = state.playerAttribute
+      var warpon = p.weapon,
+        armor = p.armor,
+        acc = p.acc,
+        entry = []
+      var attribute = {
+        CURHP: {
+          value: 0,
+          showValue: '',
+        },
+        MAXHP: {
+          value: 0,
+          showValue: '',
+        },
+        ATK: {
+          value:0,
+          showValue: '',
+        },
+        DEF: {
+          value: 0,
+          showValue: '',
+        },
+        CRIT: {
+          value: 0,
+          showValue: '',
+        },
+        CRITDMG: {
+          value: 0,
+          showValue: '',
+        },
+      }
+      entry = [].concat(warpon.type.entry).concat(warpon.extraEntry).concat(armor.type.entry).concat(armor.extraEntry).concat(acc.type.entry).concat(acc.extraEntry)
+      entry.map(item => {
+        switch (item.type) {
+          case 'ATK':
+            attribute.ATK.value += Number(item.value)
+            attribute.ATK.showValue = '+' + (attribute.ATK.value)
+            break;
+          case 'DEF':
+            attribute.DEF.value += Number(item.value)
+            attribute.DEF.showValue = '+' + (attribute.DEF.value)
+            break;
+          case 'HP':
+            attribute.MAXHP.value += Number(item.value)
+            attribute.MAXHP.showValue = '+' + (attribute.MAXHP.value)
+            break;
+          case 'CRIT':
+            attribute.CRIT.value += Number(item.value)
+            attribute.CRIT.showValue = '+' + attribute.CRIT.value + '%'
+            break;
+          case 'CRITDMG':
+            attribute.CRITDMG.value += Number(item.value)
+            attribute.CRITDMG.showValue = '+' + attribute.CRITDMG.value + '%'
+            break;
+          default:
+            break;
+        }
+      })
+      attribute.MAXHP.value+=100
+      attribute.CURHP = attribute.MAXHP
+      // state.playerAttribute.attribute=attribute
+      return attribute
     }
   },
   actions: {

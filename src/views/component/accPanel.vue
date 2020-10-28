@@ -1,35 +1,35 @@
 <template>
-  <div class="armor">
+  <div class="acc">
     <!-- <div class="btn" style="position:relative;z-index:999;">
-      <button @click="createNewarmor">随机生成</button>
+      <button @click="createNewacc">随机生成</button>
     </div> -->
-    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}">
+    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color}">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+armor.quality.color}">
-          <img :src="armor.type.iconSrc" alt="">
+        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+acc.quality.color}">
+          <img :src="acc.type.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
+        <div class='name' :style="{color:acc.quality.color}">{{acc.quality.name}}的{{acc.type.name}}</div>
       </div>
       <div class='type'>
-        <div :style="{color:armor.quality.color}">{{armor.quality.name}}</div>
-        <div>防具</div>
+        <div :style="{color:acc.quality.color}">{{acc.quality.name}}</div>
+        <div>饰品</div>
       </div>
       <div class='lv'>
-        <div>lv{{armor.lv}}</div>
+        <div>lv{{acc.lv}}</div>
       </div>
       <div class="entry">
-        <div v-for="v in armor.type.entry" :key="v.id">
+        <div v-for="v in acc.type.entry" :key="v.id">
           <div>{{v.name}} : {{v.showVal}}</div>
         </div>
       </div>
       <div class="extraEntry">
-        <div v-for="v in armor.extraEntry" :key="v.id">
+        <div v-for="v in acc.extraEntry" :key="v.id">
           <div>{{v.name}} : {{v.showVal}}</div>
         </div>
       </div>
       <div class="des">
         <div>
-          {{armor.type.des}}
+          {{acc.type.des}}
         </div>
       </div>
     </div>
@@ -38,10 +38,10 @@
 </template>
 <script>
 export default {
-  name: "armorPanel",
+  name: "accPanel",
   data() {
     return {
-      armor: {"lv":30,"quality":{"name":"神器","qualityCoefficient":1.5,"probability":"0.15","color":"#ff00ff","extraEntryNum":3},"type":{"name":"赤柳血铠","des":"似乎会给使用者提供生命气息","iconSrc":"./icons/A_A3.png","entry":[{"valCoefficient":0.9,"value":51,"showVal":"+51","type":"DEF","name":"防御力"},{"type":"HP","valCoefficient":1.4,"value":634,"showVal":"+634","name":"生命值"}]},"extraEntry":[{"type":"HP","value":99,"showVal":"+99","name":"生命值"},{"type":"HP","value":93,"showVal":"+93","name":"生命值"},{"type":"HP","value":97,"showVal":"+97","name":"生命值"}]},
+      acc: {"iconSrc":"./icons/A_A3.png","lv":8,"quality":{"name":"普通","qualityCoefficient":1,"probability":"0.55","color":"#fff","extraEntryNum":2},"type":{"name":"十字军项链","des":"十字军佩戴的项链","iconSrc":"./icons/Ac_1.png","entry":[{"valCoefficient":0.9,"value":9,"showVal":"+9","type":"DEF","name":"防御力"}]},"extraEntry":[{"type":"DEF","value":5,"showVal":"+5","name":"防御力"},{"type":"CRITDMG","value":21,"showVal":"+21%","name":"暴击伤害"}]},
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
@@ -67,11 +67,23 @@ export default {
       }],
       category: [
         {
-          name: '战士重铠',
-          des: '六级战士使用的重型铠甲',
-          iconSrc:'./icons/A_A5.png',
+          name: '生命指环',
+          des: '据说拥有增强佩戴者体质的神秘功效',
+          iconSrc: './icons/Ac_9.png',
           entry: [{
             'valCoefficient': 1.1,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          }]
+        },
+        {
+          name: '十字军项链',
+          des: '十字军佩戴的项链',
+          iconSrc: './icons/Ac_1.png',
+          entry: [{
+            'valCoefficient': 0.9,
             'value': '11',
             'showVal': '+11',
             type: 'DEF',
@@ -79,21 +91,27 @@ export default {
           }]
         },
         {
-          name: '赤柳血铠',
-          des: '似乎会给使用者提供生命气息',
-          iconSrc:'./icons/A_A3.png',
+          name: '冰龙凝雪',
+          des: '冰龙凝雪',
+          iconSrc: './icons/Ac_7.png',
           entry: [{
             'valCoefficient': 0.9,
             'value': '11',
             'showVal': '+11',
-            type: 'DEF',
-            'name': '防御力'
-          }, {
-            type: 'HP',
-            'valCoefficient': 1.4,
-            'value': '8',
-            'showVal': '8',
-            'name': '生命值'
+            type: 'CRITDMG',
+            'name': '暴击伤害'
+          }]
+        },
+        {
+          name: '银魂之眼',
+          des: '银魂之眼',
+          iconSrc: './icons/Ac_7.png',
+          entry: [{
+            'valCoefficient': 0.9,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRIT',
+            'name': '暴击率'
           }]
         }
       ],
@@ -102,6 +120,16 @@ export default {
         'showVal': '+11',
         type: 'ATK',
         'name': '攻击力'
+      }, {
+        type: 'CRIT',
+        'value': '8',
+        'showVal': '+8%',
+        'name': '暴击率'
+      }, {
+        type: 'CRITDMG',
+        'value': '20',
+        'showVal': '+20%',
+        'name': '暴击伤害'
       }, {
         type: 'HP',
         'value': '20',
@@ -117,51 +145,51 @@ export default {
   },
   props:['item'],
   mounted() {
-    this.armor = this.item
+    this.acc = this.item
   },
   methods: {
-    createNewarmor() {
-      this.armor.quality = this.createQua()
-      this.armor.lv = this.createLv()
-      this.armor.type = this.createType()
-      this.armor.extraEntry = this.createExtraEntry(this.armor)
-      console.log(this.armor)
+    createNewacc() {
+      this.acc.quality = this.createQua()
+      this.acc.lv = this.createLv()
+      this.acc.type = this.createType()
+      this.acc.extraEntry = this.createExtraEntry(this.acc)
+      console.log(this.acc)
     },
     createLv(Max) {
       return parseInt(Math.random() * (Max || 39)) + 1
     },
     createType() {
       var index = Math.floor((Math.random() * this.category.length));
-      let type = this.category[index], lv = this.armor.lv
+      let type = this.category[index], lv = this.acc.lv
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 10)
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -205,31 +233,31 @@ export default {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 2)
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 10)
-            random = parseInt(random * this.armor.quality.qualityCoefficient)
+            random = parseInt(random * this.acc.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -253,7 +281,7 @@ export default {
   font-family: "Lato-Regular";
   src: url(../../assets/fonts/Lato-Regular.ttf);
 }
-.armorPanel {
+.accPanel {
   font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
     "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
