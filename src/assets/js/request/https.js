@@ -20,7 +20,7 @@ export async function getAxiosInstance() {
   let data = await axios.get('/config.json')
 
   baseURL = data.data.baseURL;
-  
+
   /** 
    * 跳转登录页
    * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
@@ -90,7 +90,7 @@ export async function getAxiosInstance() {
     //生产环境
     instance.defaults.baseURL = baseURL;
   }
-  instance.defaults.baseSocketURL =  data.data.baseSocketURL
+  instance.defaults.baseSocketURL = data.data.baseSocketURL
   // 设置post请求头
   // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
   instance.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
