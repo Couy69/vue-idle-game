@@ -5,7 +5,7 @@
     </div> -->
     <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}" v-if="weapon">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+weapon.quality.color}">
+        <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+weapon.quality.color}">
           <img :src="weapon.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:weapon.quality.color}">{{weapon.quality.name}}的{{weapon.type.name}}</div>
@@ -346,8 +346,8 @@ export default {
     padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
     .icon {
-      width: 0.46rem;
-      height: 0.46rem;
+      width: 0.5rem;
+      height: 0.5rem;
       background: #000;
       display: flex;
       align-items: center;

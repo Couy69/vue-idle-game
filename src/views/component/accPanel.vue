@@ -5,7 +5,7 @@
     </div> -->
     <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color}" v-if="acc">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+acc.quality.color}">
+        <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+acc.quality.color}">
           <img :src="acc.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:acc.quality.color}">{{acc.quality.name}}的{{acc.type.name}}</div>
@@ -301,8 +301,8 @@ export default {
     padding-bottom: .10rem;
     border-bottom: 1px solid #777;
     .icon {
-      width: .46rem;
-      height: .46rem;
+      width: 0.5rem;
+      height: 0.5rem;
       background: #000;
       display: flex;
       align-items: center;

@@ -43,7 +43,7 @@
 
       <div class="weapon" @mouseover="showItemInfo('weapon',playerWeapon)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerWeapon.quality.color}">
+          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.quality.name}}的{{playerWeapon.type.name}}</div>
@@ -51,7 +51,7 @@
       </div>
       <div class="armor" @mouseover="showItemInfo('armor',playerArmor)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerArmor">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerArmor.quality.color}">
+          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.quality.name}}的{{playerArmor.type.name}}</div>
@@ -59,7 +59,7 @@
       </div>
       <div class="acc" @mouseover="showItemInfo('acc',playerAcc)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerAcc">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerAcc.quality.color}">
+          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerAcc.quality.color}">
             <img :src="playerAcc.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.quality.name}}的{{playerAcc.type.name}}</div>
@@ -104,7 +104,7 @@
       <armorPanel :item="armor" v-show="armorShow"></armorPanel>
       <accPanel :item="acc" v-show="accShow"></accPanel>
     </div>
-    <div class="dialog-backpackPanel" v-if="backpackPanelOpened">
+    <div class="dialog-backpackPanel" v-show="backpackPanelOpened">
       <div class="title">
         <span>背包</span>
         <i class="close"></i>
@@ -453,6 +453,7 @@ a {
 .dialog {
   position: absolute;
   display: none;
+  z-index: 10;
 }
 .weaponShow {
   top: 0.67rem;
@@ -489,6 +490,7 @@ a {
 }
 .dialog-backpackPanel{
   position: absolute;
+  z-index:9;
   top:50%;
   left:50%;
   transform: translate(-50%,-50%);

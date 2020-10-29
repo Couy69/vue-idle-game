@@ -5,7 +5,7 @@
     </div> -->
     <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5rpx '+armor.quality.color}" v-if="armor">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+armor.quality.color}">
+        <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
@@ -273,8 +273,8 @@ export default {
     padding-bottom: .10rem;
     border-bottom: 1px solid #777;
     .icon {
-      width: .46rem;
-      height: .46rem;
+      width: 0.5rem;
+      height: 0.5rem;
       background: #000;
       display: flex;
       align-items: center;

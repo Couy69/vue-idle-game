@@ -265,6 +265,16 @@ export default {
           console.log(item)
         }
         item = JSON.parse(item)
+        var backpackPanel= this.findBrothersComponents(this, 'backpackPanel', false)[0]
+        console.log(backpackPanel)
+        for(let i=0;i<backpackPanel.grid.length;i++){
+          console.log(JSON.stringify(backpackPanel.grid[i]).length)
+          if(JSON.stringify(backpackPanel.grid[i]).length<3){
+            this.$set(backpackPanel.grid,i,item)
+            break;
+          }
+          
+        }
         this.$store.commit("set_sys_info", {
           msg: `
               获得了:金币${event.trophy.gold}
