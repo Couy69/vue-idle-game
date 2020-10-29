@@ -30,7 +30,7 @@ export default {
           name: '小史莱姆', type: 'monster',
           eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 20,
             ATK: 1,
           },
           trophy: {
@@ -42,7 +42,7 @@ export default {
         }, {
           name: '小史莱姆', type: 'monster', eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 20,
             ATK: 1,
           },
           trophy: {
@@ -55,7 +55,7 @@ export default {
           name: '小史莱姆',
           type: 'monster', eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 20,
             ATK: 1,
           },
           trophy: {
@@ -68,7 +68,7 @@ export default {
           name: '小史莱姆',
           type: 'monster', eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 20,
             ATK: 1,
           },
           trophy: {
@@ -81,7 +81,7 @@ export default {
           name: '史莱姆王',
           type: 'boss', eventType: 'battle',
           attribute: {
-            HP: 200,
+            HP: 40,
             ATK: 2,
           },
           trophy: {
@@ -170,19 +170,57 @@ export default {
       }, 100)
     },
     battleCom(event) {
-      // TODO: 详细的战斗计算公式 
-      if ('win') {
-        // TODO: 战利品获取随机计算
+      var playerAttribute = this.$store.state.playerAttribute.attribute,
+        battleTime,
+        healthRecoverySpeed = this.$store.state.playerAttribute.healthRecoverySpeed,
+        reducedDamage = this.$store.state.playerAttribute.attribute.REDUCDMG,
+        playerDPS = playerAttribute.DPS,
+        monsterAttribute = event.attribute //HP: 100,ATK: 1,
+
+      // 战斗伤害计算公式 
+      // 1 - 0.06 * armor / (1 / (0.06 * armor))
+
+      var playerDeadTime = parseInt(playerAttribute.CURHP.value / monsterAttribute.ATK),
+        monsterDeadTime = parseInt(monsterAttribute.HP / playerDPS)
+      
+      // 战斗获胜
+      if (monsterDeadTime < playerDeadTime) {
+        battleTime = monsterDeadTime
+        var takeDmg = -battleTime * Number(monsterAttribute.ATK)
+        takeDmg = parseInt(takeDmg * reducedDamage)
+        this.$store.commit('set_player_curhp', takeDmg)
+
         this.$store.commit("set_sys_info", {
           msg: `
-              战斗获胜：你获得了金币：${event.trophy.gold}
+              击杀了${event.name}(lv${this.zones.lv})，受到了${Math.abs(takeDmg)}点伤害
+            `,
+          type: 'win'
+        });
+        this.$store.commit("set_sys_info", {
+          msg: `
+              你获得了金币：${event.trophy.gold}
             `,
           type: 'trophy'
         });
+        this.$store.commit("set_player_gold", event.trophy.gold);
+      } else {
+        // 玩家死亡
+
+        this.$store.commit("set_sys_info", {
+          msg: `
+              战斗失败！
+            `,
+          type: 'enter'
+        });
+      }
+      if ('win') {
+        // TODO: 战利品获取随机计算
+        
+        
       } else {
 
       }
-    }
+    },
   }
 };
 

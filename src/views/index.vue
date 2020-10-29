@@ -14,10 +14,10 @@
             {{attribute.ATK.value}}
           </div>
         </div>
-        <div class="item" title="防御力">
+        <div class="item" title="防御力及减伤比例">
           <img src="../assets/icons/icon_11.png" alt="">
           <div class="value">
-            {{attribute.DEF.value}}
+            {{attribute.DEF.value}} <span style="font-size:14px;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
           </div>
         </div>
         <div class="item" title="暴击几率">
@@ -36,7 +36,11 @@
       </div>
     </div>
     <div class="user-item">
-      <div class="gold">GOLD: <span>{{userGold}}</span></div>
+      <div class="uii">
+        <div class="gold">DPS: <span>{{attribute.DPS}}</span></div>
+        <div class="gold">GOLD: <span>{{userGold}}</span></div>
+      </div>
+
       <div class="weapon" @mouseover="showItemInfo('weapon')" @mouseleave="closeItemInfo">
         <div class="title" v-if="weapon">
           <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
@@ -102,40 +106,43 @@ export default {
   name: "index",
   data() {
     return {
-      time:'00:00:00',
+      time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
       armorShow: false,
       accShow: false,
-      weapon: '',
-      armor: '',
-      acc: '',
-      userGold: '',
-      attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
+      // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
   components: { weaponPanel, armorPanel, accPanel, zones },
   mounted() {
+    this.$store.getters.calculatePlayerAttribute;
     // 从store中加载装备与人物数据
-    this.weapon = this.$store.state.playerAttribute.weapon
-    this.armor = this.$store.state.playerAttribute.armor
-    this.acc = this.$store.state.playerAttribute.acc
-    this.userGold = this.$store.state.playerAttribute.GOLD
-    this.attribute = this.$store.getters.calculatePlayerAttribute
-
+    // this.weapon = this.$store.state.playerAttribute.weapon
+    // this.armor = this.$store.state.playerAttribute.armor
+    // this.acc = this.$store.state.playerAttribute.acc
+    // this.userGold = this.$store.state.playerAttribute.GOLD
+    // this.attribute = this.$store.getters.calculatePlayerAttribute
+    setInterval(()=>{
+      this.$store.commit('set_player_curhp',this.healthRecoverySpeed)
+    },1000)
     this.sysInfo = this.$store.state.sysInfo
+  },
+  computed: {
+    attribute(){return this.$store.state.playerAttribute.attribute},
+    healthRecoverySpeed(){return this.$store.state.playerAttribute.healthRecoverySpeed},
+    userGold() { return this.$store.state.playerAttribute.GOLD },
+    weapon() { return this.$store.state.playerAttribute.weapon },
+    armor() { return this.$store.state.playerAttribute.armor },
+    acc() { return this.$store.state.playerAttribute.acc },
   },
   watch: {
     sysInfo() {
-      var time = +new Date()
-      var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
-      this.sysInfo[this.sysInfo.length-1].time =date.toJSON().substr(11, 8).replace('T', ' ')
       var element = document.getElementById('sysInfo')
       //渲染完成后滚至最下端
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         element.scrollTop = element.scrollHeight + 20
       })
-      
     }
   },
   methods: {
@@ -274,41 +281,29 @@ a {
       width: calc(100% - 40px);
       margin: 0 20px;
     }
+    .uii {
+      display: flex;
+      width: calc(100% -40px);
+    }
     .gold {
-      // margin: 0;
-      // background: transparent;
-      // font-size: 24px;
-      // text-align: left;
-      // padding: 0 20px;
-      // width: 100%;
-      // display: flex;
-      // align-items: center;
-      // span{
-      //   border:2px solid #fff;
-      //   text-align: right;
-      //   font-size: 20px;
-      //   display: inline-block;
-      //   padding: 6px;
-      //   margin-left: 10px;
-      //   width: calc(100% - 40px);
-      // }
-
       cursor: pointer;
       height: 70px;
-      margin: 20px;
+      margin: 10px;
       margin-top: 8px;
-      width: calc(100% -40px);
+      width: calc(50%);
       display: flex;
-      border: 2px solid #ccc;
       align-items: center;
-      padding-left: 20px;
-      font-size: 26px;
+      padding-left: 10px;
+      font-size: 22px;
       span {
         font-size: 20px;
         font-weight: bold;
         text-align: right;
         flex: 1;
-        padding: 10px 20px;
+        padding: 10px 8px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
       }
     }
     .title {
@@ -347,7 +342,7 @@ a {
       overflow-y: auto;
       transition: 0.2s;
       width: 100%;
-      height:100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-start;

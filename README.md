@@ -28,7 +28,7 @@
 ##### 方式1
 ```sh
 var armor=40;
-console.log(1 - 0.06 * armor / (1 / (0.06 * armor)))
+console.log(1 - 0.06 * armor / (1 + (0.06 * armor)))
 ```
 ##### 方式2
 ```sh
