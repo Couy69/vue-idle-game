@@ -12,8 +12,10 @@
   </div>
 </template>
 <script>
+import { assist } from '../../assets/js/assist';
 export default {
   name: "zones",
+  mixins: [assist],
   data() {
     return {
       left: 0,
@@ -36,7 +38,7 @@ export default {
           trophy: {
             gold: 30,
             equip: [
-              0.2, 0.1, 0.05, 0, 0
+              1, 0, 0, 0
             ],
           }
         }, {
@@ -48,7 +50,7 @@ export default {
           trophy: {
             gold: 30,
             equip: [
-              0.2, 0.1, 0.05, 0, 0
+              0.2, 0.1, 0.05, 0
             ],
           }
         }, {
@@ -61,7 +63,7 @@ export default {
           trophy: {
             gold: 30,
             equip: [
-              0.2, 0.1, 0.05, 0, 0
+              0.2, 0.1, 0.05, 0
             ],
           }
         }, {
@@ -74,7 +76,7 @@ export default {
           trophy: {
             gold: 30,
             equip: [
-              0.2, 0.1, 0.05, 0, 0
+              0.2, 0.1, 0.05, 0
             ],
           }
         }, {
@@ -87,7 +89,7 @@ export default {
           trophy: {
             gold: 30,
             equip: [
-              0.2, 0.1, 0.05, 0, 0
+              0.25, 0.55, 0.15, 0.05
             ],
           }
         },]
@@ -169,6 +171,7 @@ export default {
         });
       }, 100)
     },
+    // 计算战斗过程
     battleCom(event) {
       var playerAttribute = this.$store.state.playerAttribute.attribute,
         battleTime,
@@ -182,7 +185,7 @@ export default {
 
       var playerDeadTime = parseInt(playerAttribute.CURHP.value / monsterAttribute.ATK),
         monsterDeadTime = parseInt(monsterAttribute.HP / playerDPS)
-      
+
       // 战斗获胜
       if (monsterDeadTime < playerDeadTime) {
         battleTime = monsterDeadTime
@@ -196,13 +199,9 @@ export default {
             `,
           type: 'win'
         });
-        this.$store.commit("set_sys_info", {
-          msg: `
-              你获得了金币：${event.trophy.gold}
-            `,
-          type: 'trophy'
-        });
-        this.$store.commit("set_player_gold", event.trophy.gold);
+
+        this.caculateTrophy(event)
+
       } else {
         // 玩家死亡
 
@@ -215,12 +214,77 @@ export default {
       }
       if ('win') {
         // TODO: 战利品获取随机计算
-        
-        
+
+
       } else {
 
       }
     },
+    caculateTrophy(event) {
+      var trophy=event.trophy
+      var equip = [
+        0.25, 0.25, 0.25, 0.25
+      ]
+      var equip = trophy.equip
+      var equipQua = -1;
+      var r = Math.random()
+      if (r <= equip[0]) {
+        // 获得破旧装备
+        equipQua = 0
+      } else if (r < equip[1] + equip[0] && r >= equip[0]) {
+        // 获得普通装备
+        equipQua = 1
+      }
+      else if (r < equip[2] + equip[1] + equip[0] && r >= equip[1] + equip[0]) {
+        // 获得神器装备
+        equipQua = 2
+      }
+      else if (r < equip[3] + equip[2] + equip[1] + equip[0] && r >= equip[2] + equip[1] + equip[0]) {
+        // 获得史诗装备
+        equipQua = 3
+      } else {
+        // 未获得装备
+      }
+      console.log(equipQua)
+
+      if (equipQua != -1) {
+        var lv = this.zones.lv
+        // this.createEquip(equipQua,lv)
+        var index = Math.floor((Math.random() * 3));
+        if (index == 0) {
+          var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
+          var item = b.createNewItem(equipQua, lv)
+          console.log(item)
+        } else if (index == 1) {
+          var b = this.findBrothersComponents(this, 'armorPanel', false)[0]
+          var item = b.createNewItem(equipQua, lv)
+          console.log(item)
+        } else {
+          var b = this.findBrothersComponents(this, 'accPanel', false)[0]
+          var item = b.createNewItem(equipQua, lv)
+          console.log(item)
+        }
+        item = JSON.parse(item)
+        this.$store.commit("set_sys_info", {
+          msg: `
+              获得了:金币${event.trophy.gold}
+            `,
+          type: 'trophy',
+          equip:[item]
+        });
+        this.$store.commit("set_player_gold", event.trophy.gold);
+      } else {
+        this.$store.commit("set_sys_info", {
+          msg: `
+              获得了:金币${event.trophy.gold}
+            `,
+          type: 'trophy',
+          equip:[]
+        });
+        this.$store.commit("set_player_gold", event.trophy.gold);
+      }
+
+    }
   }
 };
 

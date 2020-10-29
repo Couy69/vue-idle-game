@@ -17,7 +17,7 @@
         <div class="item" title="防御力及减伤比例">
           <img src="../assets/icons/icon_11.png" alt="">
           <div class="value">
-            {{attribute.DEF.value}} <span style="font-size:14px;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
+            {{attribute.DEF.value}} <span style="font-size:.14rem;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
           </div>
         </div>
         <div class="item" title="暴击几率">
@@ -41,34 +41,37 @@
         <div class="gold">GOLD: <span>{{userGold}}</span></div>
       </div>
 
-      <div class="weapon" @mouseover="showItemInfo('weapon')" @mouseleave="closeItemInfo">
-        <div class="title" v-if="weapon">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="weapon.type.iconSrc" alt="">
+      <div class="weapon" @mouseover="showItemInfo('weapon',playerWeapon)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="playerWeapon">
+          <div class='icon' :style="{'box-shadow':'0 0 2px 1px playerWeapon.quality.color'}">
+            <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:weapon.quality.color}">{{weapon.quality.name}}的{{weapon.type.name}}</div>
+          <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.quality.name}}的{{playerWeapon.type.name}}</div>
         </div>
       </div>
-      <div class="armor" @mouseover="showItemInfo('armor')" @mouseleave="closeItemInfo">
-        <div class="title" v-if="armor">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="armor.type.iconSrc" alt="">
+      <div class="armor" @mouseover="showItemInfo('armor',playerArmor)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="playerArmor">
+          <div class='icon' :style="{'box-shadow':'0 0 2px 1px playerArmor.quality.color'}">
+            <img :src="playerArmor.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
+          <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.quality.name}}的{{playerArmor.type.name}}</div>
         </div>
       </div>
-      <div class="acc" @mouseover="showItemInfo('acc')" @mouseleave="closeItemInfo">
-        <div class="title" v-if="acc">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px weapon.quality.color'}">
-            <img :src="acc.type.iconSrc" alt="">
+      <div class="acc" @mouseover="showItemInfo('acc',playerAcc)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="playerAcc">
+          <div class='icon' :style="{'box-shadow':'0 0 2rpx 1px playerAcc.quality.color'}">
+            <img :src="playerAcc.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:acc.quality.color}">{{acc.quality.name}}的{{acc.type.name}}</div>
+          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.quality.name}}的{{playerAcc.type.name}}</div>
         </div>
       </div>
     </div>
     <div class="sys-info">
       <div id='sysInfo'>
-        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:12px" v-if="v.time">({{v.time}})</i>：<span>{{v.msg}}</span></div>
+        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:.12rem" v-if="v.time">({{v.time}})</i>：
+          <span>{{v.msg}}</span> 
+          <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}"  @mouseover="showItemInfo(o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
+        </div>
       </div>
 
       <!-- <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
@@ -86,14 +89,14 @@
       <div class="plan">
         <zones></zones>
       </div>
-      <div class="icon" @click="setSysInfo" style="top:170px;left:323px"></div>
-      <div class="icon" style="top:670px;left:483px"></div>
-      <div class="icon" style="top: 231px;left: 846px;"></div>
+      <div class="icon" @click="setSysInfo" style="top:1.70rem;left:3.23rem"></div>
+      <div class="icon" style="top:6.70rem;left:4.83rem"></div>
+      <div class="icon" style="top: 2.31rem;left: 8.46rem;"></div>
     </div>
     <div class="dialog" :class="{weaponShow:weaponShow,armorShow:armorShow,accShow:accShow}">
-      <weaponPanel :item="weapon" v-if="weaponShow"></weaponPanel>
-      <armorPanel :item="armor" v-if="armorShow"></armorPanel>
-      <accPanel :item="acc" v-if="accShow"></accPanel>
+      <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
+      <armorPanel :item="armor" v-show="armorShow"></armorPanel>
+      <accPanel :item="acc" v-show="accShow"></accPanel>
     </div>
   </div>
 </template>
@@ -111,10 +114,19 @@ export default {
       weaponShow: false,
       armorShow: false,
       accShow: false,
+      weapon:{},
+      acc:{},
+      armor:{},
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
   components: { weaponPanel, armorPanel, accPanel, zones },
+  created() {
+    window.onresize = () => {
+      this.initial()
+    };
+    this.initial()
+  },
   mounted() {
     this.$store.getters.calculatePlayerAttribute;
     // 从store中加载装备与人物数据
@@ -123,18 +135,22 @@ export default {
     // this.acc = this.$store.state.playerAttribute.acc
     // this.userGold = this.$store.state.playerAttribute.GOLD
     // this.attribute = this.$store.getters.calculatePlayerAttribute
-    setInterval(()=>{
-      this.$store.commit('set_player_curhp',this.healthRecoverySpeed)
-    },1000)
+    setInterval(() => {
+      this.$store.commit('set_player_curhp', this.healthRecoverySpeed)
+    }, 1000)
     this.sysInfo = this.$store.state.sysInfo
+
+    this.weapon = this.playerWeapon
+    this.armor = this.playerArmor
+    this.acc = this.playerAcc
   },
   computed: {
-    attribute(){return this.$store.state.playerAttribute.attribute},
-    healthRecoverySpeed(){return this.$store.state.playerAttribute.healthRecoverySpeed},
+    attribute() { return this.$store.state.playerAttribute.attribute },
+    healthRecoverySpeed() { return this.$store.state.playerAttribute.healthRecoverySpeed },
     userGold() { return this.$store.state.playerAttribute.GOLD },
-    weapon() { return this.$store.state.playerAttribute.weapon },
-    armor() { return this.$store.state.playerAttribute.armor },
-    acc() { return this.$store.state.playerAttribute.acc },
+    playerWeapon() { return this.$store.state.playerAttribute.weapon },
+    playerArmor() { return this.$store.state.playerAttribute.armor },
+    playerAcc() { return this.$store.state.playerAttribute.acc },
   },
   watch: {
     sysInfo() {
@@ -146,18 +162,31 @@ export default {
     }
   },
   methods: {
+    initial() {
+      let html = document.documentElement;
+      let wW = html.clientHeight;
+      let designSize = 1000; //设计高度
+      if (!this.fullScreen) {
+        wW = html.clientHeight;
+      }
+      let rem = (wW * 100) / designSize;
+      document.documentElement.style.fontSize = rem + "px";
+    },
     contextmenu(e) {
       // 鼠标右键
     },
-    showItemInfo(type) {
+    showItemInfo(type,item) {
       switch (type) {
         case 'weapon':
+          this.weapon =item
           this.weaponShow = true
           break;
         case 'armor':
+          this.armor =item
           this.armorShow = true
           break;
         case 'acc':
+          this.acc =item
           this.accShow = true
           break;
         default:
@@ -208,28 +237,28 @@ a {
   height: 100%;
   .user-status {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 0.1rem;
+    left: 0.1rem;
     border: 2px solid #ccc;
-    height: 400px;
-    width: 400px;
-    padding: 20px;
+    height: 4rem;
+    width: 4rem;
+    padding: 0.2rem;
     display: flex;
     flex-direction: column;
     .hp {
       cursor: pointer;
-      height: 70px;
+      height: 0.7rem;
       width: 100%;
       display: flex;
       border: 2px solid #ccc;
       align-items: center;
-      padding-left: 20px;
+      padding-left: 0.2rem;
       img {
-        width: 50px;
-        height: 50px;
+        width: 0.5rem;
+        height: 0.5rem;
       }
       .value {
-        font-size: 26px;
+        font-size: 0.26rem;
         font-weight: bold;
         text-align: center;
         flex: 1;
@@ -237,14 +266,14 @@ a {
     }
     .other {
       img {
-        width: 40px;
-        height: 40px;
+        width: 0.4rem;
+        height: 0.4rem;
       }
       display: flex;
       flex: 1;
-      padding: 20px;
+      padding: 0.2rem;
       border: 2px solid #ccc;
-      margin-top: 20px;
+      margin-top: 0.2rem;
       flex-wrap: wrap;
       & > div {
         cursor: pointer;
@@ -253,10 +282,10 @@ a {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding-left: 20px;
+        padding-left: 0.2rem;
         .value {
-          margin-left: 10px;
-          font-size: 24px;
+          margin-left: 0.1rem;
+          font-size: 0.24rem;
           font-weight: normal;
         }
       }
@@ -264,43 +293,43 @@ a {
   }
   .user-item {
     position: absolute;
-    top: 10px;
-    left: 420px;
+    top: 0.1rem;
+    left: 4.2rem;
     border: 2px solid #ccc;
-    height: 400px;
-    width: 400px;
+    height: 4rem;
+    width: 4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    padding: 40px 0;
-    padding-top: 10px;
+    padding: 0.4rem 0;
+    padding-top: 0.1rem;
     cursor: pointer;
     & > div {
       background: rgba(0, 0, 0, 0.7);
-      width: calc(100% - 40px);
-      margin: 0 20px;
+      width: calc(100% - 0.4rem);
+      margin: 0 20rem;
     }
     .uii {
       display: flex;
-      width: calc(100% -40px);
+      width: calc(100% -0.4rem);
     }
     .gold {
       cursor: pointer;
-      height: 70px;
-      margin: 10px;
-      margin-top: 8px;
+      height: 0.7rem;
+      margin: 0.1rem;
+      margin-top: 0.08rem;
       width: calc(50%);
       display: flex;
       align-items: center;
-      padding-left: 10px;
-      font-size: 22px;
+      padding-left: 0.1rem;
+      font-size: 0.22rem;
       span {
-        font-size: 20px;
+        font-size: 0.2rem;
         font-weight: bold;
         text-align: right;
         flex: 1;
-        padding: 10px 8px;
+        padding: 0.1rem 0.08rem;
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
@@ -308,35 +337,35 @@ a {
     }
     .title {
       display: flex;
-      padding: 10px;
+      padding: 0.1rem;
       width: 100%;
       .icon {
-        width: 56px;
-        height: 56px;
+        width: 0.56rem;
+        height: 0.56rem;
         background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
+        border-radius: 0.04rem;
       }
       .name {
-        font-size: 22px;
-        height: 46px;
-        margin-left: 20px;
-        line-height: 46px;
+        font-size: 0.22rem;
+        height: 0.46rem;
+        margin-left: 0.2rem;
+        line-height: 0.46rem;
       }
     }
   }
   .sys-info {
     position: absolute;
     border: 2px solid #ccc;
-    height: calc(100% - 440px);
-    width: 810px;
-    bottom: 10px;
-    left: 10px;
+    height: calc(100% - 4.4rem);
+    width: 8.1rem;
+    bottom: 0.1rem;
+    left: 0.1rem;
 
     transition: 0.2s;
-    padding: 20px;
+    padding: 0.2rem;
 
     & > div {
       overflow-y: auto;
@@ -349,7 +378,12 @@ a {
       justify-content: flex-start;
     }
     .info {
-      margin: 3px 0;
+      margin: 0.03rem 0;
+    }
+    a{
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: .05rem;
     }
     .enter > span {
       color: #f90202;
@@ -366,29 +400,29 @@ a {
   }
   .map {
     position: absolute;
-    right: 10px;
-    left: 830px;
-    top: 10px;
-    bottom: 10px;
+    right: 0.1rem;
+    left: 8.3rem;
+    top: 0.1rem;
+    bottom: 0.1rem;
     border: 2px solid #ccc;
     background-image: url(../assets/img/map.jpg);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     .plan {
       position: absolute;
-      top: 10px;
-      width: calc(100% - 30px);
-      left: 15px;
-      height: 100px;
+      top: 0.1rem;
+      width: calc(100% - 0.3rem);
+      left: 0.15rem;
+      height: 1rem;
       background: rgba(0, 0, 0, 0.7);
       text-align: center;
-      font-size: 40px;
-      line-height: 100px;
+      font-size: 0.4rem;
+      line-height: 1rem;
     }
     .icon {
       position: absolute;
-      width: 45px;
-      height: 45px;
+      width: 0.45rem;
+      height: 0.45rem;
       background-image: url(../assets/icons/I_Scroll.png);
       border-radius: 50%;
       border-radius: 50%;
@@ -403,18 +437,18 @@ a {
   display: none;
 }
 .weaponShow {
-  top: 67px;
-  left: 798px;
+  top: 0.67rem;
+  left: 7.98rem;
   display: flex;
 }
 .armorShow {
-  top: 177px;
-  left: 798px;
+  top: 1.77rem;
+  left: 7.98rem;
   display: flex;
 }
 .accShow {
-  top: 277px;
-  left: 798px;
+  top: 2.77rem;
+  left: 7.98rem;
   display: flex;
 }
 </style>

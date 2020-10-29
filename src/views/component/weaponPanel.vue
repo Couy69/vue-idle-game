@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewWeapon">随机生成</button>
     </div> -->
-    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}">
+    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}" v-if="weapon">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+weapon.quality.color}">
           <img :src="weapon.type.iconSrc" alt="">
@@ -29,7 +29,7 @@
       </div>
       <div class="des">
         <div>
-         {{weapon.type.des}}
+          {{weapon.type.des}}
         </div>
       </div>
     </div>
@@ -42,33 +42,33 @@ export default {
   data() {
     return {
       weapon: {
-        "lv": 35,
+        "lv": 1,
+        itemType: 'weapon',
         "quality": {
-          "name": "史诗",
-          "qualityCoefficient": 2,
-          "probability": "0.05",
-          "color": "#f78918",
-          "extraEntryNum": 4
+          name: '破旧',
+          qualityCoefficient: 0.7,
+          probability: '0.25',
+          color: '#a1a1a1',
+          extraEntryNum: 1,
         },
         "type": {
-          "name": "赤柳血刃",
-          "des": "似乎会给使用者提供生命气息",
-          "iconSrc": "./icons/W_Sword019.png",
+          "name": "新手短剑",
+          "des": "新手菜鸡使用的短剑",
+          "iconSrc": "./icons/W_Sword001.png",
           "entry": [{
             "valCoefficient": 0.9,
-            "value": 88,
-            "showVal": "+88",
+            "value": 1,
+            "showVal": "+1",
             "type": "ATK",
             "name": "攻击力"
-          }, {
-            "type": "HP",
-            "valCoefficient": 1.4,
-            "value": 1006,
-            "showVal": "+1006",
-            "name": "生命值"
           }]
         },
-        "extraEntry": [{ "value": 32, "showVal": "+32", "type": "ATK", "name": "攻击力" }, { "type": "CRIT", "value": 8, "showVal": "+8%", "name": "暴击率" }, { "type": "CRIT", "value": 12, "showVal": "+12%", "name": "暴击率" }, { "type": "CRIT", "value": 12, "showVal": "+12%", "name": "暴击率" }]
+        "extraEntry": [{
+          "value": 1,
+          "showVal": "+1",
+          "type": "ATK",
+          "name": "攻击力"
+        }]
       },
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
@@ -95,8 +95,8 @@ export default {
       }],
       category: [{
         name: '狱岩石太刀',
-        des:'用狱岩石制作的太刀，据说拥有让使用者潜力爆发的神秘力量',
-        iconSrc:'./icons/W_Sword016.png',
+        des: '用狱岩石制作的太刀，据说拥有让使用者潜力爆发的神秘力量',
+        iconSrc: './icons/W_Sword016.png',
         entry: [{
           'valCoefficient': 0.9,
           'value': '11',
@@ -113,8 +113,8 @@ export default {
       },
       {
         name: '战士长剑',
-        des:'六级战士使用的长剑',
-        iconSrc:'./icons/W_Sword007.png',
+        des: '六级战士使用的长剑',
+        iconSrc: './icons/W_Sword007.png',
         entry: [{
           'valCoefficient': 1.1,
           'value': '11',
@@ -131,8 +131,8 @@ export default {
       },
       {
         name: '赤柳血刃',
-        des:'似乎会给使用者提供生命气息',
-        iconSrc:'./icons/W_Sword019.png',
+        des: '似乎会给使用者提供生命气息',
+        iconSrc: './icons/W_Sword019.png',
         entry: [{
           'valCoefficient': 0.9,
           'value': '11',
@@ -149,8 +149,8 @@ export default {
       },
       {
         name: '普通长剑',
-        des:'朴实无华普通长剑，有的只有强力的攻击力',
-        iconSrc:'./icons/W_Sword001.png',
+        des: '朴实无华普通长剑，有的只有强力的攻击力',
+        iconSrc: './icons/W_Sword001.png',
         entry: [{
           'valCoefficient': 1.5,
           'value': '11',
@@ -188,53 +188,59 @@ export default {
       }]
     };
   },
-  props:['item'],
+  props: ['item'],
   mounted() {
-    this.weapon = this.item
+  },
+  watch: {
+    item() {
+      this.weapon = JSON.parse(JSON.stringify(this.item))
+    }
   },
   methods: {
-    createNewWeapon() {
-      this.weapon.quality = this.createQua()
-      this.weapon.lv = this.createLv()
-      this.weapon.type = this.createType()
-      this.weapon.extraEntry = this.createExtraEntry(this.weapon)
-      console.log(this.weapon)
+    createNewItem(qualityIndex, lv) {
+      var weapon = {}
+      weapon.itemType = 'weapon'
+      weapon.quality = qualityIndex > -1 ? this.quality[qualityIndex] : this.createQua()
+      weapon.lv = lv || this.createLv()
+      weapon.type = this.createType(weapon)
+      weapon.extraEntry = this.createExtraEntry(weapon)
+      return JSON.stringify(weapon)
     },
     createLv(Max) {
       return parseInt(Math.random() * (Max || 39)) + 1
     },
-    createType() {
+    createType(weapon) {
       var index = Math.floor((Math.random() * this.category.length));
-      let type = this.category[index], lv = this.weapon.lv
+      let type = this.category[index], lv = weapon.lv
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 10)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -265,8 +271,8 @@ export default {
       }
       return quality
     },
-    createExtraEntry(v) {
-      var n = v.quality.extraEntryNum, extraEntry = [], lv = v.lv
+    createExtraEntry(weapon) {
+      var n = weapon.quality.extraEntryNum, extraEntry = [], lv = weapon.lv
       for (let i = 0; i < n; i++) {
         var index = Math.floor((Math.random() * this.extraEntry.length));
         extraEntry.push(this.extraEntry[index])
@@ -276,31 +282,31 @@ export default {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 2)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 10)
-            random = parseInt(random * this.weapon.quality.qualityCoefficient)
+            random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -328,41 +334,41 @@ export default {
   font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
     "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
-  width: 300px;
+  width: 3rem;
   height: auto;
   background: rgba(0, 0, 0, 0.8);
   border: #393839;
-  border-radius: 5px;
-  padding: 16px;
+  border-radius: 0.05rem;
+  padding: 0.16rem;
   box-sizing: border-box;
   .title {
     display: flex;
-    padding-bottom: 10px;
+    padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
     .icon {
-      width: 46px;
-      height: 46px;
+      width: 0.46rem;
+      height: 0.46rem;
       background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
+      border-radius: 0.04rem;
     }
     .name {
-      height: 46px;
-      margin-left: 20px;
-      line-height: 46px;
+      height: 0.46rem;
+      margin-left: 0.2rem;
+      line-height: 0.46rem;
     }
   }
   .type {
-    padding: 10px;
+    padding: 0.1rem;
     display: flex;
     width: 100%;
     align-content: center;
     justify-content: space-between;
   }
   .lv {
-    padding-right: 10px;
+    padding-right: 0.1rem;
     display: flex;
     width: 100%;
     align-content: center;
@@ -370,8 +376,8 @@ export default {
   }
   .entry {
     width: 100%;
-    padding-left: 20px;
-    padding-bottom: 10px;
+    padding-left: 0.2rem;
+    padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
     div {
       text-align: left;
@@ -379,30 +385,30 @@ export default {
   }
   .extraEntry {
     width: 100%;
-    padding-left: 20px;
-    margin-top: 10px;
-    padding-bottom: 10px;
-    color:#68d5ed;
+    padding-left: 0.2rem;
+    margin-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    color: #68d5ed;
     border-bottom: 1px solid #777;
     div {
       text-align: left;
     }
   }
 }
-.des{
-  color:#777;
-  font-size: 12px;
-  margin-top: 10px;
+.des {
+  color: #777;
+  font-size: 0.12rem;
+  margin-top: 0.1rem;
   text-align: left;
-  text-indent: 24px;
+  text-indent: 0.24rem;
 }
 .btn {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 20px;
-  button{
-    padding: 6px 12px;
+  padding: 0.2rem;
+  button {
+    padding: 0.06rem 0.12rem;
   }
 }
 </style>
