@@ -43,7 +43,7 @@
 
       <div class="weapon" @mouseover="showItemInfo('weapon',playerWeapon)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px playerWeapon.quality.color'}">
+          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.quality.name}}的{{playerWeapon.type.name}}</div>
@@ -51,7 +51,7 @@
       </div>
       <div class="armor" @mouseover="showItemInfo('armor',playerArmor)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerArmor">
-          <div class='icon' :style="{'box-shadow':'0 0 2px 1px playerArmor.quality.color'}">
+          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.quality.name}}的{{playerArmor.type.name}}</div>
@@ -59,7 +59,7 @@
       </div>
       <div class="acc" @mouseover="showItemInfo('acc',playerAcc)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerAcc">
-          <div class='icon' :style="{'box-shadow':'0 0 2rpx 1px playerAcc.quality.color'}">
+          <div class='icon' :style="{'box-shadow':'0 0 2px 1px '+playerAcc.quality.color}">
             <img :src="playerAcc.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.quality.name}}的{{playerAcc.type.name}}</div>
@@ -93,10 +93,23 @@
       <div class="icon" style="top:6.70rem;left:4.83rem"></div>
       <div class="icon" style="top: 2.31rem;left: 8.46rem;"></div>
     </div>
+    <div class="menu">
+      <div class="Backpack" @click="openBackpackPanel">
+        <img src="../assets/icons/S_Sword06.png" alt="">
+        <span>背包</span>
+      </div>
+    </div>
     <div class="dialog" :class="{weaponShow:weaponShow,armorShow:armorShow,accShow:accShow}">
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
       <armorPanel :item="armor" v-show="armorShow"></armorPanel>
       <accPanel :item="acc" v-show="accShow"></accPanel>
+    </div>
+    <div class="dialog-backpackPanel" v-if="backpackPanelOpened">
+      <div class="title">
+        <span>背包</span>
+        <i class="close"></i>
+      </div>
+      <backpackPanel></backpackPanel>
     </div>
   </div>
 </template>
@@ -104,6 +117,7 @@
 import weaponPanel from './component/weaponPanel'
 import armorPanel from './component/armorPanel'
 import accPanel from './component/accPanel'
+import backpackPanel from './component/backpackPanel'
 import zones from './component/zones'
 export default {
   name: "index",
@@ -117,10 +131,11 @@ export default {
       weapon:{},
       acc:{},
       armor:{},
+      backpackPanelOpened:true,
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, zones },
+  components: { weaponPanel, armorPanel, accPanel, zones,backpackPanel },
   created() {
     window.onresize = () => {
       this.initial()
@@ -162,6 +177,9 @@ export default {
     }
   },
   methods: {
+    openBackpackPanel(){
+      this.backpackPanelOpened = !this.backpackPanelOpened
+    },
     initial() {
       let html = document.documentElement;
       let wW = html.clientHeight;
@@ -450,5 +468,38 @@ a {
   top: 2.77rem;
   left: 7.98rem;
   display: flex;
+}
+.menu{
+  position: absolute;
+  bottom: .4rem;
+  left:8.7rem;
+  display: flex;
+  &>div{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+  span{
+      color:#fff;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+  
+}
+.dialog-backpackPanel{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  border: 2px solid #fff;
+  border-radius: 6px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.7);
+  background: rgba(0,0,0,0.7);
+  .title{
+    padding: .1rem;
+    display: flex;
+    
+  }
 }
 </style>
