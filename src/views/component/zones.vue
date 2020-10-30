@@ -108,7 +108,7 @@ export default {
           eventType: 'battle',
           attribute: {
             HP: 60,
-            ATK: 6,
+            ATK: 4,
           },
           trophy: {
             gold: 100,
@@ -120,7 +120,7 @@ export default {
           name: '猫妖', type: 'monster', eventType: 'battle',
           attribute: {
             HP: 60,
-            ATK: 6,
+            ATK: 4,
           },
           trophy: {
             gold: 100,
@@ -133,7 +133,7 @@ export default {
           type: 'monster', eventType: 'battle',
           attribute: {
             HP: 60,
-            ATK: 6,
+            ATK: 4,
           },
           trophy: {
             gold: 100,
@@ -146,7 +146,7 @@ export default {
           type: 'monster', eventType: 'battle',
           attribute: {
             HP: 60,
-            ATK: 6,
+            ATK: 4,
           },
           trophy: {
             gold: 100,
@@ -158,8 +158,8 @@ export default {
           name: '倔强的哈尼克',
           type: 'boss', eventType: 'battle',
           attribute: {
-            HP: 100,
-            ATK: 10,
+            HP: 80,
+            ATK: 8,
           },
           trophy: {
             gold: 100,
@@ -180,7 +180,7 @@ export default {
           name: '翼龙', type: 'monster',
           eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 80,
             ATK: 6,
           },
           trophy: {
@@ -193,7 +193,7 @@ export default {
           name: '翼龙', type: 'monster',
           eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 80,
             ATK: 9,
           },
           trophy: {
@@ -206,7 +206,7 @@ export default {
           name: '翼龙', type: 'monster',
           eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 80,
             ATK: 10,
           },
           trophy: {
@@ -219,7 +219,7 @@ export default {
           name: '翼龙', type: 'monster',
           eventType: 'battle',
           attribute: {
-            HP: 100,
+            HP: 80,
             ATK: 10,
           },
           trophy: {
