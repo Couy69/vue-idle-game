@@ -2,16 +2,17 @@
   <div class="backpackPanel">
     <div v-for="(v, k) in grid" :key="k">
       <div class="grid">
-        <div class="title" v-if="v.lv"  @mouseover="showItemInfo(v.itemType,v)" @mouseleave="closeItemInfo">
-          <div
-            class="icon"
-            :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }"
-          >
+        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
+          <div class="icon" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
         </div>
       </div>
     </div>
+    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+      <li @click="equipTheEquipment()">装备</li>
+      <li @click="sellTheEquipment()">售出</li>
+    </ul>
   </div>
 </template>
 <script>
@@ -21,11 +22,25 @@ export default {
   data() {
     return {
       grid: [],
+      left:'',
+      top:'',
+      visible:false,
+      currentItem:{},
+      currentItemIndex:'',
     };
   },
-  mixins:[assist],
+  mixins: [assist],
   created() {
     this.grid = new Array(32).fill({});
+  },
+  watch:{
+    visible(value) {
+      if (value) {
+        document.body.addEventListener("click", this.closeMenu);
+      } else {
+        document.body.removeEventListener("click", this.closeMenu);
+      }
+    }
   },
   mounted() {
     var item = {
@@ -65,44 +80,82 @@ export default {
         { type: "HP", value: 97, showVal: "+97", name: "生命值" },
       ],
     };
-    this.$set(this.grid,0,item)
+    // this.$set(this.grid,0,item)
   },
   methods: {
-    showItemInfo(type,item) {
-      var p = this.findComponentUpward(this,'index')
-      switch (type) {
+    openMenu(k, e) {
+      this.currentItemIndex=k
+      this.currentItem=this.grid[k]
+      console.log(e)
+      const menuMinWidth = 105;
+      const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
+      const offsetWidth = this.$el.offsetWidth; // container width
+      const maxLeft = offsetWidth - menuMinWidth; // left boundary
+      const left = e.clientX - offsetLeft + 15; // 15: margin right
+
+      if (left > maxLeft) {
+        this.left = maxLeft;
+      } else {
+        this.left = left;
+      }
+
+      this.top = e.offsetY;
+      this.visible = true;
+    },
+    closeMenu() {
+      this.visible = false;
+    },
+    showItemInfo($event, type, item) {
+      var p = this.findComponentUpward(this, 'index')
+      p.showItemInfo($event, type, item)
+    },
+    closeItemInfo() {
+      var p = this.findComponentUpward(this, 'index')
+      p.weaponShow = p.armorShow = p.accShow = false
+    },
+    equipTheEquipment(){
+      switch (this.currentItem.itemType) {
         case 'weapon':
-          p.weapon =item
-          p.weaponShow = true
+          this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.weapon
+          this.$store.commit('set_player_weapon',this.currentItem)
           break;
         case 'armor':
-          p.armor =item
-          p.armorShow = true
+          this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.armor
+          this.$store.commit('set_player_armor',this.currentItem)
           break;
         case 'acc':
-          p.acc =item
-          p.accShow = true
+          this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.acc
+          this.$store.commit('set_player_acc',this.currentItem)
           break;
         default:
           break;
       }
+      
     },
-    closeItemInfo() {
-      var p = this.findComponentUpward(this,'index')
-      p.weaponShow = p.armorShow = p.accShow = false
-    },
+    sellTheEquipment(){
+      this.grid[this.currentItemIndex] = {}
+      var gold = this.currentItem.lv*this.currentItem.quality.qualityCoefficient*10
+      this.$store.commit("set_player_gold", gold);
+      this.$store.commit("set_sys_info", {
+          msg: `
+              出售装备获得金币${gold}
+            `,
+          type: 'trophy',
+        });
+    }
   },
 };
 </script>
 <style lang="scss" scoped>
 .backpackPanel {
   width: 5rem;
-  height: 3rem;
+  height: 2.5rem;
   display: flex;
   flex-wrap: wrap;
-  padding: 0.31rem 0.14rem;
+  padding: 0 0.14rem 0.14rem;
   justify-items: flex-start;
   align-items: flex-start;
+  position: relative;
 }
 .grid {
   width: 0.6rem;
@@ -123,6 +176,32 @@ export default {
       align-items: center;
       justify-content: center;
       border-radius: 0.04rem;
+    }
+  }
+}
+.contextmenu {
+  margin: 0;
+  background: #000;
+  border:1px solid #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #fff;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+
+  li {
+    margin: 0;
+    padding: 9px 16px;
+    cursor: pointer;
+    border-top:1px solid #ccc;
+    margin-top: -1px;
+    font-size: 14px;
+    letter-spacing: 6px;
+    &:hover {
+      color: #ccc;
     }
   }
 }

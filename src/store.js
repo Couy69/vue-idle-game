@@ -218,6 +218,18 @@ export default new Vuex.Store({
 
   },
   mutations: {
+    set_player_weapon(state, data){
+      this.state.playerAttribute.weapon = data
+      vueInstance.$store.getters.calculatePlayerAttribute;
+    },
+    set_player_armor(state, data){
+      this.state.playerAttribute.armor = data
+      vueInstance.$store.getters.calculatePlayerAttribute;
+    },
+    set_player_acc(state, data){
+      this.state.playerAttribute.acc = data
+      vueInstance.$store.getters.calculatePlayerAttribute;
+    },
     set_player_attribute(state, data){
       this.state.playerAttribute.attribute = data
     },
@@ -232,11 +244,16 @@ export default new Vuex.Store({
     },
     set_player_curhp(state, data) {
       var CURHP =this.state.playerAttribute.attribute.CURHP,MAXHP=this.state.playerAttribute.attribute.MAXHP
-      CURHP.value+=Number(data);
-      CURHP.value = parseInt(CURHP.value)
-      if(CURHP.value>MAXHP.value){
-        CURHP.value=MAXHP.value
+      if(data == 'full'){
+        CURHP.value = 1
+      }else{
+        CURHP.value+=Number(data);
+        CURHP.value = parseInt(CURHP.value)
+        if(CURHP.value>MAXHP.value){
+          CURHP.value=MAXHP.value
+        }  
       }
+      
     }
   },
 })

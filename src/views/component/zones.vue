@@ -20,7 +20,229 @@ export default {
     return {
       left: 0,
       pro: {},
+      timeOut:{},
       nextEvent: 1,
+      zonesArr: [{
+        battleTime: 2000,
+        name: '史莱姆森林',
+        time: '60',
+        id: '1',
+        eventNum: '5',
+        lv: 1,
+        needDPS: '2',
+        eventType: [{
+          name: '小史莱姆', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 20,
+            ATK: 1,
+          },
+          trophy: {
+            gold: 30,
+            equip: [
+              1, 0, 0, 0
+            ],
+          }
+        }, {
+          name: '小史莱姆', type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 20,
+            ATK: 1,
+          },
+          trophy: {
+            gold: 30,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '小史莱姆',
+          type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 20,
+            ATK: 1,
+          },
+          trophy: {
+            gold: 30,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '小史莱姆',
+          type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 20,
+            ATK: 1,
+          },
+          trophy: {
+            gold: 30,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '史莱姆王',
+          type: 'boss', eventType: 'battle',
+          attribute: {
+            HP: 40,
+            ATK: 2,
+          },
+          trophy: {
+            gold: 30,
+            equip: [
+              0.25, 0.55, 0.15, 0.05
+            ],
+          }
+        },]
+      }, {
+        battleTime: 2000,
+        name: '幽暗密林',
+        time: '60',
+        needDPS: '10',
+        id: '2',
+        eventNum: '5',
+        lv: 5,
+        eventType: [{
+          name: '猫妖', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 60,
+            ATK: 6,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '猫妖', type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 60,
+            ATK: 6,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '猫妖',
+          type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 60,
+            ATK: 6,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '猫妖',
+          type: 'monster', eventType: 'battle',
+          attribute: {
+            HP: 60,
+            ATK: 6,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '倔强的哈尼克',
+          type: 'boss', eventType: 'battle',
+          attribute: {
+            HP: 100,
+            ATK: 10,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.4, 0.15, 0.05
+            ],
+          }
+        },]
+      }, {
+        battleTime: 2000,
+        name: '天空之城',
+        time: '60',
+        needDPS: '20',
+        id: '2',
+        eventNum: '5',
+        lv: 10,
+        eventType: [{
+          name: '翼龙', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 100,
+            ATK: 6,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '翼龙', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 100,
+            ATK: 9,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '翼龙', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 100,
+            ATK: 10,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '翼龙', type: 'monster',
+          eventType: 'battle',
+          attribute: {
+            HP: 100,
+            ATK: 10,
+          },
+          trophy: {
+            gold: 100,
+            equip: [
+              0.2, 0.1, 0.05, 0
+            ],
+          }
+        }, {
+          name: '光之城主赛格哈特',
+          type: 'boss', eventType: 'battle',
+          attribute: {
+            HP: 200,
+            ATK: 15,
+          },
+          trophy: {
+            gold: 200,
+            equip: [
+              0.2, 0.4, 0.35, 0.05
+            ],
+          }
+        },]
+      }],
       zones: {
         battleTime: 2000,
         name: '史莱姆森林',
@@ -97,7 +319,7 @@ export default {
     };
   },
   mounted() {
-    this.evenHandle()
+    // this.evenHandle()
   },
   methods: {
     evenHandle() {
@@ -106,7 +328,7 @@ export default {
           this.evenInExecution()
           this.nextEvent++
           if (this.nextEvent <= this.zones.eventNum) {
-            setTimeout(() => {
+            this.timeOut =setTimeout(() => {
               this.pro = setInterval(() => {
                 startEnent()
               }, 100)
@@ -128,14 +350,12 @@ export default {
       }, 100)
     },
     evenBegin() {
-      console.log('evenBegin')
       this.$store.commit("set_sys_info", {
         msg: "你已进入" + this.zones.name,
         type: 'enter'
       });
     },
     evenInExecution() {
-      console.log('evenInExecution' + this.nextEvent)
       var event = this.zones.eventType[this.nextEvent - 1]
       switch (event.eventType) {
         case 'battle':
@@ -160,6 +380,13 @@ export default {
     //   <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
     evenEnd() {
       var event = this.zones.eventType[this.nextEvent - 2]
+      clearInterval(this.pro)
+      this.pro = {}
+      this.left = 0
+      this.nextEvent = 1
+      var p = this.findComponentUpward(this, 'index')
+      p.inZones = false
+      this.zones = {}
 
       setTimeout(() => {
         // this.battleCom(event)
@@ -203,25 +430,30 @@ export default {
         this.caculateTrophy(event)
 
       } else {
+        console.log(this.pro)
         // 玩家死亡
-
+        this.$store.commit('set_player_curhp', 'full')
+        clearInterval(this.pro)
+        clearTimeout(this.timeOut)
+        this.pro = {}
+        this.timeOut = {} 
+        this.left = 0
+        this.nextEvent = 1
+        var p = this.findComponentUpward(this, 'index')
+        p.inZones = false
+        this.zones = {}
         this.$store.commit("set_sys_info", {
           msg: `
-              战斗失败！
+              战斗失败！受到了${monsterDeadTime*Number(monsterAttribute.ATK)}点伤害
             `,
           type: 'enter'
         });
-      }
-      if ('win') {
-        // TODO: 战利品获取随机计算
 
-
-      } else {
 
       }
     },
     caculateTrophy(event) {
-      var trophy=event.trophy
+      var trophy = event.trophy
       var equip = [
         0.25, 0.25, 0.25, 0.25
       ]
@@ -245,7 +477,6 @@ export default {
       } else {
         // 未获得装备
       }
-      console.log(equipQua)
 
       if (equipQua != -1) {
         var lv = this.zones.lv
@@ -265,22 +496,20 @@ export default {
           console.log(item)
         }
         item = JSON.parse(item)
-        var backpackPanel= this.findBrothersComponents(this, 'backpackPanel', false)[0]
-        console.log(backpackPanel)
-        for(let i=0;i<backpackPanel.grid.length;i++){
-          console.log(JSON.stringify(backpackPanel.grid[i]).length)
-          if(JSON.stringify(backpackPanel.grid[i]).length<3){
-            this.$set(backpackPanel.grid,i,item)
+        var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
+        for (let i = 0; i < backpackPanel.grid.length; i++) {
+          if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+            this.$set(backpackPanel.grid, i, item)
             break;
           }
-          
+
         }
         this.$store.commit("set_sys_info", {
           msg: `
               获得了:金币${event.trophy.gold}
             `,
           type: 'trophy',
-          equip:[item]
+          equip: [item]
         });
         this.$store.commit("set_player_gold", event.trophy.gold);
       } else {
@@ -289,7 +518,7 @@ export default {
               获得了:金币${event.trophy.gold}
             `,
           type: 'trophy',
-          equip:[]
+          equip: []
         });
         this.$store.commit("set_player_gold", event.trophy.gold);
       }

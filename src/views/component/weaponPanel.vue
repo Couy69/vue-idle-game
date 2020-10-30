@@ -345,6 +345,7 @@ export default {
     display: flex;
     padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
+    posr
     .icon {
       width: 0.5rem;
       height: 0.5rem;
@@ -353,11 +354,6 @@ export default {
       align-items: center;
       justify-content: center;
       border-radius: 0.04rem;
-    }
-    .name {
-      height: 0.46rem;
-      margin-left: 0.2rem;
-      line-height: 0.46rem;
     }
   }
   .type {

@@ -37,11 +37,11 @@
     </div>
     <div class="user-item">
       <div class="uii">
-        <div class="gold">DPS: <span>{{attribute.DPS}}</span></div>
+        <div class="gold" v-if="attribute.DPS">DPS: <span>{{(attribute.DPS).toFixed(2)}}</span></div>
         <div class="gold">GOLD: <span>{{userGold}}</span></div>
       </div>
 
-      <div class="weapon" @mouseover="showItemInfo('weapon',playerWeapon)" @mouseleave="closeItemInfo">
+      <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
@@ -49,7 +49,7 @@
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.quality.name}}的{{playerWeapon.type.name}}</div>
         </div>
       </div>
-      <div class="armor" @mouseover="showItemInfo('armor',playerArmor)" @mouseleave="closeItemInfo">
+      <div class="armor" @mouseover="showItemInfo($event,'armor',playerArmor)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerArmor">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
@@ -57,7 +57,7 @@
           <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.quality.name}}的{{playerArmor.type.name}}</div>
         </div>
       </div>
-      <div class="acc" @mouseover="showItemInfo('acc',playerAcc)" @mouseleave="closeItemInfo">
+      <div class="acc" @mouseover="showItemInfo($event,'acc',playerAcc)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerAcc">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerAcc.quality.color}">
             <img :src="playerAcc.type.iconSrc" alt="">
@@ -69,8 +69,8 @@
     <div class="sys-info">
       <div id='sysInfo'>
         <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:.12rem" v-if="v.time">({{v.time}})</i>：
-          <span>{{v.msg}}</span> 
-          <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}"  @mouseover="showItemInfo(o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
+          <span>{{v.msg}}</span>
+          <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}" @mouseover="showItemInfo($event,o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
         </div>
       </div>
 
@@ -86,20 +86,33 @@
       <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div> -->
     </div>
     <div class="map">
-      <div class="plan">
+      <div class="plan" v-show='inZones'>
         <zones></zones>
       </div>
-      <div class="icon" @click="setSysInfo" style="top:1.70rem;left:3.23rem"></div>
-      <div class="icon" style="top:6.70rem;left:4.83rem"></div>
-      <div class="icon" style="top: 2.31rem;left: 8.46rem;"></div>
+      <div class="zones-Info" v-if="zones">
+        <i class="zones-close" @click="closeZonesInfo"></i>
+        <div class="zones-title">{{zones.name}}</div>
+        <div class="jjj">
+          <div class="zones-dps">推荐DPS：{{zones.needDPS}}</div>
+          <div class="zones-lv">副本等级{{zones.lv}}</div>
+        </div>
+        <div class="image">占位副本图</div>
+        <div class="zones-lv"></div>
+        <div class="zones-btn" @click="evenBegin()">开始挑战</div>
+      </div>
+      <div class="event-icon" @click="showZonesInfo(0)" v-show='!inZones' style="top:1.70rem;left:3.23rem">
+        lv1
+      </div>
+      <div class="event-icon" @click="showZonesInfo(1)" v-show='!inZones' style="top:6.70rem;left:4.83rem">lv5</div>
+      <div class="event-icon" @click="showZonesInfo(2)" v-show='!inZones' style="top: 2.31rem;left: 8.46rem;">lv10</div>
     </div>
     <div class="menu">
       <div class="Backpack" @click="openBackpackPanel">
-        <img src="../assets/icons/S_Sword06.png" alt="">
+        <!-- <img src="../assets/icons/S_Sword06.png" alt=""> -->
         <span>背包</span>
       </div>
     </div>
-    <div class="dialog" :class="{weaponShow:weaponShow,armorShow:armorShow,accShow:accShow}">
+    <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
       <armorPanel :item="armor" v-show="armorShow"></armorPanel>
       <accPanel :item="acc" v-show="accShow"></accPanel>
@@ -107,7 +120,7 @@
     <div class="dialog-backpackPanel" v-show="backpackPanelOpened">
       <div class="title">
         <span>背包</span>
-        <i class="close"></i>
+        <i class="close" @click="closePanel"></i>
       </div>
       <backpackPanel></backpackPanel>
     </div>
@@ -119,8 +132,10 @@ import armorPanel from './component/armorPanel'
 import accPanel from './component/accPanel'
 import backpackPanel from './component/backpackPanel'
 import zones from './component/zones'
+import { assist } from '../assets/js/assist';
 export default {
   name: "index",
+  mixins: [assist],
   data() {
     return {
       time: '00:00:00',
@@ -128,14 +143,17 @@ export default {
       weaponShow: false,
       armorShow: false,
       accShow: false,
-      weapon:{},
-      acc:{},
-      armor:{},
-      backpackPanelOpened:true,
+      weapon: {},
+      inZones: false,  //是否在副本进程中
+      zones: '',
+      acc: {},
+      armor: {},
+      backpackPanelOpened: false,
+      itemDialogStyle: {}
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, zones,backpackPanel },
+  components: { weaponPanel, armorPanel, accPanel, zones, backpackPanel },
   created() {
     window.onresize = () => {
       this.initial()
@@ -177,8 +195,25 @@ export default {
     }
   },
   methods: {
-    openBackpackPanel(){
+    showZonesInfo(k) {
+      var b = this.findComponentDownward(this, 'zones')
+      this.zones = b.zonesArr[k]
+    },
+    closeZonesInfo() {
+      this.zones = ''
+    },
+    evenBegin() {
+      var b = this.findComponentDownward(this, 'zones')
+      b.zones = this.zones
+      b.evenHandle()
+      this.zones = ''
+      this.inZones = true
+    },
+    openBackpackPanel() {
       this.backpackPanelOpened = !this.backpackPanelOpened
+    },
+    closePanel() {
+      this.backpackPanelOpened = false
     },
     initial() {
       let html = document.documentElement;
@@ -193,18 +228,32 @@ export default {
     contextmenu(e) {
       // 鼠标右键
     },
-    showItemInfo(type,item) {
+    showItemInfo(e, type, item) {
+      let x = e.pageX, y = e.pageY, maxH = window.innerHeight
+      if (y < window.innerHeight / 2) {
+        this.itemDialogStyle = {
+          display: 'flex',
+          'top': y + 20 + 'px',
+          'left': x + 20 + 'px',
+        }
+      } else {
+        this.itemDialogStyle = {
+          display: 'flex',
+          'bottom': maxH - y + 20 + 'px',
+          'left': x + 20 + 'px',
+        }
+      }
       switch (type) {
         case 'weapon':
-          this.weapon =item
+          this.weapon = item
           this.weaponShow = true
           break;
         case 'armor':
-          this.armor =item
+          this.armor = item
           this.armorShow = true
           break;
         case 'acc':
-          this.acc =item
+          this.acc = item
           this.accShow = true
           break;
         default:
@@ -398,10 +447,10 @@ a {
     .info {
       margin: 0.03rem 0;
     }
-    a{
+    a {
       cursor: pointer;
       text-decoration: underline;
-      margin-left: .05rem;
+      margin-left: 0.05rem;
     }
     .enter > span {
       color: #f90202;
@@ -437,15 +486,17 @@ a {
       font-size: 0.4rem;
       line-height: 1rem;
     }
-    .icon {
+    .event-icon {
       position: absolute;
-      width: 0.45rem;
-      height: 0.45rem;
-      background-image: url(../assets/icons/I_Scroll.png);
+      cursor: pointer;
+      width: 0.55rem;
+      height: 0.55rem;
+      background-image: url(../assets/icons/icon_81.png);
       border-radius: 50%;
       border-radius: 50%;
       background-repeat: no-repeat;
       background-position: center;
+      background-color: rgba(245, 54, 54, 0.7);
       box-shadow: 0 0 4px 4px rgba(184, 171, 255, 70%);
     }
   }
@@ -470,38 +521,99 @@ a {
   left: 7.98rem;
   display: flex;
 }
-.menu{
+.menu {
   position: absolute;
-  bottom: .4rem;
-  left:8.7rem;
+  bottom: 0.4rem;
+  left: 8.7rem;
   display: flex;
-  &>div{
+  & > div {
     display: flex;
     align-items: center;
     flex-direction: column;
     cursor: pointer;
-  span{
-      color:#fff;
-      font-size: 20px;
+    span {
+      color: #fff;
+      font-size: 30px;
       font-weight: bold;
     }
   }
-  
 }
-.dialog-backpackPanel{
+.dialog-backpackPanel {
   position: absolute;
-  z-index:9;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  z-index: 9;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border: 2px solid #fff;
   border-radius: 6px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.7);
-  background: rgba(0,0,0,0.7);
-  .title{
-    padding: .1rem;
+  background: rgba(0, 0, 0, 0.7);
+  .title {
     display: flex;
-    
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 0.1rem;
+    .close {
+      cursor: pointer;
+      position: absolute;
+      top: 0.1rem;
+      right: 0.1rem;
+      display: block;
+      width: 0.3rem;
+      height: 0.3rem;
+      background-image: url(../assets/icons/close.png);
+      background-size: cover;
+    }
+  }
+}
+.zones-Info {
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3rem;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  border: 2px solid #ccc;
+  height: 4rem;
+  padding: 0.1rem;
+  .zones-close {
+    cursor: pointer;
+    position: absolute;
+    top: 0.1rem;
+    right: 0.1rem;
+    display: block;
+    width: 0.23rem;
+    height: 0.23rem;
+    background-image: url(../assets/icons/close.png);
+    background-size: cover;
+  }
+  .zones-title {
+    margin-top: 0.1rem;
+    font-size: 20px;
+  }
+  .jjj {
+    width: 100%;
+    justify-content: space-around;
+    display: flex;
+    padding: 0.15rem;
+    align-items: center;
+  }
+  .image {
+    width: 100%;
+    height: 2rem;
+    background: #000;
+  }
+  .zones-btn {
+    margin: 0.2rem 0.4rem;
+    padding: 0.1rem 0.3rem;
+    cursor: pointer;
+    color: #fff;
+    background: #000;
+    border: 1px solid #fff;
   }
 }
 </style>
