@@ -175,11 +175,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .backpackPanel {
-  width: 5rem;
-  height: 3rem;
+  width: 5.02rem;
+  height: 3.1rem;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 0.14rem 0.14rem;
+  padding: 0.14rem 0.14rem 0.14rem;
   justify-items: flex-start;
   align-items: flex-start;
   position: relative;

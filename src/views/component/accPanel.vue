@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewacc">随机生成</button>
     </div> -->
-    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color}" v-if="acc">
+    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color}"  v-if="JSON.stringify(acc)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+acc.quality.color}">
           <img :src="acc.type.iconSrc" alt="">
@@ -41,7 +41,7 @@ export default {
   name: "accPanel",
   data() {
     return {
-      acc: {"iconSrc":"./icons/A_A3.png","lv":8,"quality":{"name":"普通","qualityCoefficient":1,"probability":"0.55","color":"#fff","extraEntryNum":2},"type":{"name":"十字军项链","des":"十字军佩戴的项链","iconSrc":"./icons/Ac_1.png","entry":[{"valCoefficient":0.9,"value":9,"showVal":"+9","type":"DEF","name":"防御力"}]},"extraEntry":[{"type":"DEF","value":5,"showVal":"+5","name":"防御力"},{"type":"CRITDMG","value":21,"showVal":"+21%","name":"暴击伤害"}]},
+      acc: {},
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
@@ -100,6 +100,12 @@ export default {
             'showVal': '+11',
             type: 'CRITDMG',
             'name': '暴击伤害'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRIT',
+            'name': '暴击几率'
           }]
         },
         {
@@ -107,7 +113,7 @@ export default {
           des: '银魂之眼',
           iconSrc: './icons/Ac_7.png',
           entry: [{
-            'valCoefficient': 0.9,
+            'valCoefficient': 1.5,
             'value': '11',
             'showVal': '+11',
             type: 'CRIT',

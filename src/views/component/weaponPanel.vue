@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewWeapon">随机生成</button>
     </div> -->
-    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}" v-if="weapon">
+    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}" v-if="JSON.stringify(weapon)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+weapon.quality.color}">
           <img :src="weapon.type.iconSrc" alt="">
@@ -42,33 +42,7 @@ export default {
   data() {
     return {
       weapon: {
-        "lv": 1,
-        itemType: 'weapon',
-        "quality": {
-          name: '破旧',
-          qualityCoefficient: 0.7,
-          probability: '0.25',
-          color: '#a1a1a1',
-          extraEntryNum: 1,
-        },
-        "type": {
-          "name": "新手短剑",
-          "des": "新手菜鸡使用的短剑",
-          "iconSrc": "./icons/W_Sword001.png",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "value": 1,
-            "showVal": "+1",
-            "type": "ATK",
-            "name": "攻击力"
-          }]
-        },
-        "extraEntry": [{
-          "value": 1,
-          "showVal": "+1",
-          "type": "ATK",
-          "name": "攻击力"
-        }]
+        
       },
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
@@ -345,7 +319,6 @@ export default {
     display: flex;
     padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
-    posr
     .icon {
       width: 0.5rem;
       height: 0.5rem;
@@ -354,6 +327,11 @@ export default {
       align-items: center;
       justify-content: center;
       border-radius: 0.04rem;
+    }
+    .name {
+      height: .46rem;
+      margin-left: .20rem;
+      line-height: .46rem;
     }
   }
   .type {

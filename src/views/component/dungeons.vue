@@ -267,15 +267,12 @@ export default {
         if (index == 0) {
           var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
-          console.log(item)
         } else if (index == 1) {
           var b = this.findBrothersComponents(this, 'armorPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
-          console.log(item)
         } else {
           var b = this.findBrothersComponents(this, 'accPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
-          console.log(item)
         }
         item = JSON.parse(item)
         var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]

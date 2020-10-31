@@ -6,7 +6,8 @@
 export const dungeonsConfig = {
   data() {
     return {
-      dungeonsArr: [{
+      dungeonsArr: [
+        {
           battleTime: 2000,
           name: '史莱姆森林',
           time: '20',
@@ -85,7 +86,8 @@ export const dungeonsConfig = {
               ],
             }
           }, ]
-        }, {
+        }
+        , {
           battleTime: 2000,
           name: '幽暗密林',
           time: '20',
@@ -164,7 +166,8 @@ export const dungeonsConfig = {
               ],
             }
           }, ]
-        }, {
+        }
+        , {
           battleTime: 2000,
           name: '龙人之塔',
           time: '20',
@@ -243,7 +246,8 @@ export const dungeonsConfig = {
               ],
             }
           }, ]
-        }, {
+        }
+        , {
           battleTime: 2000,
           name: '人偶玄关',
           time: '20',
@@ -322,12 +326,12 @@ export const dungeonsConfig = {
               ],
             }
           }, ]
-        }, , {
+        }, {
           battleTime: 2000,
           name: '城主宫殿',
           time: '20',
-          needDPS: '100',
-          id: '2',
+          needDPS: '200',
+          id: '4',
           eventNum: '5',
           lv: 20,
           eventType: [{
@@ -335,8 +339,8 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 300,
-              ATK: 60,
+              HP: 400,
+              ATK: 70,
             },
             trophy: {
               gold: 150,
@@ -349,8 +353,8 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 300,
-              ATK: 60,
+              HP: 400,
+              ATK: 70,
             },
             trophy: {
               gold: 150,
@@ -363,8 +367,8 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 300,
-              ATK: 60,
+              HP: 400,
+              ATK: 70,
             },
             trophy: {
               gold: 150,
@@ -377,8 +381,8 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 300,
-              ATK: 60,
+              HP: 400,
+              ATK: 70,
             },
             trophy: {
               gold: 150,

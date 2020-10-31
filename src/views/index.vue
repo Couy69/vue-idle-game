@@ -41,28 +41,28 @@
         <div class="gold">GOLD: <span>{{userGold}}</span></div>
       </div>
 
-      <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon)" @mouseleave="closeItemInfo">
+      <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.quality.name}}的{{playerWeapon.type.name}}</div>
+          <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}}</div>
         </div>
       </div>
-      <div class="armor" @mouseover="showItemInfo($event,'armor',playerArmor)" @mouseleave="closeItemInfo">
+      <div class="armor" @mouseover="showItemInfo($event,'armor',playerArmor,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerArmor">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.quality.name}}的{{playerArmor.type.name}}</div>
+          <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.type.name}}</div>
         </div>
       </div>
-      <div class="acc" @mouseover="showItemInfo($event,'acc',playerAcc)" @mouseleave="closeItemInfo">
+      <div class="acc" @mouseover="showItemInfo($event,'acc',playerAcc,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerAcc">
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerAcc.quality.color}">
             <img :src="playerAcc.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.quality.name}}的{{playerAcc.type.name}}</div>
+          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.type.name}}</div>
         </div>
       </div>
     </div>
@@ -96,8 +96,8 @@
           <div class="dungeons-dps">推荐DPS：{{dungeons.needDPS}}</div>
           <div class="dungeons-lv">副本等级{{dungeons.lv}}</div>
         </div>
-        <div class="image">占位副本图</div>
-        <div class="dungeons-lv"></div>
+        <div class="dese"> -{{dungeons.name}}:副本介绍</div>
+        <!-- <div class="dungeons-lv"> </div> -->
         <div class="dungeons-btn" @click="evenBegin()">开始挑战</div>
       </div>
       <div class="event-icon low-level" @click="showDungeonsInfo(0)" v-show='!inDungeons' style="    top: 48%;left: 10%;">
@@ -114,19 +114,30 @@
 
     </div>
     <div class="menu">
-      <div class="Backpack" @click="openBackpackPanel">
-        <!-- <img src="../assets/icons/S_Sword06.png" alt=""> -->
+      <div class="Backpack" @click="openMenuPanel('backpack')">
+        <img src="../assets/icons/menu/quest_icon_02.png" alt="">
         <span>背包</span>
       </div>
+      <div class="Backpack" @click="openMenuPanel('shop')">
+        <img src="../assets/icons/menu/quest_icon_03.png" alt="">
+        <span>商店</span>
+      </div>
+      <div class="Backpack" @click="openMenuPanel('backpack')">
+        <img src="../assets/icons/menu/icon_80.png" alt="">
+        <span>装备强化</span>
+      </div>
       <div class="Backpack" @click="GMOpened = true">
-        <!-- <img src="../assets/icons/S_Sword06.png" alt=""> -->
+        <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
       </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
+      <weaponPanel :item="playerWeapon" v-show="weaponShow&&needComparison"></weaponPanel>
       <armorPanel :item="armor" v-show="armorShow"></armorPanel>
+      <armorPanel :item="playerArmor" v-show="armorShow&&needComparison"></armorPanel>
       <accPanel :item="acc" v-show="accShow"></accPanel>
+      <accPanel :item="playerAcc" v-show="accShow&&needComparison"></accPanel>
     </div>
     <div class="dialog-backpackPanel" v-show="backpackPanelOpened">
       <div class="title">
@@ -135,14 +146,22 @@
       </div>
       <backpackPanel></backpackPanel>
     </div>
-    <div class="dialog-backpackPanel" v-show="GMOpened">
+     <div class="dialog-backpackPanel" v-show="shopPanelOpened">
+      <div class="title">
+        <span>装备商店</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <shopPanel></shopPanel>
+    </div>
+    <div class="dialog-backpackPanel gm-panel" v-if="GMOpened">
       <div class="title">
         <span>GM面板</span>
         <i class="close" @click="closePanel"></i>
       </div>
-      <div>
-        <input :v-model="GMEquipLv" type="text" placeholder="随机生成一套输入等级的装备">
-        <button @click="createGMEquip">确定</button>
+      <div class="content">
+        lv:<input v-model="GMEquipLv" type="text" placeholder="随机生成一套输入等级的装备">
+        稀有度：<input v-model="GMEquipQu" type="text" placeholder="装备质量">
+        <div class="button" @click="createGMEquip">确定</div>
       </div>
     </div>
     <div></div>
@@ -153,6 +172,7 @@ import weaponPanel from './component/weaponPanel'
 import armorPanel from './component/armorPanel'
 import accPanel from './component/accPanel'
 import backpackPanel from './component/backpackPanel'
+import shopPanel from './component/shopPanel'
 import dungeons from './component/dungeons'
 import { assist } from '../assets/js/assist';
 export default {
@@ -171,13 +191,16 @@ export default {
       acc: {},
       armor: {},
       backpackPanelOpened: false,
+      shopPanelOpened: false,
       itemDialogStyle: {},
-      GMEquipLv:'1',
+      GMEquipLv:1,
+      GMEquipQu:2,
       GMOpened:false,
+      needComparison:true,
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel,shopPanel },
   created() {
     window.onresize = () => {
       this.initial()
@@ -216,12 +239,13 @@ export default {
       this.$nextTick(() => {
         element.scrollTop = element.scrollHeight + 20
       })
-    }
+    },
+    
   },
   methods: {
     createGMEquip(){
       var b = this.findComponentDownward(this, "weaponPanel");
-      var item = b.createNewItem(2, this.GMEquipLv);
+      var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
       var backpackPanel = this.findComponentDownward(
         this,
@@ -234,7 +258,7 @@ export default {
         }
       }
       var b = this.findComponentDownward(this, "armorPanel");
-      var item = b.createNewItem(2, this.GMEquipLv);
+      var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
       var backpackPanel = this.findComponentDownward(
         this,
@@ -247,7 +271,7 @@ export default {
         }
       }
       var b = this.findComponentDownward(this, "accPanel");
-      var item = b.createNewItem(2, this.GMEquipLv);
+      var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
       var backpackPanel = this.findComponentDownward(
         this,
@@ -276,11 +300,22 @@ export default {
       this.dungeons = ''
       this.inDungeons = true
     },
-    openBackpackPanel() {
-      this.backpackPanelOpened = !this.backpackPanelOpened
+    openMenuPanel(type) {
+      this.backpackPanelOpened = this.shopPanelOpened =false
+      switch (type) {
+        case 'backpack':
+          this.backpackPanelOpened = !this.backpackPanelOpened
+          break;
+        case 'shop':
+          this.shopPanelOpened = !this.shopPanelOpened
+          break;
+        default:
+          break;
+      }
+      
     },
     closePanel() {
-      this.backpackPanelOpened = false
+      this.backpackPanelOpened = this.shopPanelOpened =false
       this.GMOpened = false
     },
     initial() {
@@ -296,7 +331,12 @@ export default {
     contextmenu(e) {
       // 鼠标右键
     },
-    showItemInfo(e, type, item) {
+    showItemInfo(e, type, item,needComparison) {
+      if(needComparison === false){
+        this.needComparison = false
+      }else{
+        this.needComparison = true
+      }
       let x = e.pageX, y = e.pageY, maxH = window.innerHeight
       if (y < window.innerHeight / 2) {
         this.itemDialogStyle = {
@@ -329,6 +369,7 @@ export default {
       }
     },
     closeItemInfo() {
+      this.needComparison=true;
       this.weaponShow = this.armorShow = this.accShow = false
     },
     setSysInfo() {
@@ -584,6 +625,11 @@ a {
   position: absolute;
   display: none;
   z-index: 10;
+  &>div{
+    margin:.1rem;
+  }
+  display: flex;
+  justify-content: space-between;
 }
 .weaponShow {
   top: 0.67rem;
@@ -602,18 +648,23 @@ a {
 }
 .menu {
   position: absolute;
-  bottom: 0.4rem;
-  left: 8.7rem;
+  bottom: 0.15rem;
+  background: rgba($color: #000000, $alpha: 0.4);
+  left: 8.33rem;
+  padding: .1rem;
+  border-top-right-radius: .1rem;
   display: flex;
   & > div {
     display: flex;
     align-items: center;
     flex-direction: column;
     cursor: pointer;
+    margin:0 .2rem;
     span {
       color: #fff;
-      font-size: 30px;
+      font-size: .30rem;
       font-weight: bold;
+      text-shadow: 1px 1px 3px rgb(0,0,0);
     }
   }
 }
@@ -634,17 +685,35 @@ a {
     justify-content: center;
     font-size: 20px;
     padding: 0.1rem;
+    height:.6rem;
+    border-bottom: 1px solid #ccc;
     .close {
       cursor: pointer;
       position: absolute;
-      top: 0.1rem;
-      right: 0.1rem;
+      top: 0.13rem;
+      right: 0.15rem;
       display: block;
       width: 0.3rem;
       height: 0.3rem;
       background-image: url(../assets/icons/close.png);
       background-size: cover;
     }
+  }
+}
+.gm-panel{
+  width:5rem;
+  height:3rem;
+  .content{
+    input{
+      padding: .05rem .1rem;
+      width:1.4rem
+    }
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    padding: .1rem;
+    align-items: center;
+    justify-content: center;
   }
 }
 .dungeons-Info {
@@ -672,19 +741,27 @@ a {
   }
   .dungeons-title {
     margin-top: 0.1rem;
-    font-size: 20px;
+    font-size: .20rem;
   }
   .jjj {
+    font-size: .14rem;
     width: 100%;
     justify-content: space-around;
     display: flex;
     padding: 0.15rem;
     align-items: center;
+    .dungeons-dps{
+      color:#f90202;
+      text-shadow: 0px 0px 2px rgba(245, 54, 54, 0.7);
+    }
   }
-  .image {
+  .dese {
     width: 100%;
     height: 2rem;
-    background: #000;
+    font-size: .14rem;
+    border-top:1px solid #ccc;
+    padding: .2rem;
+    color:#999;
   }
   .dungeons-btn {
     margin: 0.2rem 0.4rem;

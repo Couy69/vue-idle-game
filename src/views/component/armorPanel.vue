@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewarmor">随机生成</button>
     </div> -->
-    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5rpx '+armor.quality.color}" v-if="armor">
+    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}"  v-if="JSON.stringify(armor)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
@@ -41,7 +41,7 @@ export default {
   name: "armorPanel",
   data() {
     return {
-      armor: {"lv":30,"quality":{"name":"神器","qualityCoefficient":1.5,"probability":"0.15","color":"#ff00ff","extraEntryNum":3},"type":{"name":"赤柳血铠","des":"似乎会给使用者提供生命气息","iconSrc":"./icons/A_A3.png","entry":[{"valCoefficient":0.9,"value":51,"showVal":"+51","type":"DEF","name":"防御力"},{"type":"HP","valCoefficient":1.4,"value":634,"showVal":"+634","name":"生命值"}]},"extraEntry":[{"type":"HP","value":99,"showVal":"+99","name":"生命值"},{"type":"HP","value":93,"showVal":"+93","name":"生命值"},{"type":"HP","value":97,"showVal":"+97","name":"生命值"}]},
+      armor: {},
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
