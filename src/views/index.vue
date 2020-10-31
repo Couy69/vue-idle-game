@@ -86,30 +86,41 @@
       <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div> -->
     </div>
     <div class="map">
-      <div class="plan" v-show='inZones'>
-        <zones></zones>
+      <div class="plan" v-show='inDungeons'>
+        <dungeons></dungeons>
       </div>
-      <div class="zones-Info" v-if="zones">
-        <i class="zones-close" @click="closeZonesInfo"></i>
-        <div class="zones-title">{{zones.name}}</div>
+      <div class="dungeons-Info" v-if="dungeons">
+        <i class="dungeons-close" @click="closeDungeonsInfo"></i>
+        <div class="dungeons-title">{{dungeons.name}}</div>
         <div class="jjj">
-          <div class="zones-dps">推荐DPS：{{zones.needDPS}}</div>
-          <div class="zones-lv">副本等级{{zones.lv}}</div>
+          <div class="dungeons-dps">推荐DPS：{{dungeons.needDPS}}</div>
+          <div class="dungeons-lv">副本等级{{dungeons.lv}}</div>
         </div>
         <div class="image">占位副本图</div>
-        <div class="zones-lv"></div>
-        <div class="zones-btn" @click="evenBegin()">开始挑战</div>
+        <div class="dungeons-lv"></div>
+        <div class="dungeons-btn" @click="evenBegin()">开始挑战</div>
       </div>
-      <div class="event-icon" @click="showZonesInfo(0)" v-show='!inZones' style="top:1.70rem;left:3.23rem">
-        lv1
+      <div class="event-icon low-level" @click="showDungeonsInfo(0)" v-show='!inDungeons' style="    top: 48%;left: 10%;">
+         <span>lv1</span>
       </div>
-      <div class="event-icon" @click="showZonesInfo(1)" v-show='!inZones' style="top:6.70rem;left:4.83rem">lv5</div>
-      <div class="event-icon" @click="showZonesInfo(2)" v-show='!inZones' style="top: 2.31rem;left: 8.46rem;">lv10</div>
+      <div class="event-icon low-level" @click="showDungeonsInfo(1)" v-show='!inDungeons' style="top: 38%;left: 17%;"><span>lv5</span></div>
+      <div class="event-icon low-level" @click="showDungeonsInfo(2)" v-show='!inDungeons' style="top: 54%;left: 30%;"><span>lv10</span></div>
+      <div class="event-icon low-level" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 28%;left: 43%;"><span>lv15</span></div>
+      <div class="event-icon low-level" @click="showDungeonsInfo(4)" v-show='!inDungeons' style="top: 39%;left: 48%;"><span>lv20</span></div>
+      <!-- <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
+      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
+      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
+      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div> -->
+
     </div>
     <div class="menu">
       <div class="Backpack" @click="openBackpackPanel">
         <!-- <img src="../assets/icons/S_Sword06.png" alt=""> -->
         <span>背包</span>
+      </div>
+      <div class="Backpack" @click="GMOpened = true">
+        <!-- <img src="../assets/icons/S_Sword06.png" alt=""> -->
+        <span>GM</span>
       </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
@@ -124,6 +135,17 @@
       </div>
       <backpackPanel></backpackPanel>
     </div>
+    <div class="dialog-backpackPanel" v-show="GMOpened">
+      <div class="title">
+        <span>GM面板</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <div>
+        <input :v-model="GMEquipLv" type="text" placeholder="随机生成一套输入等级的装备">
+        <button @click="createGMEquip">确定</button>
+      </div>
+    </div>
+    <div></div>
   </div>
 </template>
 <script>
@@ -131,7 +153,7 @@ import weaponPanel from './component/weaponPanel'
 import armorPanel from './component/armorPanel'
 import accPanel from './component/accPanel'
 import backpackPanel from './component/backpackPanel'
-import zones from './component/zones'
+import dungeons from './component/dungeons'
 import { assist } from '../assets/js/assist';
 export default {
   name: "index",
@@ -144,16 +166,18 @@ export default {
       armorShow: false,
       accShow: false,
       weapon: {},
-      inZones: false,  //是否在副本进程中
-      zones: '',
+      inDungeons: false,  //是否在副本进程中
+      dungeons: '',
       acc: {},
       armor: {},
       backpackPanelOpened: false,
-      itemDialogStyle: {}
+      itemDialogStyle: {},
+      GMEquipLv:'1',
+      GMOpened:false,
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, zones, backpackPanel },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel },
   created() {
     window.onresize = () => {
       this.initial()
@@ -195,25 +219,69 @@ export default {
     }
   },
   methods: {
-    showZonesInfo(k) {
-      var b = this.findComponentDownward(this, 'zones')
-      this.zones = b.zonesArr[k]
+    createGMEquip(){
+      var b = this.findComponentDownward(this, "weaponPanel");
+      var item = b.createNewItem(2, this.GMEquipLv);
+      item = JSON.parse(item);
+      var backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+        );
+      for (let i = 0; i < backpackPanel.grid.length; i++) {
+        if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+          this.$set(backpackPanel.grid, i, item);
+          break;
+        }
+      }
+      var b = this.findComponentDownward(this, "armorPanel");
+      var item = b.createNewItem(2, this.GMEquipLv);
+      item = JSON.parse(item);
+      var backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+        );
+      for (let i = 0; i < backpackPanel.grid.length; i++) {
+        if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+          this.$set(backpackPanel.grid, i, item);
+          break;
+        }
+      }
+      var b = this.findComponentDownward(this, "accPanel");
+      var item = b.createNewItem(2, this.GMEquipLv);
+      item = JSON.parse(item);
+      var backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+        );
+      for (let i = 0; i < backpackPanel.grid.length; i++) {
+        if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+          this.$set(backpackPanel.grid, i, item);
+          break;
+        }
+      }
+      this.backpackPanelOpened = true
+      this.GMOpened = false
     },
-    closeZonesInfo() {
-      this.zones = ''
+    showDungeonsInfo(k) {
+      var b = this.findComponentDownward(this, 'dungeons')
+      this.dungeons = b.dungeonsArr[k]
+    },
+    closeDungeonsInfo() {
+      this.dungeons = ''
     },
     evenBegin() {
-      var b = this.findComponentDownward(this, 'zones')
-      b.zones = this.zones
+      var b = this.findComponentDownward(this, 'dungeons')
+      b.dungeons = this.dungeons
       b.evenHandle()
-      this.zones = ''
-      this.inZones = true
+      this.dungeons = ''
+      this.inDungeons = true
     },
     openBackpackPanel() {
       this.backpackPanelOpened = !this.backpackPanelOpened
     },
     closePanel() {
       this.backpackPanelOpened = false
+      this.GMOpened = false
     },
     initial() {
       let html = document.documentElement;
@@ -494,10 +562,21 @@ a {
       background-image: url(../assets/icons/icon_81.png);
       border-radius: 50%;
       border-radius: 50%;
+      transform: translate(-50%, -50%);
       background-repeat: no-repeat;
       background-position: center;
       background-color: rgba(245, 54, 54, 0.7);
       box-shadow: 0 0 4px 4px rgba(184, 171, 255, 70%);
+      span{
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        text-shadow: 1px 1px 3px rgb(0,0,0);
+      }
+    }
+    .low-level{
+      background-color: rgba(100 ,255, 36 , 0.7);
     }
   }
 }
@@ -568,7 +647,7 @@ a {
     }
   }
 }
-.zones-Info {
+.dungeons-Info {
   z-index: 2;
   position: absolute;
   top: 50%;
@@ -580,7 +659,7 @@ a {
   border: 2px solid #ccc;
   height: 4rem;
   padding: 0.1rem;
-  .zones-close {
+  .dungeons-close {
     cursor: pointer;
     position: absolute;
     top: 0.1rem;
@@ -591,7 +670,7 @@ a {
     background-image: url(../assets/icons/close.png);
     background-size: cover;
   }
-  .zones-title {
+  .dungeons-title {
     margin-top: 0.1rem;
     font-size: 20px;
   }
@@ -607,7 +686,7 @@ a {
     height: 2rem;
     background: #000;
   }
-  .zones-btn {
+  .dungeons-btn {
     margin: 0.2rem 0.4rem;
     padding: 0.1rem 0.3rem;
     cursor: pointer;

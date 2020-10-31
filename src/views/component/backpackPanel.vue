@@ -9,9 +9,13 @@
         </div>
       </div>
     </div>
+    <div class="handle">
+        <div class="button" @click="neaten">一键整理</div>
+        <div class="button" @click="sell">一键出售</div>
+      </div>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="equipTheEquipment()">装备</li>
-      <li @click="sellTheEquipment()">售出</li>
+      <li @click="sellTheEquipment()">出售</li>
     </ul>
   </div>
 </template>
@@ -83,6 +87,29 @@ export default {
     // this.$set(this.grid,0,item)
   },
   methods: {
+    neaten(){
+      var tem = new Array(32).fill({}),
+        temIndex = 0
+      this.grid.map((item,index)=>{
+        if (JSON.stringify(item) != '{}') {
+          tem[temIndex] = item
+          temIndex ++
+        }
+      }) 
+      console.log(tem)
+      this.grid = JSON.parse(JSON.stringify(tem)) 
+      tem = []
+    },
+    sell(){
+        this.grid.map((item,index)=>{
+          if (JSON.stringify(item) != '{}') {
+            this.currentItemIndex = index
+            this.currentItem = item
+            this.sellTheEquipment()
+          }
+        })  
+      
+    },
     openMenu(k, e) {
       this.currentItemIndex=k
       this.currentItem=this.grid[k]
@@ -133,7 +160,7 @@ export default {
       
     },
     sellTheEquipment(){
-      this.grid[this.currentItemIndex] = {}
+      this.$set(this.grid, this.currentItemIndex, {});
       var gold = this.currentItem.lv*this.currentItem.quality.qualityCoefficient*10
       this.$store.commit("set_player_gold", gold);
       this.$store.commit("set_sys_info", {
@@ -149,13 +176,21 @@ export default {
 <style lang="scss" scoped>
 .backpackPanel {
   width: 5rem;
-  height: 2.5rem;
+  height: 3rem;
   display: flex;
   flex-wrap: wrap;
   padding: 0 0.14rem 0.14rem;
   justify-items: flex-start;
   align-items: flex-start;
   position: relative;
+}
+.handle{
+  padding-top: .1rem;
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  width:100%;
+  height:.5rem
 }
 .grid {
   width: 0.6rem;

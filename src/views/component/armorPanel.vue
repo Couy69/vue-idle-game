@@ -8,7 +8,7 @@
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:armor.quality.color}">{{armor.quality.name}}的{{armor.type.name}}</div>
+        <div class='name' :style="{color:armor.quality.color}">{{armor.type.name}}</div>
       </div>
       <div class='type'>
         <div :style="{color:armor.quality.color}">{{armor.quality.name}}</div>

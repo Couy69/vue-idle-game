@@ -72,3 +72,19 @@ body {
   background-color: #9f9f9f;
   border-radius: 4px;
 }
+
+.button {
+  padding: 0.08rem 0.17rem;
+  margin: 0 .06rem;
+  cursor: pointer;
+  color: #fff;
+  background: #000;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  
+  &:hover{
+    // background: #222;
+    border: 1px solid #ccc;
+    text-shadow: 1px 1px 3px #ccc;
+  }
+}
