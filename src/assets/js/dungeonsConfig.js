@@ -251,7 +251,7 @@ export const dungeonsConfig = {
           battleTime: 2000,
           name: '人偶玄关',
           time: '20',
-          needDPS: '100',
+          needDPS: '70',
           id: '2',
           eventNum: '5',
           lv: 15,
@@ -330,7 +330,7 @@ export const dungeonsConfig = {
           battleTime: 2000,
           name: '城主宫殿',
           time: '20',
-          needDPS: '200',
+          needDPS: '100',
           id: '4',
           eventNum: '5',
           lv: 20,
@@ -399,7 +399,7 @@ export const dungeonsConfig = {
               ATK: 130,
             },
             trophy: {
-              gold: 500,
+              gold: 400,
               equip: [
                 0.2, 0.3, 0.35, 0.15
               ],
@@ -407,7 +407,658 @@ export const dungeonsConfig = {
           }, ]
         }
 
+        , {
+          battleTime: 2000,
+          name: '神殿外围',
+          time: '20',
+          needDPS: '200',
+          id: '4',
+          eventNum: '5',
+          lv: 25,
+          desc:'',
+          eventType: [{
+            name: 'GBL教信徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 1000,
+              ATK: 140,
+            },
+            trophy: {
+              gold: 150,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: 'GBL教信徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 1000,
+              ATK: 140,
+            },
+            trophy: {
+              gold: 150,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: 'GBL教神官',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 1000,
+              ATK: 160,
+            },
+            trophy: {
+              gold: 150,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: 'GBL教大祭司',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 1100,
+              ATK: 200,
+            },
+            trophy: {
+              gold: 150,
+              equip: [
+                0.2, 0.45, 0.25, 0.10
+              ],
+            }
+          }, {
+            name: 'GBL教大主教',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 1500,
+              ATK: 200,
+            },
+            trophy: {
+              gold: 300,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
 
+        , {
+          battleTime: 2000,
+          name: '第一脊椎',
+          time: '20',
+          needDPS: '250',
+          id: '4',
+          eventNum: '5',
+          lv: 30,
+          desc:'',
+          eventType: [{
+            name: '红章鱼',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3000,
+              ATK: 150,
+            },
+            trophy: {
+              gold: 170,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '红章鱼',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3000,
+              ATK: 150,
+            },
+            trophy: {
+              gold: 170,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '蓝章鱼',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3000,
+              ATK: 175,
+            },
+            trophy: {
+              gold: 180,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '蓝章鱼',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3000,
+              ATK: 175,
+            },
+            trophy: {
+              gold: 180,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '巨型章鱼',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 3000,
+              ATK: 250,
+            },
+            trophy: {
+              gold: 400,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        , {
+          battleTime: 2000,
+          name: '第二脊椎',
+          time: '20',
+          needDPS: '300',
+          id: '4',
+          eventNum: '5',
+          lv: 35,
+          desc:'',
+          eventType: [{
+            name: '龙头炮',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3500,
+              ATK: 320,
+            },
+            trophy: {
+              gold: 250,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '龙头炮',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3500,
+              ATK: 320,
+            },
+            trophy: {
+              gold: 250,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '激光龙头炮',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3500,
+              ATK: 350,
+            },
+            trophy: {
+              gold: 250,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '激光龙头炮',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 3500,
+              ATK: 350,
+            },
+            trophy: {
+              gold: 250,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '长脚的罗特斯',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 3500,
+              ATK: 400,
+            },
+            trophy: {
+              gold: 800,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        , {
+          battleTime: 2000,
+          name: '天帷禁地',
+          time: '20',
+          needDPS: '350',
+          id: '4',
+          eventNum: '5',
+          lv: 40,
+          desc:'',
+          eventType: [{
+            name: '疯狂的信徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4000,
+              ATK: 250,
+            },
+            trophy: {
+              gold: 300,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '疯狂的信徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4000,
+              ATK: 250,
+            },
+            trophy: {
+              gold: 300,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: 'GBL女教徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4000,
+              ATK: 300,
+            },
+            trophy: {
+              gold: 300,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: 'GBL女教徒',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4000,
+              ATK: 300,
+            },
+            trophy: {
+              gold: 300,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '审判者马塞尔',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 475,
+            },
+            trophy: {
+              gold: 600,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+
+        , {
+          battleTime: 2000,
+          name: '黑雾之源',
+          time: '20',
+          needDPS: '400',
+          id: '4',
+          eventNum: '5',
+          lv: 45,
+          desc:'向安徒恩发起进攻的瞬间， 浓浓的黑雾如帷帐般笼罩着安徒恩巨大的身体， 士兵们一个个倒在伸手不见五指的黑暗之中……必须要解决这可怕的黑雾， 不能让我们的士兵白白牺牲',
+          eventType: [{
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4000,
+              ATK: 450,
+            },
+            trophy: {
+              gold: 400,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4100,
+              ATK: 450,
+            },
+            trophy: {
+              gold: 400,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 450,
+            },
+            trophy: {
+              gold: 400,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 450,
+            },
+            trophy: {
+              gold: 400,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '歼灭之内尔贝',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 550,
+            },
+            trophy: {
+              gold: 1000,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        
+        , {
+          battleTime: 2000,
+          name: '震颤的大地',
+          time: '20',
+          needDPS: '400',
+          id: '4',
+          eventNum: '5',
+          lv: 50,
+          desc:'既然无法回收安徒恩的能量， 那就只能先破坏安徒恩的关节部位， 才能确保大部队的总攻。',
+          eventType: [{
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 500,
+            },
+            trophy: {
+              gold: 450,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4600,
+              ATK: 500,
+            },
+            trophy: {
+              gold: 450,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4700,
+              ATK: 500,
+            },
+            trophy: {
+              gold: 450,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 4800,
+              ATK: 500,
+            },
+            trophy: {
+              gold: 450,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '毁灭之塔伊奥利',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 4500,
+              ATK: 600,
+            },
+            trophy: {
+              gold: 1200,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        
+        , {
+          battleTime: 2000,
+          name: '擎天之柱',
+          time: '20',
+          needDPS: '600',
+          id: '4',
+          eventNum: '5',
+          lv: 55,
+          desc:'安徒恩似乎打算退回魔界， 决不能让他这么轻易地回去！ 这么多的杀戮这么多的罪孽， 只有死亡才能赎清他的罪恶。 一定要阻止他返回魔界！ 向他的腿部发起进攻， 阻止他前进！',
+          eventType: [{
+            name: '火焰之克瑞夫',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 5500,
+              ATK: 550,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '守门将克拉特',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 5600,
+              ATK: 550,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '火焰之克瑞夫',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 5100,
+              ATK: 700,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '守门将克拉特',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 5200,
+              ATK: 700,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '炽炎',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 5500,
+              ATK: 900,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        , {
+          battleTime: 2000,
+          name: '黑色火山',
+          time: '20',
+          needDPS: '1000',
+          id: '4',
+          eventNum: '5',
+          lv: 60,
+          desc:'黑色火山， 安徒恩的心脏所在之处， 他最脆弱的地方， 但同时也可以说是最强大的地方。',
+          eventType: [{
+            name: '阿托尔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 6000,
+              ATK: 700,
+            },
+            trophy: {
+              gold: 600,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '梅尔塔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 6000,
+              ATK: 800,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '魔眼赛尔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 6000,
+              ATK: 900,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '恐怖邪念体',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 6000,
+              ATK: 950,
+            },
+            trophy: {
+              gold: 500,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '克雷斯',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 6000,
+              ATK: 2000,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
       ]
     }
   },

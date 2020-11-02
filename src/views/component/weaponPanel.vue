@@ -133,6 +133,49 @@ export default {
           'name': '攻击力'
         }]
       }
+      ,
+      {
+        name: '紫炎波刃剑',
+        des: '传说中的狂战士最喜爱的剑。',
+        iconSrc: './icons/W_Sword021.png',
+        entry: [{
+          'valCoefficient': 1.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },
+      {
+        name: '毛毛的爪子',
+        des: '这？这也是武器？',
+        iconSrc: './icons/W_Fist003.png',
+        entry: [{
+          'valCoefficient': 1.7,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },
+      {
+        name: '冰晶之刃',
+        des: '剑锋覆盖着冰晶，碰到的敌人都会被冻住。',
+        iconSrc: './icons/W_Sword018.png',
+        entry: [{
+          'valCoefficient': 1.3,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        },{
+          'valCoefficient': 1.3,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
+        }]
+      }
       ],
       extraEntry: [{
         'value': '11',

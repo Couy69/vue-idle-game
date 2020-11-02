@@ -67,8 +67,9 @@
       </div>
     </div>
     <div class="sys-info">
+      <div class="clear" @click="clearSysInfo">清除信息</div>
       <div id='sysInfo'>
-        <div class="info enter" :class="{enter:v.type=='enter',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:.12rem" v-if="v.time">({{v.time}})</i>：
+        <div class="info warning" :class="{warning:v.type=='warning',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:.12rem" v-if="v.time">({{v.time}})</i>：
           <span>{{v.msg}}</span>
           <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}" @mouseover="showItemInfo($event,o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
         </div>
@@ -96,17 +97,33 @@
           <div class="dungeons-dps">推荐DPS：{{dungeons.needDPS}}</div>
           <div class="dungeons-lv">副本等级{{dungeons.lv}}</div>
         </div>
-        <div class="dese"> -{{dungeons.name}}:副本介绍</div>
+        <div class="dese"> -{{dungeons.name}}:{{dungeons.desc||'副本介绍'}}</div>
         <!-- <div class="dungeons-lv"> </div> -->
-        <div class="dungeons-btn" @click="evenBegin()">开始挑战</div>
+        <div class="handle">
+        <!-- <div>
+            <input type="checkbox" name="" id="checkbox">重复挑战
+          </div> -->
+          <div class="dungeons-btn" @click="evenBegin()">开始挑战</div>   
+        </div>
+        
       </div>
       <div class="event-icon low-level" @click="showDungeonsInfo(0)" v-show='!inDungeons' style="    top: 48%;left: 10%;">
-         <span>lv1</span>
+        <span>lv1</span>
       </div>
       <div class="event-icon low-level" @click="showDungeonsInfo(1)" v-show='!inDungeons' style="top: 38%;left: 17%;"><span>lv5</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(2)" v-show='!inDungeons' style="top: 54%;left: 30%;"><span>lv10</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 28%;left: 43%;"><span>lv15</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(4)" v-show='!inDungeons' style="top: 39%;left: 48%;"><span>lv20</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(5)" v-show='!inDungeons' style="top: 9%;left: 61%;"><span>lv25</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(6)" v-show='!inDungeons' style="top: 19%;left: 71%;"><span>lv30</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(7)" v-show='!inDungeons' style="top: 29%;left: 88%;"><span>lv35</span></div>
+       <div class="event-icon m-level" @click="showDungeonsInfo(8)" v-show='!inDungeons' style="top: 45%;left: 78%;"><span>lv40</span></div>
+      
+      <div class="event-icon htgh-level" @click="showDungeonsInfo(9)" v-show='!inDungeons' style="top: 64%;left: 11%;"><span>lv45</span></div>
+      <div class="event-icon htgh-level" @click="showDungeonsInfo(10)" v-show='!inDungeons' style="top: 75%;left: 36%;"><span>lv50</span></div>
+       <div class="event-icon htgh-level" @click="showDungeonsInfo(11)" v-show='!inDungeons' style="top: 75%;left: 58%;"><span>lv55</span></div>
+
+       <div class="event-icon boss" @click="showDungeonsInfo(12)" v-show='!inDungeons' style="top: 55%;left: 51%;"><span>boss</span></div>
       <!-- <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
       <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
       <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
@@ -122,14 +139,18 @@
         <img src="../assets/icons/menu/quest_icon_03.png" alt="">
         <span>商店</span>
       </div>
-      <div class="Backpack" @click="openMenuPanel('backpack')">
+      <!-- <div class="Backpack" @click="openMenuPanel('backpack')">
         <img src="../assets/icons/menu/icon_80.png" alt="">
         <span>装备强化</span>
+      </div> -->
+      <div class="Backpack" @click="saveGame">
+        <img src="../assets/icons/menu/icon_85.png" alt="">
+        <span>保存</span>
       </div>
-      <div class="Backpack" @click="GMOpened = true">
+      <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div>
+      </div> -->
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -146,7 +167,7 @@
       </div>
       <backpackPanel></backpackPanel>
     </div>
-     <div class="dialog-backpackPanel" v-show="shopPanelOpened">
+    <div class="dialog-backpackPanel" v-show="shopPanelOpened">
       <div class="title">
         <span>装备商店</span>
         <i class="close" @click="closePanel"></i>
@@ -175,6 +196,7 @@ import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
 import dungeons from './component/dungeons'
 import { assist } from '../assets/js/assist';
+import { Base64 } from 'js-base64';
 export default {
   name: "index",
   mixins: [assist],
@@ -193,30 +215,59 @@ export default {
       backpackPanelOpened: false,
       shopPanelOpened: false,
       itemDialogStyle: {},
-      GMEquipLv:1,
-      GMEquipQu:2,
-      GMOpened:false,
-      needComparison:true,
+      GMEquipLv: 1,
+      GMEquipQu: 2,
+      GMOpened: false,
+      needComparison: true,
+      saveData:{}
       // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel,shopPanel },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel },
   created() {
     window.onresize = () => {
       this.initial()
     };
     this.initial()
+    var sd = localStorage.getItem('_sd')
+    try {
+      if (sd) {
+        this.saveData = JSON.parse(Base64.decode(Base64.decode(sd)))
+
+        this.$store.commit('set_player_weapon',this.saveData.playerEquipment.playerWeapon)
+        this.$store.commit('set_player_armor',this.saveData.playerEquipment.playerArmor)
+        this.$store.commit('set_player_acc',this.saveData.playerEquipment.playerAcc)
+
+        this.$store.commit('set_player_gold',this.saveData.gold||0)
+      }
+      else{
+        this.$store.commit('set_player_weapon',this.playerWeapon)
+        this.$store.commit('set_player_armor',this.playerArmor)
+        this.$store.commit('set_player_acc',this.playerAcc)
+      }
+
+    } catch (error) {
+      console.log(error)
+      this.$store.commit("set_sys_info", {
+        msg: `
+              糟糕，存档坏了！
+            `,
+        type: 'warning'
+      });
+    }
+
   },
   mounted() {
-    this.$store.getters.calculatePlayerAttribute;
+    // this.$store.getters.calculatePlayerAttribute;
     // 从store中加载装备与人物数据
     // this.weapon = this.$store.state.playerAttribute.weapon
     // this.armor = this.$store.state.playerAttribute.armor
     // this.acc = this.$store.state.playerAttribute.acc
     // this.userGold = this.$store.state.playerAttribute.GOLD
     // this.attribute = this.$store.getters.calculatePlayerAttribute
+
     setInterval(() => {
-      this.$store.commit('set_player_curhp', this.healthRecoverySpeed)
+      this.$store.commit('set_player_curhp', this.healthRecoverySpeed*(this.attribute.MAXHP.value/33))
     }, 1000)
     this.sysInfo = this.$store.state.sysInfo
 
@@ -233,6 +284,9 @@ export default {
     playerAcc() { return this.$store.state.playerAttribute.acc },
   },
   watch: {
+    // attribute(val){
+    //   this.attribute = val
+    // },
     sysInfo() {
       var element = document.getElementById('sysInfo')
       //渲染完成后滚至最下端
@@ -240,17 +294,45 @@ export default {
         element.scrollTop = element.scrollHeight + 20
       })
     },
-    
+
   },
   methods: {
-    createGMEquip(){
+    saveGame() {
+      var data = {}
+      var backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+      );
+      data = {
+        playerEquipment: {
+          playerWeapon: this.$store.state.playerAttribute.weapon,
+          playerArmor: this.$store.state.playerAttribute.armor,
+          playerAcc: this.$store.state.playerAttribute.acc,
+        },
+        backpackEquipment: backpackPanel.grid,
+        gold:this.$store.state.playerAttribute.GOLD,
+      }
+      var saveData = Base64.encode(Base64.encode(JSON.stringify(data)))
+      localStorage.setItem('_sd', saveData)
+
+      this.$store.commit("set_sys_info", {
+        msg: `
+              游戏进度已经保存了。
+            `,
+        type: 'win'
+      });
+    },
+    clearSysInfo(){
+      this.$store.commit('clear_sys_info')
+    },
+    createGMEquip() {
       var b = this.findComponentDownward(this, "weaponPanel");
       var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
       var backpackPanel = this.findComponentDownward(
         this,
         "backpackPanel",
-        );
+      );
       for (let i = 0; i < backpackPanel.grid.length; i++) {
         if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
           this.$set(backpackPanel.grid, i, item);
@@ -263,7 +345,7 @@ export default {
       var backpackPanel = this.findComponentDownward(
         this,
         "backpackPanel",
-        );
+      );
       for (let i = 0; i < backpackPanel.grid.length; i++) {
         if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
           this.$set(backpackPanel.grid, i, item);
@@ -276,7 +358,7 @@ export default {
       var backpackPanel = this.findComponentDownward(
         this,
         "backpackPanel",
-        );
+      );
       for (let i = 0; i < backpackPanel.grid.length; i++) {
         if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
           this.$set(backpackPanel.grid, i, item);
@@ -301,7 +383,7 @@ export default {
       this.inDungeons = true
     },
     openMenuPanel(type) {
-      this.backpackPanelOpened = this.shopPanelOpened =false
+      this.backpackPanelOpened = this.shopPanelOpened = false
       switch (type) {
         case 'backpack':
           this.backpackPanelOpened = !this.backpackPanelOpened
@@ -312,10 +394,10 @@ export default {
         default:
           break;
       }
-      
+
     },
     closePanel() {
-      this.backpackPanelOpened = this.shopPanelOpened =false
+      this.backpackPanelOpened = this.shopPanelOpened = false
       this.GMOpened = false
     },
     initial() {
@@ -331,10 +413,10 @@ export default {
     contextmenu(e) {
       // 鼠标右键
     },
-    showItemInfo(e, type, item,needComparison) {
-      if(needComparison === false){
+    showItemInfo(e, type, item, needComparison) {
+      if (needComparison === false) {
         this.needComparison = false
-      }else{
+      } else {
         this.needComparison = true
       }
       let x = e.pageX, y = e.pageY, maxH = window.innerHeight
@@ -369,7 +451,7 @@ export default {
       }
     },
     closeItemInfo() {
-      this.needComparison=true;
+      this.needComparison = true;
       this.weaponShow = this.armorShow = this.accShow = false
     },
     setSysInfo() {
@@ -542,8 +624,16 @@ a {
 
     transition: 0.2s;
     padding: 0.2rem;
-
-    & > div {
+    .clear{
+      position: absolute;
+      top: .2rem;
+      right:.2rem;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    #sysInfo {
       overflow-y: auto;
       transition: 0.2s;
       width: 100%;
@@ -561,7 +651,7 @@ a {
       text-decoration: underline;
       margin-left: 0.05rem;
     }
-    .enter > span {
+    .warning > span {
       color: #f90202;
     }
     .battle > span {
@@ -608,16 +698,22 @@ a {
       background-position: center;
       background-color: rgba(245, 54, 54, 0.7);
       box-shadow: 0 0 4px 4px rgba(184, 171, 255, 70%);
-      span{
+      span {
         position: absolute;
         top: 100%;
         left: 50%;
         transform: translateX(-50%);
-        text-shadow: 1px 1px 3px rgb(0,0,0);
+        text-shadow: 1px 1px 3px rgb(0, 0, 0);
       }
     }
-    .low-level{
-      background-color: rgba(100 ,255, 36 , 0.7);
+    .low-level {
+      background-color: rgba(100, 255, 36, 0.7);
+    }
+    .m-level {
+      background-color: rgba(245, 241, 0, 0.7);
+    }
+    .boss{
+      background-image: url(../assets/icons/icon_83.png);
     }
   }
 }
@@ -625,8 +721,8 @@ a {
   position: absolute;
   display: none;
   z-index: 10;
-  &>div{
-    margin:.1rem;
+  & > div {
+    margin: 0.1rem;
   }
   display: flex;
   justify-content: space-between;
@@ -651,20 +747,20 @@ a {
   bottom: 0.15rem;
   background: rgba($color: #000000, $alpha: 0.4);
   left: 8.33rem;
-  padding: .1rem;
-  border-top-right-radius: .1rem;
+  padding: 0.1rem;
+  border-top-right-radius: 0.1rem;
   display: flex;
   & > div {
     display: flex;
     align-items: center;
     flex-direction: column;
     cursor: pointer;
-    margin:0 .2rem;
+    margin: 0 0.2rem;
     span {
       color: #fff;
-      font-size: .30rem;
+      font-size: 0.3rem;
       font-weight: bold;
-      text-shadow: 1px 1px 3px rgb(0,0,0);
+      text-shadow: 1px 1px 3px rgb(0, 0, 0);
     }
   }
 }
@@ -685,7 +781,7 @@ a {
     justify-content: center;
     font-size: 20px;
     padding: 0.1rem;
-    height:.6rem;
+    height: 0.6rem;
     border-bottom: 1px solid #ccc;
     .close {
       cursor: pointer;
@@ -700,18 +796,18 @@ a {
     }
   }
 }
-.gm-panel{
-  width:5rem;
-  height:3rem;
-  .content{
-    input{
-      padding: .05rem .1rem;
-      width:1.4rem
+.gm-panel {
+  width: 5rem;
+  height: 3rem;
+  .content {
+    input {
+      padding: 0.05rem 0.1rem;
+      width: 1.4rem;
     }
     flex-direction: column;
     display: flex;
     justify-content: center;
-    padding: .1rem;
+    padding: 0.1rem;
     align-items: center;
     justify-content: center;
   }
@@ -741,27 +837,36 @@ a {
   }
   .dungeons-title {
     margin-top: 0.1rem;
-    font-size: .20rem;
+    font-size: 0.2rem;
+  }
+  .handle{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &>div{
+      display: flex;
+      align-items: center;
+    }
   }
   .jjj {
-    font-size: .14rem;
+    font-size: 0.14rem;
     width: 100%;
     justify-content: space-around;
     display: flex;
     padding: 0.15rem;
     align-items: center;
-    .dungeons-dps{
-      color:#f90202;
+    .dungeons-dps {
+      color: #f90202;
       text-shadow: 0px 0px 2px rgba(245, 54, 54, 0.7);
     }
   }
   .dese {
     width: 100%;
     height: 2rem;
-    font-size: .14rem;
-    border-top:1px solid #ccc;
-    padding: .2rem;
-    color:#999;
+    font-size: 0.14rem;
+    border-top: 1px solid #ccc;
+    padding: 0.2rem;
+    color: #999;
   }
   .dungeons-btn {
     margin: 0.2rem 0.4rem;

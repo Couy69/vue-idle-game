@@ -67,6 +67,24 @@ export default {
       }],
       category: [
         {
+          name: '紫金守护胸甲',
+          des: '够肉才能输出',
+          iconSrc:'./icons/A_A2.png',
+          entry: [{
+            'valCoefficient': 2,
+            'value': '11',
+            'showVal': '+11',
+            type: 'DEF',
+            'name': '防御力'
+          }, {
+            type: 'HP',
+            'valCoefficient': 0.6,
+            'value': '8',
+            'showVal': '8',
+            'name': '生命值'
+          }]
+        },
+        {
           name: '战士重铠',
           des: '六级战士使用的重型铠甲',
           iconSrc:'./icons/A_A5.png',
@@ -76,6 +94,36 @@ export default {
             'showVal': '+11',
             type: 'DEF',
             'name': '防御力'
+          }, {
+            type: 'HP',
+            'valCoefficient': 0.7,
+            'value': '8',
+            'showVal': '8',
+            'name': '生命值'
+          }]
+        },
+        {
+          name: '天权轻甲',
+          des: '舍弃了防御性能的轻甲，因为更加轻便，攻击性能更加突出',
+          iconSrc:'./icons/A_A7.png',
+          entry: [{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'DEF',
+            'name': '防御力'
+          }, {
+            type: 'HP',
+            'valCoefficient': 0.5,
+            'value': '8',
+            'showVal': '8',
+            'name': '生命值'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'ATK',
+            'name': '攻击力'
           }]
         },
         {

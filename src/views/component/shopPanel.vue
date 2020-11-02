@@ -102,7 +102,7 @@ export default {
           msg: `
               刷新次数不够了，等等吧。
             `,
-          type: "enter",
+          type: "warning",
         });
         return 
       }
@@ -203,7 +203,7 @@ export default {
           msg: `
               钱不够啊，买啥呢。
             `,
-          type: "enter",
+          type: "warning",
         });
       } else {
         this.$store.commit("set_player_gold", -gold);

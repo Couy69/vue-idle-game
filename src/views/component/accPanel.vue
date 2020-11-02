@@ -79,6 +79,24 @@ export default {
           }]
         },
         {
+          name: '御魂之戒',
+          des: '出来吧，卡赞！吸纳所有彷徨的灵魂！   ——鬼剑士约翰',
+          iconSrc: './icons/Ac_10.png',
+          entry: [{
+            'valCoefficient': 0.7,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'ATK',
+            'name': '攻击力'
+          }]
+        },
+        {
           name: '十字军项链',
           des: '十字军佩戴的项链',
           iconSrc: './icons/Ac_1.png',
@@ -88,6 +106,12 @@ export default {
             'showVal': '+11',
             type: 'DEF',
             'name': '防御力'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
           }]
         },
         {
@@ -106,18 +130,30 @@ export default {
             'showVal': '+11',
             type: 'CRIT',
             'name': '暴击几率'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
           }]
         },
         {
           name: '银魂之眼',
           des: '银魂之眼',
-          iconSrc: './icons/Ac_7.png',
+          iconSrc: './icons/Ac_5.png',
           entry: [{
             'valCoefficient': 1.5,
             'value': '11',
             'showVal': '+11',
             type: 'CRIT',
             'name': '暴击率'
+          },{
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
           }]
         }
       ],
@@ -195,13 +231,13 @@ export default {
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * acc.quality.qualityCoefficient* item.valCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 10)
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * acc.quality.qualityCoefficient* item.valCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -242,20 +278,20 @@ export default {
       b.map(item => {
         switch (item.type) {
           case 'ATK':
-            var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            var random = parseInt(lv * 0.3 + (Math.random() * lv / 2))
+            random = parseInt(random * acc.quality.qualityCoefficient) + 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
-            var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            var random = parseInt((lv * 0.2 + (Math.random() * lv / 2)))
+            random = parseInt(random * acc.quality.qualityCoefficient) + 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
-            var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2)))
+            random = parseInt(random * acc.quality.qualityCoefficient) + 1
             item.value = random
             item.showVal = '+' + random
             break;

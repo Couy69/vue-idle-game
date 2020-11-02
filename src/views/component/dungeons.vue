@@ -16,12 +16,12 @@ import { assist } from '../../assets/js/assist';
 import { dungeonsConfig } from '../../assets/js/dungeonsConfig';
 export default {
   name: "dungeons",
-  mixins: [assist,dungeonsConfig],
+  mixins: [assist, dungeonsConfig],
   data() {
     return {
       left: 0,
       pro: {},
-      timeOut:{},
+      timeOut: {},
       nextEvent: 1,
       dungeons: {
         battleTime: 2000,
@@ -108,10 +108,10 @@ export default {
           this.evenInExecution()
           this.nextEvent++
           if (this.nextEvent <= this.dungeons.eventNum) {
-            this.timeOut =setTimeout(() => {
+            this.timeOut = setTimeout(() => {
               this.pro = setInterval(() => {
                 startEnent()
-              }, 100)
+              }, 50)
             }, 2000)
           } else {
             setTimeout(() => {
@@ -127,13 +127,23 @@ export default {
       this.evenBegin()
       this.pro = setInterval(() => {
         startEnent()
-      }, 100)
+      }, 50)
     },
     evenBegin() {
       this.$store.commit("set_sys_info", {
         msg: "你已进入" + this.dungeons.name,
-        type: 'enter'
+        type: 'warning'
       });
+      if (this.dungeons.name == '黑色火山') {
+        this.$store.commit("set_sys_info", {
+          msg: "似乎这就是最后的挑战了",
+          type: 'battle'
+        });
+        this.$store.commit("set_sys_info", {
+          msg: "加油吧",
+          type: 'battle'
+        });
+      }
     },
     evenInExecution() {
       var event = this.dungeons.eventType[this.nextEvent - 1]
@@ -176,6 +186,12 @@ export default {
             `,
           type: 'win'
         });
+        if (this.dungeons.name == '黑色火山') {
+        this.$store.commit("set_sys_info", {
+          msg: "击败了最后的boss，你通关了！",
+          type: 'win'
+        });
+      }
       }, 100)
     },
     // 计算战斗过程
@@ -190,7 +206,7 @@ export default {
       // 战斗伤害计算公式 
       // 1 - 0.06 * armor / (1 / (0.06 * armor))
 
-      var playerDeadTime = (playerAttribute.CURHP.value/reducedDamage / monsterAttribute.ATK),
+      var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 
       // 战斗获胜
@@ -216,19 +232,19 @@ export default {
         clearInterval(this.pro)
         clearTimeout(this.timeOut)
         this.pro = {}
-        this.timeOut = {} 
+        this.timeOut = {}
         this.left = 0
         this.nextEvent = 1
         var p = this.findComponentUpward(this, 'index')
         p.inDungeons = false
         this.dungeons = {}
-        var takeDmg = monsterDeadTime*Number(monsterAttribute.ATK)
-        takeDmg = parseInt(takeDmg*reducedDamage)
+        var takeDmg = monsterDeadTime * Number(monsterAttribute.ATK)
+        takeDmg = parseInt(takeDmg * reducedDamage)
         this.$store.commit("set_sys_info", {
           msg: `
               战斗失败！受到了${takeDmg}点伤害
             `,
-          type: 'enter'
+          type: 'warning'
         });
 
 

@@ -132,13 +132,33 @@ export default new Vuex.Store({
       },
     }
   },
-  getters: {
-    calculatePlayerAttribute: state => {
+  mutations: {
+    set_player_weapon(state, data){
+      this.state.playerAttribute.weapon = data
+      vueInstance.$store.commit('set_player_attribute')
+    },
+    set_player_armor(state, data){
+      this.state.playerAttribute.armor = data
+      vueInstance.$store.commit('set_player_attribute')
+    },
+    set_player_acc(state, data){
+      this.state.playerAttribute.acc = data
+      vueInstance.$store.commit('set_player_attribute')
+    },
+    set_player_attribute(state, data){
+      console.log(1)
       var p = state.playerAttribute
       var warpon = p.weapon,
         armor = p.armor,
         acc = p.acc,
-        entry = []
+        entry = [],
+        chp = state.playerAttribute.attribute.CURHP.value,
+        mhp = state.playerAttribute.attribute.MAXHP.value,hpP;
+        if(chp&&mhp){
+          hpP = chp/mhp
+        }
+        
+        // console.log(hpP)
       var attribute = {
         CURHP: {
           value: 0,
@@ -194,7 +214,13 @@ export default new Vuex.Store({
       })
       // console.log(vueInstance.$store.state)
       attribute.MAXHP.value += 100
-      if(!attribute.CURHP.value){
+      console.log(hpP)
+      if(hpP){
+        // attribute.CURHP = JSON.parse(JSON.stringify(attribute.MAXHP))
+
+        attribute.CURHP.value = parseInt(attribute.MAXHP.value*hpP)
+        attribute.CURHP.showValue = '+' + (attribute.CURHP.value)
+      }else{
         attribute.CURHP = JSON.parse(JSON.stringify(attribute.MAXHP))
       }
       
@@ -212,26 +238,8 @@ export default new Vuex.Store({
       //承受伤害比例
       attribute.REDUCDMG = 1 - 0.06 * armor / (1 + (0.06 * armor))
       // state.playerAttribute.attribute=attribute
-      vueInstance.$store.commit("set_player_attribute", attribute);
-      return attribute
-    }
-
-  },
-  mutations: {
-    set_player_weapon(state, data){
-      this.state.playerAttribute.weapon = data
-      vueInstance.$store.getters.calculatePlayerAttribute;
-    },
-    set_player_armor(state, data){
-      this.state.playerAttribute.armor = data
-      vueInstance.$store.getters.calculatePlayerAttribute;
-    },
-    set_player_acc(state, data){
-      this.state.playerAttribute.acc = data
-      vueInstance.$store.getters.calculatePlayerAttribute;
-    },
-    set_player_attribute(state, data){
-      this.state.playerAttribute.attribute = data
+      // vueInstance.$store.commit("set_player_attribute", attribute);
+      this.state.playerAttribute.attribute = attribute
     },
     set_sys_info(state, data) {
       this.state.sysInfo.push(data);
@@ -239,9 +247,13 @@ export default new Vuex.Store({
       var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
       this.state.sysInfo[this.state.sysInfo.length - 1].time = date.toJSON().substr(11, 8).replace('T', ' ')
     },
+    clear_sys_info(state, data){
+      this.state.sysInfo.splice(1,this.state.sysInfo.length)
+    },
     set_player_gold(state, data) {
       this.state.playerAttribute.GOLD+=Number(data);
     },
+    
     set_player_curhp(state, data) {
       var CURHP =this.state.playerAttribute.attribute.CURHP,MAXHP=this.state.playerAttribute.attribute.MAXHP
       if(data == 'full'){
