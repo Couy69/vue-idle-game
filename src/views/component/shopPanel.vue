@@ -15,7 +15,7 @@
           >
             <img :src="v.type.iconSrc" alt="" />
           </div>
-          <span class="info">{{v.lv * v.quality.qualityCoefficient * 300}}</span>
+          <span class="info">{{v.lv * v.quality.qualityCoefficient * (300+5*v.lv)}}</span>
         </div>
       </div>
     </div>
@@ -109,10 +109,10 @@ export default {
       this.refreshTime--
       this.grid = new Array(5).fill({});
       var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
-      var alv = Number(this.$store.state.playerAttribute.weapon.lv);
-      var acclv = Number(this.$store.state.playerAttribute.weapon.lv);
+      var alv = Number(this.$store.state.playerAttribute.armor.lv);
+      var acclv = Number(this.$store.state.playerAttribute.acc.lv);
       for (let i = 0; i < 5; i++) {
-        var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 3);
+        var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
         this.createShopItem(lv);
       }
     },
@@ -195,7 +195,7 @@ export default {
     },
     buyTheEquipment() {
       var gold =
-        this.currentItem.lv * this.currentItem.quality.qualityCoefficient * 300;
+        this.currentItem.lv * this.currentItem.quality.qualityCoefficient * (300+5*this.currentItem.lv);
       console.log(gold);
       console.log(this.$store.state.playerAttribute.GOLD);
       if (this.$store.state.playerAttribute.GOLD < gold) {

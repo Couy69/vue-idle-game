@@ -138,7 +138,7 @@ export default {
             'name': '防御力'
           }, {
             type: 'HP',
-            'valCoefficient': 1.4,
+            'valCoefficient': 1.2,
             'value': '8',
             'showVal': '8',
             'name': '生命值'
@@ -192,18 +192,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -258,18 +261,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;

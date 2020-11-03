@@ -74,17 +74,6 @@
           <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}" @mouseover="showItemInfo($event,o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
         </div>
       </div>
-
-      <!-- <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
-      <div class="info win">系统：<span> 击杀了史莱姆（lv1）</span></div>
-      <div class="info trophy">系统：<span> 获得：金币+33</span></div>
-      <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
-      <div class="info win">系统：<span> 击杀了史莱姆（lv1）</span></div>
-      <div class="info trophy">系统：<span> 获得：金币+33</span></div>
-      <div class="info battle">系统：<span> 遭遇了史莱姆王（lv5）</span></div>
-      <div class="info win">系统：<span> 击杀了史莱姆王（lv5）</span></div>
-      <div class="info trophy">系统：<span> 获得：金币+33</span></div>
-      <div class="info trophy">系统：<span> 获得：<a style="color:#fff;text-decoration: underline;">普通的士兵护石</a>，<a style="color:#fff;text-decoration: underline;">普通的士兵防御力</a></span></div> -->
     </div>
     <div class="map">
       <div class="plan" v-show='inDungeons'>
@@ -97,7 +86,8 @@
           <div class="dungeons-dps">推荐DPS：{{dungeons.needDPS}}</div>
           <div class="dungeons-lv">副本等级{{dungeons.lv}}</div>
         </div>
-        <div class="dese"> -{{dungeons.name}}:{{dungeons.desc||'副本介绍'}}</div>
+        <!-- <div class="dese"> -{{dungeons.name}}:{{dungeons.desc||'副本介绍'}}</div> -->
+        <div class="dese"> -{{dungeons.name}}:{{'副本介绍'}}</div>
         <!-- <div class="dungeons-lv"> </div> -->
         <div class="handle">
         <!-- <div>
@@ -118,16 +108,10 @@
       <div class="event-icon m-level" @click="showDungeonsInfo(6)" v-show='!inDungeons' style="top: 19%;left: 71%;"><span>lv30</span></div>
       <div class="event-icon m-level" @click="showDungeonsInfo(7)" v-show='!inDungeons' style="top: 29%;left: 88%;"><span>lv35</span></div>
        <div class="event-icon m-level" @click="showDungeonsInfo(8)" v-show='!inDungeons' style="top: 45%;left: 78%;"><span>lv40</span></div>
-      
       <div class="event-icon htgh-level" @click="showDungeonsInfo(9)" v-show='!inDungeons' style="top: 64%;left: 11%;"><span>lv45</span></div>
       <div class="event-icon htgh-level" @click="showDungeonsInfo(10)" v-show='!inDungeons' style="top: 75%;left: 36%;"><span>lv50</span></div>
        <div class="event-icon htgh-level" @click="showDungeonsInfo(11)" v-show='!inDungeons' style="top: 75%;left: 58%;"><span>lv55</span></div>
-
        <div class="event-icon boss" @click="showDungeonsInfo(12)" v-show='!inDungeons' style="top: 55%;left: 51%;"><span>boss</span></div>
-      <!-- <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
-      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
-      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div>
-      <div class="event-icon" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 25%;left: 40%;">lv15</div> -->
 
     </div>
     <div class="menu">
@@ -147,10 +131,10 @@
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>保存</span>
       </div>
-      <!-- <div class="Backpack" @click="GMOpened = true">
+      <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div> -->
+      </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -220,7 +204,6 @@ export default {
       GMOpened: false,
       needComparison: true,
       saveData:{}
-      // attribute: { "CURHP": { "value": 100, "showValue": "+100" }, "MAXHP": { "value": 100, "showValue": "+100" }, "ATK": { "value": 0, "showValue": "+0" }, "DEF": { "value": 0, "showValue": "+0" }, "CRIT": { "value": 0, "showValue": "+0%" }, "CRITDMG": { "value": 0, "showValue": "+0%" } },
     };
   },
   components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel },
@@ -233,7 +216,6 @@ export default {
     try {
       if (sd) {
         this.saveData = JSON.parse(Base64.decode(Base64.decode(sd)))
-
         this.$store.commit('set_player_weapon',this.saveData.playerEquipment.playerWeapon)
         this.$store.commit('set_player_armor',this.saveData.playerEquipment.playerArmor)
         this.$store.commit('set_player_acc',this.saveData.playerEquipment.playerAcc)
@@ -258,16 +240,8 @@ export default {
 
   },
   mounted() {
-    // this.$store.getters.calculatePlayerAttribute;
-    // 从store中加载装备与人物数据
-    // this.weapon = this.$store.state.playerAttribute.weapon
-    // this.armor = this.$store.state.playerAttribute.armor
-    // this.acc = this.$store.state.playerAttribute.acc
-    // this.userGold = this.$store.state.playerAttribute.GOLD
-    // this.attribute = this.$store.getters.calculatePlayerAttribute
-
     setInterval(() => {
-      this.$store.commit('set_player_curhp', this.healthRecoverySpeed*(this.attribute.MAXHP.value/33))
+      this.$store.commit('set_player_curhp', this.healthRecoverySpeed*(this.attribute.MAXHP.value/50))
     }, 1000)
     this.sysInfo = this.$store.state.sysInfo
 
@@ -284,9 +258,6 @@ export default {
     playerAcc() { return this.$store.state.playerAttribute.acc },
   },
   watch: {
-    // attribute(val){
-    //   this.attribute = val
-    // },
     sysInfo() {
       var element = document.getElementById('sysInfo')
       //渲染完成后滚至最下端

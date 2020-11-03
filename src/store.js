@@ -251,7 +251,7 @@ export default new Vuex.Store({
       this.state.sysInfo.splice(1,this.state.sysInfo.length)
     },
     set_player_gold(state, data) {
-      this.state.playerAttribute.GOLD+=Number(data);
+      this.state.playerAttribute.GOLD+=parseInt(data);
     },
     
     set_player_curhp(state, data) {

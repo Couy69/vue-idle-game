@@ -71,7 +71,7 @@ export default {
           des: '据说拥有增强佩戴者体质的神秘功效',
           iconSrc: './icons/Ac_9.png',
           entry: [{
-            'valCoefficient': 1.1,
+            'valCoefficient': 0.9,
             'value': '11',
             'showVal': '+11',
             type: 'HP',
@@ -214,18 +214,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * acc.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * acc.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * acc.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -280,18 +283,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2))
             random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2)))
             random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2)))
             random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;

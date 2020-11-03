@@ -108,14 +108,14 @@ export default {
         des: '似乎会给使用者提供生命气息',
         iconSrc: './icons/W_Sword019.png',
         entry: [{
-          'valCoefficient': 0.9,
+          'valCoefficient': 1.1,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.4,
+          'valCoefficient': 0.9,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -234,18 +234,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -300,18 +303,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
+            random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
