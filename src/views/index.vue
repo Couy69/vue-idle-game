@@ -135,6 +135,14 @@
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
       </div>
+      <div class="Backpack" @click="enableAuto">
+        <template v-if="auto">
+          <img v-if="wounded" src="../assets/icons/S_Holy03.png" alt="healing">
+          <img v-else src="../assets/icons/icon_83.png" alt="fight">
+        </template>
+        <img v-else src="icons/W_Sword006.png" alt="rest">
+        <span>自动</span>
+      </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -186,6 +194,9 @@ export default {
   mixins: [assist],
   data() {
     return {
+      auto: false,
+      autoHP: 0.9,
+      autoLevel: '',
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
@@ -241,6 +252,20 @@ export default {
   },
   mounted() {
     setInterval(() => {
+      if (this.auto) {
+        if (this.inDungeons) {
+          return
+        }
+        if (this.wounded) {
+          return
+        }
+        if (this.autoLevel) {
+          this.dungeons = this.autoLevel
+          this.evenBegin()
+        }
+      }
+    }, 2000)
+    setInterval(() => {
       this.$store.commit('set_player_curhp', this.healthRecoverySpeed*(this.attribute.MAXHP.value/50))
     }, 1000)
     this.sysInfo = this.$store.state.sysInfo
@@ -250,6 +275,7 @@ export default {
     this.acc = this.playerAcc
   },
   computed: {
+    wounded() { return this.attribute.CURHP.value / this.attribute.MAXHP.value < this.autoHP },
     attribute() { return this.$store.state.playerAttribute.attribute },
     healthRecoverySpeed() { return this.$store.state.playerAttribute.healthRecoverySpeed },
     userGold() { return this.$store.state.playerAttribute.GOLD },
@@ -268,6 +294,22 @@ export default {
 
   },
   methods: {
+    enableAuto() {
+      this.auto = !this.auto
+      let message = '自动挑战已禁用'
+      if (this.auto) {
+        if (this.autoLevel === '') {
+          message = '先手动挑战一次，自动挑战才能启用'
+          this.auto = false
+        } else {
+          message = '自动挑战已启用'
+        }
+      }
+      this.$store.commit("set_sys_info", {
+        msg: message,
+        type: 'warning'
+      });
+    },
     saveGame() {
       var data = {}
       var backpackPanel = this.findComponentDownward(
@@ -350,6 +392,7 @@ export default {
       var b = this.findComponentDownward(this, 'dungeons')
       b.dungeons = this.dungeons
       b.evenHandle()
+      this.autoLevel = this.dungeons
       this.dungeons = ''
       this.inDungeons = true
     },
