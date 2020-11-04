@@ -115,7 +115,7 @@ export default {
             }, 2000)
           } else {
             setTimeout(() => {
-              this.evenEnd()
+              this.eventEnd()
             }, 2000)
           }
 
@@ -124,12 +124,12 @@ export default {
 
         this.left += 0.5
       }
-      this.evenBegin()
+      this.eventBegin()
       this.pro = setInterval(() => {
         startEnent()
       }, 50)
     },
-    evenBegin() {
+    eventBegin() {
       this.$store.commit("set_sys_info", {
         msg: "你已进入" + this.dungeons.name,
         type: 'warning'
@@ -168,15 +168,16 @@ export default {
     // <div class="info win">系统：<span> 击杀了史莱姆（lv1）</span></div>
     //   <div class="info trophy">系统：<span> 获得：金币+33</span></div>
     //   <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
-    evenEnd() {
+    forcedToStopEvent(){
       var event = this.dungeons.eventType[this.nextEvent - 2]
       clearInterval(this.pro)
       this.pro = {}
       this.left = 0
       this.nextEvent = 1
-      var p = this.findComponentUpward(this, 'index')
-      p.inDungeons = false
       this.dungeons = {}
+    },
+    eventEnd() {
+      this.forcedToStopEvent()
 
       setTimeout(() => {
         // this.battleCom(event)
@@ -187,11 +188,21 @@ export default {
           type: 'win'
         });
         if (this.dungeons.name == '黑色火山') {
-        this.$store.commit("set_sys_info", {
-          msg: "击败了最后的boss，你通关了！",
-          type: 'win'
-        });
-      }
+          this.$store.commit("set_sys_info", {
+            msg: "击败了最后的boss，你通关了！",
+            type: 'win'
+          });
+        }
+
+        let p = this.findComponentUpward(this, 'index')
+        let backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
+        let backpackPanelSign = backpackPanel.itemNum/backpackPanel.grid.length<0.8
+        if (p.reChallenge&&backpackPanelSign) {
+          p.eventBegin()
+        } else {
+          p.dungeons = ''
+          p.inDungeons = false
+        }
       }, 100)
     },
     // 计算战斗过程
@@ -204,7 +215,7 @@ export default {
         monsterAttribute = event.attribute //HP: 100,ATK: 1,
 
       // 战斗伤害计算公式 
-      // 1 - 0.06 * armor / (1 / (0.06 * armor))
+      // 1 - 0.06 * armor / (1 + (0.06 * armor))
 
       var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
         monsterDeadTime = (monsterAttribute.HP / playerDPS)

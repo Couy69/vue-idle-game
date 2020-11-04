@@ -210,7 +210,7 @@ export default {
   },
   watch: {
     item() {
-      this.weapon = JSON.parse(JSON.stringify(this.item))
+      this.weapon = this.$deepCopy(this.item)
     }
   },
   methods: {
@@ -253,13 +253,13 @@ export default {
             item.showVal = '+' + random
             break;
           case 'CRIT':
-            var random = parseInt(Math.random() * 5 + 5)
+            var random = parseInt(Math.random() * 5 + 7)
             random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
-            var random = parseInt(Math.random() * 20 + 10)
+            var random = parseInt(Math.random() * 20 + 20)
             random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
@@ -297,7 +297,7 @@ export default {
         var index = Math.floor((Math.random() * this.extraEntry.length));
         extraEntry.push(this.extraEntry[index])
       }
-      var b = JSON.parse(JSON.stringify(extraEntry))
+      var b = this.$deepCopy(extraEntry)
       b.map(item => {
         switch (item.type) {
           case 'ATK':
@@ -322,13 +322,13 @@ export default {
             item.showVal = '+' + random
             break;
           case 'CRIT':
-            var random = parseInt(Math.random() * 5 + 2)
+            var random = parseInt(Math.random() * 5 + 5)
             random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
-            var random = parseInt(Math.random() * 12 + 10)
+            var random = parseInt(Math.random() * 12 + 20)
             random = parseInt(random * weapon.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'

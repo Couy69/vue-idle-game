@@ -146,7 +146,6 @@ export default new Vuex.Store({
       vueInstance.$store.commit('set_player_attribute')
     },
     set_player_attribute(state, data){
-      console.log(1)
       var p = state.playerAttribute
       var warpon = p.weapon,
         armor = p.armor,
@@ -214,14 +213,12 @@ export default new Vuex.Store({
       })
       // console.log(vueInstance.$store.state)
       attribute.MAXHP.value += 100
-      console.log(hpP)
       if(hpP){
-        // attribute.CURHP = JSON.parse(JSON.stringify(attribute.MAXHP))
 
         attribute.CURHP.value = parseInt(attribute.MAXHP.value*hpP)
         attribute.CURHP.showValue = '+' + (attribute.CURHP.value)
       }else{
-        attribute.CURHP = JSON.parse(JSON.stringify(attribute.MAXHP))
+        attribute.CURHP = vueInstance.$deepCopy(attribute.MAXHP)
       }
       
       // 初始暴击伤害150%

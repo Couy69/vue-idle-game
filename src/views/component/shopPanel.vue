@@ -195,9 +195,8 @@ export default {
     },
     buyTheEquipment() {
       var gold =
-        this.currentItem.lv * this.currentItem.quality.qualityCoefficient * (300+5*this.currentItem.lv);
-      console.log(gold);
-      console.log(this.$store.state.playerAttribute.GOLD);
+        this.currentItem.lv * this.currentItem.quality.qualityCoefficient * (200+5*this.currentItem.lv);
+      gold = parseInt(gold)
       if (this.$store.state.playerAttribute.GOLD < gold) {
         this.$store.commit("set_sys_info", {
           msg: `
@@ -206,7 +205,7 @@ export default {
           type: "warning",
         });
       } else {
-        this.$store.commit("set_player_gold", -gold);
+        this.$store.commit("set_player_gold", -parseInt(gold));
 
         var backpackPanel = this.findBrothersComponents(
           this,

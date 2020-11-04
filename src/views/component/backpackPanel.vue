@@ -9,10 +9,11 @@
         </div>
       </div>
     </div>
+    <div class="backpack-capacity" :class="{'height-capacity':itemNum/grid.length>0.8}">{{itemNum}}/{{grid.length}}</div>
     <div class="handle">
-        <div class="button" @click="neaten">一键整理</div>
-        <div class="button" @click="sell">一键出售</div>
-      </div>
+      <div class="button" @click="neaten">一键整理</div>
+      <div class="button" @click="sell">一键出售</div>
+    </div>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="equipTheEquipment()">装备</li>
       <li @click="sellTheEquipment()">出售</li>
@@ -26,18 +27,18 @@ export default {
   data() {
     return {
       grid: [],
-      left:'',
-      top:'',
-      visible:false,
-      currentItem:{},
-      currentItemIndex:'',
+      left: '',
+      top: '',
+      visible: false,
+      currentItem: {},
+      currentItemIndex: '',
     };
   },
   mixins: [assist],
   created() {
     this.grid = new Array(32).fill({});
   },
-  watch:{
+  watch: {
     visible(value) {
       if (value) {
         document.body.addEventListener("click", this.closeMenu);
@@ -46,10 +47,29 @@ export default {
       }
     }
   },
+  computed: {
+    itemNum() {
+      let count = 0
+      this.grid.map((item) => {
+        if (JSON.stringify(item) != '{}') {
+          count++
+        }
+      })
+      if (count / this.grid.length > 0.8) {
+        this.$store.commit("set_sys_info", {
+          msg: `
+              背包快满了，请注意及时清理！
+            `,
+          type: 'warning',
+        });
+      }
+      return count
+    }
+  },
   mounted() {
     var item = {
       lv: 30,
-      itemType:'armor',
+      itemType: 'armor',
       quality: {
         name: "神器",
         qualityCoefficient: 1.5,
@@ -87,9 +107,9 @@ export default {
     // this.$set(this.grid,0,item)
     try {
       var p = this.findComponentUpward(this, 'index')
-      if(JSON.stringify(p.saveData)!='{}'){
+      if (JSON.stringify(p.saveData) != '{}') {
         this.grid = p.saveData.backpackEquipment
-      }  
+      }
     } catch (error) {
       console.log(error)
       this.$store.commit("set_sys_info", {
@@ -99,35 +119,34 @@ export default {
         type: 'warning'
       });
     }
-    
+
   },
   methods: {
-    neaten(){
+    neaten() {
       var tem = new Array(32).fill({}),
         temIndex = 0
-      this.grid.map((item,index)=>{
+      this.grid.map((item, index) => {
         if (JSON.stringify(item) != '{}') {
           tem[temIndex] = item
-          temIndex ++
+          temIndex++
         }
-      }) 
-      console.log(tem)
-      this.grid = JSON.parse(JSON.stringify(tem)) 
+      })
+      this.grid = this.$deepCopy(tem)
       tem = []
     },
-    sell(){
-        this.grid.map((item,index)=>{
-          if (JSON.stringify(item) != '{}') {
-            this.currentItemIndex = index
-            this.currentItem = item
-            this.sellTheEquipment()
-          }
-        })  
-      
+    sell() {
+      this.grid.map((item, index) => {
+        if (JSON.stringify(item) != '{}') {
+          this.currentItemIndex = index
+          this.currentItem = item
+          this.sellTheEquipment()
+        }
+      })
+
     },
     openMenu(k, e) {
-      this.currentItemIndex=k
-      this.currentItem=this.grid[k]
+      this.currentItemIndex = k
+      this.currentItem = this.grid[k]
       const menuMinWidth = 105;
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
@@ -154,35 +173,35 @@ export default {
       var p = this.findComponentUpward(this, 'index')
       p.weaponShow = p.armorShow = p.accShow = false
     },
-    equipTheEquipment(){
+    equipTheEquipment() {
       switch (this.currentItem.itemType) {
         case 'weapon':
           this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.weapon
-          this.$store.commit('set_player_weapon',this.currentItem)
+          this.$store.commit('set_player_weapon', this.currentItem)
           break;
         case 'armor':
           this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.armor
-          this.$store.commit('set_player_armor',this.currentItem)
+          this.$store.commit('set_player_armor', this.currentItem)
           break;
         case 'acc':
           this.grid[this.currentItemIndex] = this.$store.state.playerAttribute.acc
-          this.$store.commit('set_player_acc',this.currentItem)
+          this.$store.commit('set_player_acc', this.currentItem)
           break;
         default:
           break;
       }
-      
+
     },
-    sellTheEquipment(){
+    sellTheEquipment() {
       this.$set(this.grid, this.currentItemIndex, {});
-      var gold = this.currentItem.lv*this.currentItem.quality.qualityCoefficient*10
-      this.$store.commit("set_player_gold", gold);
+      var gold = this.currentItem.lv * this.currentItem.quality.qualityCoefficient * 10
+      this.$store.commit("set_player_gold", parseInt(gold));
       this.$store.commit("set_sys_info", {
-          msg: `
-              出售装备获得金币${gold}
+        msg: `
+              出售装备获得金币${parseInt(gold)}
             `,
-          type: 'trophy',
-        });
+        type: 'trophy',
+      });
     }
   },
 };
@@ -198,13 +217,13 @@ export default {
   align-items: flex-start;
   position: relative;
 }
-.handle{
-  padding-top: .1rem;
+.handle {
+  padding-top: 0.1rem;
   justify-content: flex-end;
   display: flex;
   align-items: center;
-  width:100%;
-  height:.5rem
+  width: 100%;
+  height: 0.5rem;
 }
 .grid {
   width: 0.6rem;
@@ -231,7 +250,7 @@ export default {
 .contextmenu {
   margin: 0;
   background: #000;
-  border:1px solid #fff;
+  border: 1px solid #fff;
   z-index: 3000;
   position: absolute;
   list-style-type: none;
@@ -245,7 +264,7 @@ export default {
     margin: 0;
     padding: 9px 16px;
     cursor: pointer;
-    border-top:1px solid #ccc;
+    border-top: 1px solid #ccc;
     margin-top: -1px;
     font-size: 14px;
     letter-spacing: 6px;
@@ -253,5 +272,14 @@ export default {
       color: #ccc;
     }
   }
+}
+.backpack-capacity {
+  position: absolute;
+  bottom: 0.2rem;
+  left: 0.2rem;
+  font-size: 0.2rem;
+}
+.height-capacity {
+  color: red;
 }
 </style>
