@@ -171,6 +171,7 @@ export default {
     forcedToStopEvent(){
       var event = this.dungeons.eventType[this.nextEvent - 2]
       clearInterval(this.pro)
+      clearTimeout(this.timeOut)
       this.pro = {}
       this.left = 0
       this.nextEvent = 1
@@ -262,6 +263,15 @@ export default {
       }
     },
     caculateTrophy(event) {
+      var items= []
+      var lv = this.dungeons.lv
+      if(event.type=='boss'){
+        if(Math.random()>0.99){
+          var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
+          var item = b.createNewItem(4, parseInt(lv+Math.random()*6))  
+          items.push(JSON.parse(item))
+        }
+      }
       var trophy = event.trophy
       var equip = [
         0.25, 0.25, 0.25, 0.25
@@ -288,7 +298,7 @@ export default {
       }
 
       if (equipQua != -1) {
-        var lv = this.dungeons.lv
+        
         // this.createEquip(equipQua,lv)
         var index = Math.floor((Math.random() * 3));
         if (index == 0) {
@@ -301,21 +311,23 @@ export default {
           var b = this.findBrothersComponents(this, 'accPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
         }
-        item = JSON.parse(item)
+        items.push(JSON.parse(item))
         var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
-        for (let i = 0; i < backpackPanel.grid.length; i++) {
-          if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
-            this.$set(backpackPanel.grid, i, item)
-            break;
-          }
-
-        }
+        items.map(item=>{
+          for (let i = 0; i < backpackPanel.grid.length; i++) {
+            if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+              this.$set(backpackPanel.grid, i, item)
+              break;
+            }
+          }  
+        })
+        
         this.$store.commit("set_sys_info", {
           msg: `
               获得了:金币${event.trophy.gold}
             `,
           type: 'trophy',
-          equip: [item]
+          equip: items
         });
         this.$store.commit("set_player_gold", event.trophy.gold);
       } else {

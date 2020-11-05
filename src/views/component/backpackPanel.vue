@@ -3,7 +3,7 @@
     <div v-for="(v, k) in grid" :key="k">
       <div class="grid">
         <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
-          <div class="icon" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
+          <div class="icon" :class="{unique:v.quality.name=='独特'}" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
         </div>

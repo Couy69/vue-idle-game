@@ -71,12 +71,36 @@ export default {
           des: '据说拥有增强佩戴者体质的神秘功效',
           iconSrc: './icons/Ac_9.png',
           entry: [{
-            'valCoefficient': 0.9,
+            'valCoefficient': 1.1,
             'value': '11',
             'showVal': '+11',
             type: 'HP',
             'name': '生命值'
           }]
+        },
+        {
+          name: '毛毛指环',
+          des: '喵喵戒指，上面有没有摸到毛毛jio的怨念',
+          iconSrc: './icons/Ac_11.png',
+          entry: [{
+            'valCoefficient': 0.9,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          },{
+            'valCoefficient': 0.3,
+            'value': '11',
+            'showVal': '+11',
+            type: 'ATK',
+            'name': '攻击力'
+          },{
+            'valCoefficient': 0.8,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRIT',
+            'name': '暴击几率'
+          },]
         },
         {
           name: '御魂之戒',
@@ -94,7 +118,7 @@ export default {
             'showVal': '+11',
             type: 'ATK',
             'name': '攻击力'
-          }]
+          },]
         },
         {
           name: '十字军项链',
