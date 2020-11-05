@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewacc">随机生成</button>
     </div> -->
-    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color}"  v-if="JSON.stringify(acc)!='{}'">
+    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color + 'b8'}"  v-if="JSON.stringify(acc)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+acc.quality.color}">
           <img :src="acc.type.iconSrc" alt="">

@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewWeapon">随机生成</button>
     </div> -->
-    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color}" v-if="JSON.stringify(weapon)!='{}'">
+    <div class="weaponPanel" :style="{'box-shadow':' 0 0 5px 5px '+weapon.quality.color + 'b8'}" v-if="JSON.stringify(weapon)!='{}'">
       <div class="title">
         <div class='icon' :class="{unique:weapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+weapon.quality.color}">
           <img :src="weapon.type.iconSrc" alt="">
