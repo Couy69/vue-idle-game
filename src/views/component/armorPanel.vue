@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewarmor">随机生成</button>
     </div> -->
-    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}" v-if="JSON.stringify(armor)!='{}'">
+    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color + 'b8'}"  v-if="JSON.stringify(armor)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">

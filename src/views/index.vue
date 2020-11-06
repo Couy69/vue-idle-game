@@ -20,7 +20,7 @@
             {{attribute.DEF.value}} <span style="font-size:.14rem;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
           </div>
         </div>
-        <div class="item" title="暴击几率">
+        <div class="item" title="暴击率">
           <img src="../assets/icons/icon_78.png" alt="">
           <div class="value">
             {{attribute.CRIT.value}}%
@@ -43,7 +43,7 @@
 
       <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
-          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
+          <div class='icon'  :class="{unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}}</div>
@@ -71,7 +71,7 @@
       <div id='sysInfo'>
         <div class="info warning" :class="{warning:v.type=='warning',battle:v.type=='battle',win:v.type=='win',trophy:v.type=='trophy',}" v-for="(v,k) in sysInfo" :key="k">系统<i style="font-size:.12rem" v-if="v.time">({{v.time}})</i>：
           <span>{{v.msg}}</span>
-          <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}" @mouseover="showItemInfo($event,o.itemType,o)" @mouseleave="closeItemInfo">{{o.type.name}}</a>
+          <a v-if="v.equip" v-for="(o,p) in v.equip" :key="p" :style="{color:o.quality.color}" @mouseover="showItemInfo($event,o.itemType,o)" @mouseleave="closeItemInfo"><span v-if="o.quality.name=='独特'">稀有掉落：</span>{{o.type.name}}</a>
         </div>
       </div>
     </div>
@@ -135,10 +135,10 @@
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>保存</span>
       </div>
-      <div class="Backpack" @click="GMOpened = true">
+      <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div>
+      </div> -->
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -878,9 +878,18 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    white-space:nowrap;
+    font-size: .14rem;
     & > div {
       display: flex;
       align-items: center;
+    }
+    input{
+      width:.2rem;
+      height:.2rem;
+      min-height: 15px;
+      min-width: 15px;
+      margin-right: .05rem;
     }
   }
   .jjj {
@@ -904,12 +913,13 @@ a {
     color: #999;
   }
   .dungeons-btn {
-    margin: 0.2rem 0.4rem;
+    margin: 0.2rem 0.3rem;
     padding: 0.1rem 0.3rem;
     cursor: pointer;
     color: #fff;
     background: #000;
     border: 1px solid #fff;
+    white-space:nowrap
   }
 }
 </style>

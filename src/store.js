@@ -127,7 +127,7 @@ export default new Vuex.Store({
           "type": "CRIT",
           "value": 10,
           "showVal": "+10%",
-          "name": "暴击几率"
+          "name": "暴击率"
         }]
       },
     }
