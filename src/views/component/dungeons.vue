@@ -265,7 +265,7 @@ export default {
       var items= []
       var lv = this.dungeons.lv
       if(event.type=='boss'){
-        if(Math.random()>0.99){
+        if(Math.random()>0.965){
           var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
           var item = b.createNewItem(4, parseInt(lv+Math.random()*6))  
           items.push(JSON.parse(item))

@@ -241,7 +241,7 @@ export default {
         des: '朴实无华普通长剑，有的只有强力的攻击力',
         iconSrc: './icons/W_Sword001.png',
         entry: [{
-          'valCoefficient': 1.6,
+          'valCoefficient': 1.7,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',

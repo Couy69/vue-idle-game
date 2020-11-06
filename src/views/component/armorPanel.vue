@@ -107,7 +107,7 @@ export default {
           des: '舍弃了防御性能的轻甲，因为更加轻便，攻击性能更加突出',
           iconSrc: './icons/A_A7.png',
           entry: [{
-            'valCoefficient': 0.5,
+            'valCoefficient': 0.7,
             'value': '11',
             'showVal': '+11',
             type: 'DEF',

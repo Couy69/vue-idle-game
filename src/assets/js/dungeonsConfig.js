@@ -1157,7 +1157,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 8000,
-              ATK: 2500,
+              ATK: 3000,
             },
             trophy: {
               gold: 1000,
@@ -1171,7 +1171,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 8000,
-              ATK: 2500,
+              ATK: 3100,
             },
             trophy: {
               gold: 1000,
@@ -1185,7 +1185,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 8000,
-              ATK: 2500,
+              ATK: 3200,
             },
             trophy: {
               gold: 1000,
@@ -1199,7 +1199,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 8000,
-              ATK: 2500,
+              ATK: 3300,
             },
             trophy: {
               gold: 1000,
@@ -1213,7 +1213,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 12000,
-              ATK: 3000,
+              ATK: 3500,
             },
             trophy: {
               gold: 2500,
@@ -1239,7 +1239,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 9000,
-              ATK: 3510,
+              ATK: 4510,
             },
             trophy: {
               gold: 1200,
@@ -1253,7 +1253,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 9000,
-              ATK: 3600,
+              ATK: 4600,
             },
             trophy: {
               gold: 800,
@@ -1267,7 +1267,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 9100,
-              ATK: 3700,
+              ATK: 4700,
             },
             trophy: {
               gold: 1200,
@@ -1281,7 +1281,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 9100,
-              ATK: 3800,
+              ATK: 4800,
             },
             trophy: {
               gold: 1200,
@@ -1295,7 +1295,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 15000,
-              ATK: 5200,
+              ATK: 6200,
             },
             trophy: {
               gold: 3000,
@@ -1321,7 +1321,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 10000,
-              ATK: 5750,
+              ATK: 6750,
             },
             trophy: {
               gold: 1500,
@@ -1335,7 +1335,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 10000,
-              ATK: 6050,
+              ATK: 7050,
             },
             trophy: {
               gold: 1500,
@@ -1349,7 +1349,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 10000,
-              ATK: 6150,
+              ATK: 7150,
             },
             trophy: {
               gold: 1500,
@@ -1363,7 +1363,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 10000,
-              ATK: 6250,
+              ATK: 7250,
             },
             trophy: {
               gold: 1500,
@@ -1377,7 +1377,7 @@ export const dungeonsConfig = {
             eventType: 'battle',
             attribute: {
               HP: 15000,
-              ATK: 8500,
+              ATK: 10000,
             },
             trophy: {
               gold: 4000,

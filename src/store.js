@@ -294,3 +294,5 @@ export default new Vuex.Store({
     }
   },
 })
+
+success_prompt('chenggopngle',1500)
