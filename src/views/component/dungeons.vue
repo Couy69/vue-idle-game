@@ -177,25 +177,52 @@ export default {
       this.dungeons = {}
     },
     eventEnd() {
-      this.forcedToStopEvent()
+      
 
       setTimeout(() => {
         // this.battleCom(event)
-        this.$store.commit("set_sys_info", {
-          msg: `
-              副本探索成功！
-            `,
-          type: 'win'
-        });
-        if (this.dungeons.name == '黑色火山') {
+        console.log(this.dungeons)
+       if (this.dungeons.type == "endless") {
           this.$store.commit("set_sys_info", {
-            msg: "击败了最后的boss，你通关了！",
-            type: 'win'
+            msg: `
+                挑战成功，可以挑战下一层了
+              `,
+            type: "win",
+          });
+          console.log(this.$store.state.playerAttribute.endlessLv)
+          this.$store.commit("set_endless_lv", this.$store.state.playerAttribute.endlessLv+1);
+          this.$store.commit("set_player_curhp", 9999999);
+        } else {
+          this.$store.commit("set_sys_info", {
+            msg: `
+                副本探索成功！
+              `,
+            type: "win",
           });
         }
+        
 
         let p = this.findComponentUpward(this, 'index')
         let backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
+
+        if (this.dungeons.name == '黑色火山'&&!this.$store.state.playerAttribute.endlessLv) {
+          
+          this.$store.commit("set_sys_info", {
+            msg: "击败了最后的boss，你通关了！",
+            type: 'warning'
+          });
+          this.$store.commit("set_sys_info", {
+            msg: "开启了无尽挑战，可点击地图右上角副本图标进入",
+            type: 'warning'
+          });
+          this.$store.commit("set_sys_info", {
+            msg: "试试你的极限吧",
+            type: 'warning'
+          });
+
+          this.$store.commit('set_endless_lv',1)
+        }
+        this.forcedToStopEvent()
         let backpackPanelSign = backpackPanel.itemNum/backpackPanel.grid.length<0.8
         if (p.reChallenge&&backpackPanelSign) {
           p.eventBegin()
@@ -203,6 +230,7 @@ export default {
           p.dungeons = ''
           p.inDungeons = false
         }
+        
       }, 100)
     },
     // 计算战斗过程
@@ -217,6 +245,13 @@ export default {
       // 战斗伤害计算公式 
       // 1 - 0.06 * armor / (1 + (0.06 * armor))
 
+      // 无尽模式下怪物加强
+      if(this.dungeons.type == 'endless'){
+        var endlessLv = this.$store.state.playerAttribute.endlessLv||0
+        monsterAttribute.ATK = monsterAttribute.ATK+endlessLv*100
+        monsterAttribute.HP = monsterAttribute.HP+endlessLv*110  
+      }
+      
       var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 
@@ -227,13 +262,22 @@ export default {
         takeDmg = parseInt(takeDmg * reducedDamage)
         this.$store.commit('set_player_curhp', takeDmg)
 
+        // 无尽模式下怪物加强
+      if(this.dungeons.type == 'endless'){
+        this.$store.commit("set_sys_info", {
+          msg: `
+              击杀了${event.name}(无尽层数：${this.dungeons.lv})，受到了${Math.abs(takeDmg)}点伤害
+            `,
+          type: 'win'
+        });
+      }else{
         this.$store.commit("set_sys_info", {
           msg: `
               击杀了${event.name}(lv${this.dungeons.lv})，受到了${Math.abs(takeDmg)}点伤害
             `,
           type: 'win'
         });
-
+      }
         this.caculateTrophy(event)
 
       } else {
@@ -264,7 +308,7 @@ export default {
     caculateTrophy(event) {
       var items= []
       var lv = this.dungeons.lv
-      if(event.type=='boss'){
+      if(event.type=='boss'&&this.dungeons.type!='endless'){
         if(Math.random()>0.965){
           var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
           var item = b.createNewItem(4, parseInt(lv+Math.random()*6))  

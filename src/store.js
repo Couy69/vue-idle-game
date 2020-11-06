@@ -13,6 +13,7 @@ export default new Vuex.Store({
     playerAttribute: {
       GOLD: 0,
       healthRecoverySpeed: 1,
+      endlessLv:0,
       attribute: {
         CURHP: {
           value: 0,
@@ -277,7 +278,9 @@ export default new Vuex.Store({
     set_player_gold(state, data) {
       this.state.playerAttribute.GOLD += parseInt(data);
     },
-
+    set_endless_lv(state, data) {
+      this.state.playerAttribute.endlessLv = parseInt(data);
+    },
     set_player_curhp(state, data) {
       var CURHP = this.state.playerAttribute.attribute.CURHP,
         MAXHP = this.state.playerAttribute.attribute.MAXHP
@@ -294,5 +297,3 @@ export default new Vuex.Store({
     }
   },
 })
-
-success_prompt('chenggopngle',1500)

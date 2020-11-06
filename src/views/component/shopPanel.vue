@@ -113,6 +113,8 @@ export default {
       var acclv = Number(this.$store.state.playerAttribute.acc.lv);
       for (let i = 0; i < 5; i++) {
         var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
+        //装备等级最高110
+        lv>110?110:lv
         this.createShopItem(lv);
       }
     },

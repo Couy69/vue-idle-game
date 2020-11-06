@@ -741,7 +741,7 @@ export const dungeonsConfig = {
           id: '4',
           eventNum: '5',
           lv: 45,
-          desc:'向安徒恩发起进攻的瞬间， 浓浓的黑雾如帷帐般笼罩着安徒恩巨大的身体， 士兵们一个个倒在伸手不见五指的黑暗之中……必须要解决这可怕的黑雾， 不能让我们的士兵白白牺牲',
+          desc:'',
           eventType: [{
             name: '卡勒特普通士兵',
             type: 'monster',
@@ -823,7 +823,7 @@ export const dungeonsConfig = {
           id: '4',
           eventNum: '5',
           lv: 50,
-          desc:'既然无法回收安徒恩的能量， 那就只能先破坏安徒恩的关节部位， 才能确保大部队的总攻。',
+          desc:'',
           eventType: [{
             name: '卡勒特纵火兵',
             type: 'monster',
@@ -905,7 +905,7 @@ export const dungeonsConfig = {
           id: '4',
           eventNum: '5',
           lv: 55,
-          desc:'安徒恩似乎打算退回魔界， 决不能让他这么轻易地回去！ 这么多的杀戮这么多的罪孽， 只有死亡才能赎清他的罪恶。 一定要阻止他返回魔界！ 向他的腿部发起进攻， 阻止他前进！',
+          desc:'',
           eventType: [{
             name: '卡勒特强化先锋卫队',
             type: 'monster',
@@ -986,7 +986,7 @@ export const dungeonsConfig = {
           id: '4',
           eventNum: '5',
           lv: 60,
-          desc:'黑色火山， 安徒恩的心脏所在之处， 他最脆弱的地方， 但同时也可以说是最强大的地方。',
+          desc:'',
           eventType: [{
             name: '西克特·帕菲斯',
             type: 'monster',
@@ -1310,7 +1310,7 @@ export const dungeonsConfig = {
           battleTime: 2000,
           name: '黑色火山',
           time: '20',
-          needDPS: '1000',
+          needDPS: '3000',
           id: '4',
           eventNum: '5',
           lv: 100,
@@ -1383,6 +1383,88 @@ export const dungeonsConfig = {
               gold: 4000,
               equip: [
                 0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+        , {
+          battleTime: 2000,
+          name: '无尽挑战',
+          time: '20',
+          type:'endless',
+          needDPS: '3000',
+          id: '4',
+          eventNum: '5',
+          lv: 1,
+          desc:'这里是无尽挑战，挑战将不会有装备掉落，试试你的极限吧',
+          eventType: [{
+            name: '无尽梦魇',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 6750,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0, 0, 0, 0
+              ],
+            }
+          }, {
+            name: '无尽梦魇',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 7050,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0, 0, 0, 0
+              ],
+            }
+          }, {
+            name: '无尽梦魇',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 7150,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0, 0, 0, 0
+              ],
+            }
+          }, {
+            name: '无尽梦魇',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 7250,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0, 0, 0, 0
+              ],
+            }
+          }, {
+            name: '无尽梦魇(boss)',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 15000,
+              ATK: 10000,
+            },
+            trophy: {
+              gold: 4000,
+              equip: [
+                0, 0, 0, 0
               ],
             }
           }, ]
