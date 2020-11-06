@@ -169,7 +169,6 @@ export default {
     //   <div class="info trophy">系统：<span> 获得：金币+33</span></div>
     //   <div class="info battle">系统：<span> 遭遇了史莱姆（lv1）</span></div>
     forcedToStopEvent(){
-      var event = this.dungeons.eventType[this.nextEvent - 2]
       clearInterval(this.pro)
       this.pro = {}
       this.left = 0

@@ -6,6 +6,9 @@
           <div class="icon" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
+          <div class="title-lock" v-if="v.locked">
+            <img src="../../assets/icons/lock.png" alt="">
+          </div>
         </div>
       </div>
     </div>
@@ -16,6 +19,8 @@
     </div>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="equipTheEquipment()">装备</li>
+      <li @click="lockTheEquipment(true)" v-if="!currentItem.locked">锁定</li>
+      <li @click="lockTheEquipment(false)" v-if="currentItem.locked">解锁</li>
       <li @click="sellTheEquipment()">出售</li>
     </ul>
   </div>
@@ -139,7 +144,7 @@ export default {
         if (JSON.stringify(item) != '{}') {
           this.currentItemIndex = index
           this.currentItem = item
-          this.sellTheEquipment()
+          this.sellTheEquipment(true)
         }
       })
 
@@ -173,6 +178,9 @@ export default {
       var p = this.findComponentUpward(this, 'index')
       p.weaponShow = p.armorShow = p.accShow = false
     },
+    lockTheEquipment(v) {
+      this.currentItem.locked = v;
+    },
     equipTheEquipment() {
       switch (this.currentItem.itemType) {
         case 'weapon':
@@ -192,7 +200,17 @@ export default {
       }
 
     },
-    sellTheEquipment() {
+    sellTheEquipment(withoutWarning) {
+      if (this.currentItem.locked) {
+
+        !withoutWarning&&this.$store.commit("set_sys_info", {
+          msg: `
+              装备已锁定，请先解锁再出售。
+            `,
+          type: 'warning',
+        });
+        return
+      }
       this.$set(this.grid, this.currentItemIndex, {});
       var gold = this.currentItem.lv * this.currentItem.quality.qualityCoefficient * 10
       this.$store.commit("set_player_gold", parseInt(gold));
@@ -236,6 +254,7 @@ export default {
     display: flex;
     width: 100%;
     cursor: pointer;
+    position: relative;
     .icon {
       width: 0.56rem;
       height: 0.56rem;
@@ -244,6 +263,34 @@ export default {
       align-items: center;
       justify-content: center;
       border-radius: 0.04rem;
+      img {
+        width: 80%;
+        height: 80%;
+      }
+    }
+  }
+  .title-lock {
+    position: absolute;
+    // width: 0.2rem;
+    // height: 0.2rem;
+    // background: red;
+    top: -0.03rem;
+    right: -0.11rem;
+    width: 0;
+    height: 0;
+    border-left: 0.24rem solid transparent;
+    border-right: 0.24rem solid transparent;
+    border-bottom: 0.24rem solid rgba(255, 0, 0, 0.658);
+    font-size: 0;
+    line-height: 0;
+    transform: rotate(45deg);
+    img {
+      width: 0.16rem;
+      height: 0.16rem;
+      transform: rotate(-45deg) translate(-50%, -0%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
     }
   }
 }

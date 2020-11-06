@@ -735,7 +735,7 @@ export const dungeonsConfig = {
 
         , {
           battleTime: 2000,
-          name: '黑雾之源',
+          name: '根特外围',
           time: '20',
           needDPS: '400',
           id: '4',
@@ -743,7 +743,7 @@ export const dungeonsConfig = {
           lv: 45,
           desc:'向安徒恩发起进攻的瞬间， 浓浓的黑雾如帷帐般笼罩着安徒恩巨大的身体， 士兵们一个个倒在伸手不见五指的黑暗之中……必须要解决这可怕的黑雾， 不能让我们的士兵白白牺牲',
           eventType: [{
-            name: '吞噬魔',
+            name: '卡勒特普通士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -757,7 +757,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '吞噬魔',
+            name: '卡勒特普通士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -771,7 +771,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '吞噬魔',
+            name: '卡勒特普通士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -785,7 +785,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '吞噬魔',
+            name: '卡勒特普通士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -799,7 +799,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '歼灭之内尔贝',
+            name: '纵火犯本汀克',
             type: 'boss',
             eventType: 'battle',
             attribute: {
@@ -817,7 +817,7 @@ export const dungeonsConfig = {
         
         , {
           battleTime: 2000,
-          name: '震颤的大地',
+          name: '根特东门',
           time: '20',
           needDPS: '400',
           id: '4',
@@ -825,7 +825,7 @@ export const dungeonsConfig = {
           lv: 50,
           desc:'既然无法回收安徒恩的能量， 那就只能先破坏安徒恩的关节部位， 才能确保大部队的总攻。',
           eventType: [{
-            name: '湮灭之弗雷伊内斯',
+            name: '卡勒特纵火兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -839,7 +839,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '湮灭之弗雷伊内斯',
+            name: '卡勒特纵火兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -853,7 +853,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '湮灭之弗雷伊内斯',
+            name: '卡勒特改造士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -867,7 +867,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '湮灭之弗雷伊内斯',
+            name: '卡勒特改造士兵',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -881,7 +881,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '毁灭之塔伊奥利',
+            name: '机动队长苏雷德',
             type: 'boss',
             eventType: 'battle',
             attribute: {
@@ -899,7 +899,7 @@ export const dungeonsConfig = {
         
         , {
           battleTime: 2000,
-          name: '擎天之柱',
+          name: '根特南门',
           time: '20',
           needDPS: '600',
           id: '4',
@@ -907,7 +907,7 @@ export const dungeonsConfig = {
           lv: 55,
           desc:'安徒恩似乎打算退回魔界， 决不能让他这么轻易地回去！ 这么多的杀戮这么多的罪孽， 只有死亡才能赎清他的罪恶。 一定要阻止他返回魔界！ 向他的腿部发起进攻， 阻止他前进！',
           eventType: [{
-            name: '火焰之克瑞夫',
+            name: '卡勒特强化先锋卫队',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -921,7 +921,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '守门将克拉特',
+            name: '卡勒特间谍',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -935,7 +935,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '火焰之克瑞夫',
+            name: '卡勒特强化先锋卫队',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -949,7 +949,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '守门将克拉特',
+            name: '卡勒特间谍',
             type: 'monster',
             eventType: 'battle',
             attribute: {
@@ -963,7 +963,7 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '炽炎',
+            name: 'GT-9600',
             type: 'boss',
             eventType: 'battle',
             attribute: {
@@ -980,7 +980,7 @@ export const dungeonsConfig = {
         }
         , {
           battleTime: 2000,
-          name: '黑色火山',
+          name: '补给线阻断战',
           time: '20',
           needDPS: '1000',
           id: '4',
@@ -988,12 +988,12 @@ export const dungeonsConfig = {
           lv: 60,
           desc:'黑色火山， 安徒恩的心脏所在之处， 他最脆弱的地方， 但同时也可以说是最强大的地方。',
           eventType: [{
-            name: '阿托尔',
+            name: '西克特·帕菲斯',
             type: 'monster',
             eventType: 'battle',
             attribute: {
               HP: 6000,
-              ATK: 750,
+              ATK: 700,
             },
             trophy: {
               gold: 600,
@@ -1002,12 +1002,12 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '梅尔塔',
+            name: '裴特舒·帕菲斯',
             type: 'monster',
             eventType: 'battle',
             attribute: {
               HP: 6000,
-              ATK: 850,
+              ATK: 800,
             },
             trophy: {
               gold: 500,
@@ -1016,12 +1016,12 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '魔眼赛尔',
+            name: '机械臂捷克',
             type: 'monster',
             eventType: 'battle',
             attribute: {
               HP: 6000,
-              ATK: 950,
+              ATK: 900,
             },
             trophy: {
               gold: 500,
@@ -1030,11 +1030,11 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '恐怖邪念体',
+            name: '夜战司令官巴比伦',
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 6000,
+              HP: 5800,
               ATK: 1000,
             },
             trophy: {
@@ -1044,15 +1044,343 @@ export const dungeonsConfig = {
               ],
             }
           }, {
-            name: '克雷斯',
+            name: '机械师吉赛尔',
             type: 'boss',
             eventType: 'battle',
             attribute: {
               HP: 6000,
-              ATK: 2200,
+              ATK: 2100,
             },
             trophy: {
               gold: 1500,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+
+        , {
+          battleTime: 2000,
+          name: '黑雾之源',
+          time: '20',
+          needDPS: '1500',
+          id: '4',
+          eventNum: '5',
+          lv: 70,
+          desc:'',
+          eventType: [{
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 7000,
+              ATK: 1400,
+            },
+            trophy: {
+              gold: 900,
+              equip: [
+                0.2, 0.1, 0.15, 0.05
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 7000,
+              ATK: 1410,
+            },
+            trophy: {
+              gold: 900,
+              equip: [
+                0.2, 0.1, 0.15, 0.05
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 7000,
+              ATK: 1420,
+            },
+            trophy: {
+              gold: 900,
+              equip: [
+                0.2, 0.1, 0.15, 0.05
+              ],
+            }
+          }, {
+            name: '吞噬魔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 7000,
+              ATK: 1500,
+            },
+            trophy: {
+              gold: 900,
+              equip: [
+                0.2, 0.1, 0.15, 0.05
+              ],
+            }
+          }, {
+            name: '歼灭之内尔贝',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 8000,
+              ATK: 2400,
+            },
+            trophy: {
+              gold: 2200,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+
+        , {
+          battleTime: 2000,
+          name: '震颤的大地',
+          time: '20',
+          needDPS: '2000',
+          id: '4',
+          eventNum: '5',
+          lv: 80,
+          desc:'既然无法回收安徒恩的能量， 那就只能先破坏安徒恩的关节部位， 才能确保大部队的总攻。',
+          eventType: [{
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 8000,
+              ATK: 2500,
+            },
+            trophy: {
+              gold: 1000,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 8000,
+              ATK: 2500,
+            },
+            trophy: {
+              gold: 1000,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 8000,
+              ATK: 2500,
+            },
+            trophy: {
+              gold: 1000,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '湮灭之弗雷伊内斯',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 8000,
+              ATK: 2500,
+            },
+            trophy: {
+              gold: 1000,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '毁灭之塔伊奥利',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 12000,
+              ATK: 3000,
+            },
+            trophy: {
+              gold: 2500,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+
+        , {
+          battleTime: 2000,
+          name: '擎天之柱',
+          time: '20',
+          needDPS: '2500',
+          id: '4',
+          eventNum: '5',
+          lv: 90,
+          desc:'安徒恩似乎打算退回魔界， 决不能让他这么轻易地回去！ 这么多的杀戮这么多的罪孽， 只有死亡才能赎清他的罪恶。 一定要阻止他返回魔界！ 向他的腿部发起进攻， 阻止他前进！',
+          eventType: [{
+            name: '火焰之克瑞夫',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 9000,
+              ATK: 3000,
+            },
+            trophy: {
+              gold: 1200,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '守门将克拉特',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 9000,
+              ATK: 3100,
+            },
+            trophy: {
+              gold: 800,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '火焰之克瑞夫',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 9100,
+              ATK: 3000,
+            },
+            trophy: {
+              gold: 1200,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '守门将克拉特',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 9100,
+              ATK: 3100,
+            },
+            trophy: {
+              gold: 1200,
+              equip: [
+                0.2, 0.1, 0.15, 0.1
+              ],
+            }
+          }, {
+            name: '炽炎',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 15000,
+              ATK: 3500,
+            },
+            trophy: {
+              gold: 3000,
+              equip: [
+                0.2, 0.3, 0.35, 0.15
+              ],
+            }
+          }, ]
+        }
+
+        , {
+          battleTime: 2000,
+          name: '黑色火山',
+          time: '20',
+          needDPS: '1000',
+          id: '4',
+          eventNum: '5',
+          lv: 100,
+          desc:'黑色火山， 安徒恩的心脏所在之处， 他最脆弱的地方， 但同时也可以说是最强大的地方。',
+          eventType: [{
+            name: '阿托尔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 3750,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '梅尔塔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 4050,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '魔眼赛尔',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 4150,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.1, 0.05, 0
+              ],
+            }
+          }, {
+            name: '恐怖邪念体',
+            type: 'monster',
+            eventType: 'battle',
+            attribute: {
+              HP: 10000,
+              ATK: 4250,
+            },
+            trophy: {
+              gold: 1500,
+              equip: [
+                0.2, 0.5, 0.25, 0.05
+              ],
+            }
+          }, {
+            name: '克雷斯',
+            type: 'boss',
+            eventType: 'battle',
+            attribute: {
+              HP: 15000,
+              ATK: 5500,
+            },
+            trophy: {
+              gold: 4000,
               equip: [
                 0.2, 0.3, 0.35, 0.15
               ],

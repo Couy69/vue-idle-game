@@ -72,7 +72,7 @@ export default {
         des: '用狱岩石制作的太刀，据说拥有让使用者潜力爆发的神秘力量',
         iconSrc: './icons/W_Sword016.png',
         entry: [{
-          'valCoefficient': 0.9,
+          'valCoefficient': 1.2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -90,14 +90,14 @@ export default {
         des: '六级战士使用的长剑',
         iconSrc: './icons/W_Sword007.png',
         entry: [{
-          'valCoefficient': 1.1,
+          'valCoefficient': 1.2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'DEF',
-          'valCoefficient': 0.4,
+          'valCoefficient': 0.5,
           'value': '8',
           'showVal': '8',
           'name': '防御力'
@@ -108,14 +108,14 @@ export default {
         des: '似乎会给使用者提供生命气息',
         iconSrc: './icons/W_Sword019.png',
         entry: [{
-          'valCoefficient': 1.1,
+          'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }, {
           type: 'HP',
-          'valCoefficient': 0.9,
+          'valCoefficient': 1.1,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -126,7 +126,7 @@ export default {
         des: '朴实无华普通长剑，有的只有强力的攻击力',
         iconSrc: './icons/W_Sword001.png',
         entry: [{
-          'valCoefficient': 1.5,
+          'valCoefficient': 1.6,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -139,7 +139,7 @@ export default {
         des: '传说中的狂战士最喜爱的剑。',
         iconSrc: './icons/W_Sword021.png',
         entry: [{
-          'valCoefficient': 1.6,
+          'valCoefficient': 1.7,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -151,7 +151,7 @@ export default {
         des: '这？这也是武器？',
         iconSrc: './icons/W_Fist003.png',
         entry: [{
-          'valCoefficient': 1.7,
+          'valCoefficient': 2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -163,7 +163,7 @@ export default {
         des: '剑锋覆盖着冰晶，碰到的敌人都会被冻住。',
         iconSrc: './icons/W_Sword018.png',
         entry: [{
-          'valCoefficient': 1.3,
+          'valCoefficient': 1.4,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -202,7 +202,22 @@ export default {
         'value': '8',
         'showVal': '+8%',
         'name': '防御力'
-      }]
+      },{
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'ATKPERCENT',
+        'name': '攻击力'
+      },{
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'DEFPERCENT',
+        'name': '防御力'
+      },{
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'HPPERCENT',
+        'name': '生命值'
+      },]
     };
   },
   props: ['item'],
@@ -301,7 +316,7 @@ export default {
       b.map(item => {
         switch (item.type) {
           case 'ATK':
-            var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
+            var random = parseInt(lv * 0.5 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * weapon.quality.qualityCoefficient)
             random = random||1
             item.value = random
@@ -320,6 +335,27 @@ export default {
             random = random||1
             item.value = random
             item.showVal = '+' + random
+            break;
+          case 'ATKPERCENT':
+            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
+            random = random||1
+            item.value = random
+            item.showVal = '+' + random  + '%'
+            break;
+          case 'DEFPERCENT':
+            var random = parseFloat(lv * 0.1 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
+            random = random||1
+            item.value = random
+            item.showVal = '+' + random  + '%'
+            break;
+          case 'HPPERCENT':
+            var random = parseFloat(lv * 0.13 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
+            random = random||1
+            item.value = random
+            item.showVal = '+' + random  + '%'
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)

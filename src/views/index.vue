@@ -106,13 +106,17 @@
       <div class="event-icon low-level" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 28%;left: 43%;"><span>lv15</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(4)" v-show='!inDungeons' style="top: 39%;left: 48%;"><span>lv20</span></div>
       <div class="event-icon m-level" @click="showDungeonsInfo(5)" v-show='!inDungeons' style="top: 9%;left: 61%;"><span>lv25</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(6)" v-show='!inDungeons' style="top: 19%;left: 71%;"><span>lv30</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(7)" v-show='!inDungeons' style="top: 29%;left: 88%;"><span>lv35</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(8)" v-show='!inDungeons' style="top: 45%;left: 78%;"><span>lv40</span></div>
-      <div class="event-icon htgh-level" @click="showDungeonsInfo(9)" v-show='!inDungeons' style="top: 64%;left: 11%;"><span>lv45</span></div>
-      <div class="event-icon htgh-level" @click="showDungeonsInfo(10)" v-show='!inDungeons' style="top: 75%;left: 36%;"><span>lv50</span></div>
-      <div class="event-icon htgh-level" @click="showDungeonsInfo(11)" v-show='!inDungeons' style="top: 75%;left: 58%;"><span>lv55</span></div>
-      <div class="event-icon boss" @click="showDungeonsInfo(12)" v-show='!inDungeons' style="top: 55%;left: 51%;"><span>boss</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(6)" v-show='!inDungeons' style="top: 10%;left: 71%;"><span>lv30</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(7)" v-show='!inDungeons' style="top: 21%;left: 88%;"><span>lv35</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(8)" v-show='!inDungeons' style="top: 32%;left: 78%;"><span>lv40</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(9)" v-show='!inDungeons' style="top: 42%;left: 88%;"><span>lv45</span></div>
+      <div class="event-icon m-level" @click="showDungeonsInfo(10)" v-show='!inDungeons' style="top: 56%;left: 80%;"><span>lv50</span></div>
+      <div class="event-icon h-level" @click="showDungeonsInfo(11)" v-show='!inDungeons' style="top: 79%;left: 73%;"><span>lv55</span></div>
+      <div class="event-icon h-level" @click="showDungeonsInfo(12)" v-show='!inDungeons' style="top: 85%;left: 61%;"><span>lv60</span></div>
+      <div class="event-icon h-level" @click="showDungeonsInfo(13)" v-show='!inDungeons' style="top: 71%;left: 40%;"><span>lv70</span></div>
+      <div class="event-icon h-level" @click="showDungeonsInfo(14)" v-show='!inDungeons' style="top: 75%;left: 20%;"><span>lv80</span></div>
+      <div class="event-icon boss" @click="showDungeonsInfo(15)" v-show='!inDungeons' style="top: 56%;left: 51%;"><span>lv90</span></div>
+      <div class="event-icon boss" @click="showDungeonsInfo(16)" v-show='!inDungeons' style="top: 90%;left: 88%;"><span>lv100</span></div>
     </div>
     <div class="menu">
       <div class="Backpack" @click="openMenuPanel('backpack')">
@@ -131,10 +135,10 @@
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>保存</span>
       </div>
-      <!-- <div class="Backpack" @click="GMOpened = true">
+      <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div> -->
+      </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -738,6 +742,9 @@ a {
       background-color: rgba(100, 255, 36, 0.7);
     }
     .m-level {
+      background-color: rgba(0, 159, 245, 0.7);
+    }
+    .h-level {
       background-color: rgba(245, 241, 0, 0.7);
     }
     .boss {

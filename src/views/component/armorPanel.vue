@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewarmor">随机生成</button>
     </div> -->
-    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}"  v-if="JSON.stringify(armor)!='{}'">
+    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color}" v-if="JSON.stringify(armor)!='{}'">
       <div class="title">
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
@@ -69,7 +69,7 @@ export default {
         {
           name: '紫金守护胸甲',
           des: '够肉才能输出',
-          iconSrc:'./icons/A_A2.png',
+          iconSrc: './icons/A_A2.png',
           entry: [{
             'valCoefficient': 2,
             'value': '11',
@@ -87,7 +87,7 @@ export default {
         {
           name: '战士重铠',
           des: '六级战士使用的重型铠甲',
-          iconSrc:'./icons/A_A5.png',
+          iconSrc: './icons/A_A5.png',
           entry: [{
             'valCoefficient': 1.1,
             'value': '11',
@@ -105,7 +105,7 @@ export default {
         {
           name: '天权轻甲',
           des: '舍弃了防御性能的轻甲，因为更加轻便，攻击性能更加突出',
-          iconSrc:'./icons/A_A7.png',
+          iconSrc: './icons/A_A7.png',
           entry: [{
             'valCoefficient': 0.5,
             'value': '11',
@@ -118,7 +118,7 @@ export default {
             'value': '8',
             'showVal': '8',
             'name': '生命值'
-          },{
+          }, {
             'valCoefficient': 0.5,
             'value': '11',
             'showVal': '+11',
@@ -129,7 +129,7 @@ export default {
         {
           name: '赤柳血铠',
           des: '似乎会给使用者提供生命气息',
-          iconSrc:'./icons/A_A3.png',
+          iconSrc: './icons/A_A3.png',
           entry: [{
             'valCoefficient': 0.9,
             'value': '11',
@@ -160,10 +160,20 @@ export default {
         'value': '8',
         'showVal': '+8%',
         'name': '防御力'
-      }]
+      }, {
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'DEFPERCENT',
+        'name': '防御力'
+      }, {
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'HPPERCENT',
+        'name': '生命值'
+      },]
     };
   },
-  props:['item'],
+  props: ['item'],
   mounted() {
   },
   watch: {
@@ -172,11 +182,11 @@ export default {
     }
   },
   methods: {
-    createNewItem(qualityIndex,lv) {
-      var armor ={}
-      armor.itemType= 'armor'
-      armor.quality = qualityIndex>-1?this.quality[qualityIndex]:this.createQua()
-      armor.lv = lv||this.createLv()
+    createNewItem(qualityIndex, lv) {
+      var armor = {}
+      armor.itemType = 'armor'
+      armor.quality = qualityIndex > -1 ? this.quality[qualityIndex] : this.createQua()
+      armor.lv = lv || this.createLv()
       armor.type = this.createType(armor)
       armor.extraEntry = this.createExtraEntry(armor)
       return JSON.stringify(armor)
@@ -192,21 +202,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -261,21 +271,21 @@ export default {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * armor.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -288,6 +298,20 @@ export default {
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 20)
             random = parseInt(random * armor.quality.qualityCoefficient)
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'DEFPERCENT':
+            var random = parseFloat(lv * 0.12 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            random = parseFloat(random * armor.quality.qualityCoefficient).toFixed(2)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'HPPERCENT':
+            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            random = parseFloat(random * armor.quality.qualityCoefficient).toFixed(2)
+            random = random || 1
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -315,16 +339,16 @@ export default {
   font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
     "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
-  width: 3.00rem;
+  width: 3rem;
   height: auto;
   background: rgba(0, 0, 0, 0.8);
   border: #393839;
-  border-radius: .05rem;
-  padding: .16rem;
+  border-radius: 0.05rem;
+  padding: 0.16rem;
   box-sizing: border-box;
   .title {
     display: flex;
-    padding-bottom: .10rem;
+    padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
     .icon {
       width: 0.5rem;
@@ -333,23 +357,23 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: .04rem;
+      border-radius: 0.04rem;
     }
     .name {
-      height: .46rem;
-      margin-left: .20rem;
-      line-height: .46rem;
+      height: 0.46rem;
+      margin-left: 0.2rem;
+      line-height: 0.46rem;
     }
   }
   .type {
-    padding: .10rem;
+    padding: 0.1rem;
     display: flex;
     width: 100%;
     align-content: center;
     justify-content: space-between;
   }
   .lv {
-    padding-right: .10rem;
+    padding-right: 0.1rem;
     display: flex;
     width: 100%;
     align-content: center;
@@ -357,8 +381,8 @@ export default {
   }
   .entry {
     width: 100%;
-    padding-left: .20rem;
-    padding-bottom: .10rem;
+    padding-left: 0.2rem;
+    padding-bottom: 0.1rem;
     border-bottom: 1px solid #777;
     div {
       text-align: left;
@@ -366,9 +390,9 @@ export default {
   }
   .extraEntry {
     width: 100%;
-    padding-left: .20rem;
-    margin-top: .10rem;
-    padding-bottom: .10rem;
+    padding-left: 0.2rem;
+    margin-top: 0.1rem;
+    padding-bottom: 0.1rem;
     color: #68d5ed;
     border-bottom: 1px solid #777;
     div {
@@ -378,18 +402,18 @@ export default {
 }
 .des {
   color: #777;
-  font-size: .12rem;
-  margin-top: .10rem;
+  font-size: 0.12rem;
+  margin-top: 0.1rem;
   text-align: left;
-  text-indent: .24rem;
+  text-indent: 0.24rem;
 }
 .btn {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: .20rem;
+  padding: 0.2rem;
   button {
-    padding: .06rem .12rem;
+    padding: 0.06rem 0.12rem;
   }
 }
 </style>
