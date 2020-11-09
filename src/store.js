@@ -159,7 +159,6 @@ export default new Vuex.Store({
         hpP = chp / mhp
       }
 
-      // console.log(hpP)
       var attribute = {
         CURHP: {
           value: 0,
@@ -280,6 +279,9 @@ export default new Vuex.Store({
     },
     set_endless_lv(state, data) {
       this.state.playerAttribute.endlessLv = parseInt(data);
+    },
+    set_operator_schema(state, data) {
+      this.state.operatorSchemaIsMobile = data;
     },
     set_player_curhp(state, data) {
       var CURHP = this.state.playerAttribute.attribute.CURHP,

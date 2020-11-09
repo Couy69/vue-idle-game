@@ -43,7 +43,7 @@
 
       <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
-          <div class='icon'  :class="{unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
+          <div class='icon' :class="{unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}}</div>
@@ -138,10 +138,10 @@
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>保存</span>
       </div>
-      <div class="Backpack" @click="GMOpened = true">
+      <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div>
+      </div> -->
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -150,6 +150,9 @@
       <armorPanel :item="playerArmor" v-show="armorShow&&needComparison"></armorPanel>
       <accPanel :item="acc" v-show="accShow"></accPanel>
       <accPanel :item="playerAcc" v-show="accShow&&needComparison"></accPanel>
+      <div class="item-close" @click="closeItemInfo" v-if="(armorShow||accShow||weaponShow)&&needComparison&&operatorSchemaIsMobile">
+        关闭对比
+      </div>
     </div>
     <div class="dialog-backpackPanel" v-show="backpackPanelOpened">
       <div class="title">
@@ -176,7 +179,7 @@
         <div class="button" @click="createGMEquip">确定</div>
       </div>
     </div>
-    <div></div>
+    <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game"></a>
   </div>
 </template>
 <script>
@@ -214,13 +217,21 @@ export default {
       GMOpened: false,
       needComparison: true,
       saveData: {},
+      debounceTime:{},  //防抖计时器
     };
   },
   components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel },
   created() {
     // 窗口自适应
     window.onresize = () => {
-      this.initial()
+      if (this.debounceTime) {
+        clearTimeout(this.debounceTime);
+      }
+      this.debounceTime = setTimeout( ()=> {
+        this.debounceTime = null;
+        this.initial()
+      }, 200);
+      
     };
     this.initial()
 
@@ -287,7 +298,8 @@ export default {
     playerWeapon() { return this.$store.state.playerAttribute.weapon },
     playerArmor() { return this.$store.state.playerAttribute.armor },
     playerAcc() { return this.$store.state.playerAttribute.acc },
-    endlessLv(){ return this.$store.state.playerAttribute.endlessLv }
+    endlessLv() { return this.$store.state.playerAttribute.endlessLv },
+    operatorSchemaIsMobile() { return this.$store.state.operatorSchemaIsMobile }
   },
   watch: {
     sysInfo() {
@@ -300,6 +312,9 @@ export default {
 
   },
   methods: {
+    navToGithub(){
+      window.open('https://github.com/Couy69/vue-idle-game','_blank'); 
+    },
     windowVisibilitychange() {
       if (!this.inDungeons) {
         return
@@ -387,7 +402,7 @@ export default {
     showDungeonsInfo(k) {
       var b = this.findComponentDownward(this, 'dungeons')
       this.dungeons = b.dungeonsArr[k]
-      if(this.dungeons.type == 'endless'){
+      if (this.dungeons.type == 'endless') {
         this.reChallenge = false
         this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
       }
@@ -443,6 +458,12 @@ export default {
       }
       let rem = (wW * 100) / designSize;
       document.documentElement.style.fontSize = rem + "px";
+
+      if(document.documentElement.clientWidth<768){
+        this.$store.commit('set_operator_schema',true)
+      }else{
+        this.$store.commit('set_operator_schema',false)
+      }
     },
     contextmenu(e) {
       // 鼠标右键
@@ -847,6 +868,25 @@ a {
     }
   }
 }
+.item-close {
+  display: none;
+  position: absolute;
+  top: -0.52rem;
+  right: 50%;
+  transform: translateX(68%);
+  background: #000;
+  padding: 0.04rem 0.1rem;
+  border-radius: 0.06rem;
+  border: 1px solid #fff;
+}
+.close {
+  cursor: pointer;
+  display: block;
+  width: 0.25rem;
+  height: 0.25rem;
+  background-image: url(../assets/icons/close.png);
+  background-size: cover;
+}
 .gm-panel {
   width: 5rem;
   height: 3rem;
@@ -894,18 +934,18 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    white-space:nowrap;
-    font-size: .14rem;
+    white-space: nowrap;
+    font-size: 0.14rem;
     & > div {
       display: flex;
       align-items: center;
     }
-    input{
-      width:.2rem;
-      height:.2rem;
+    input {
+      width: 0.2rem;
+      height: 0.2rem;
       min-height: 15px;
       min-width: 15px;
-      margin-right: .05rem;
+      margin-right: 0.05rem;
     }
   }
   .jjj {
@@ -935,7 +975,16 @@ a {
     color: #fff;
     background: #000;
     border: 1px solid #fff;
-    white-space:nowrap
+    white-space: nowrap;
   }
+}
+.github{
+  position: fixed;
+  width:.35rem;
+  height:.35rem;
+  background: url(../assets/icons/github.svg);
+  display: flex;
+  bottom: .2rem;
+  right: .2rem;
 }
 </style>

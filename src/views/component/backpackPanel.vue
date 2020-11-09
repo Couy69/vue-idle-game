@@ -2,7 +2,7 @@
   <div class="backpackPanel">
     <div v-for="(v, k) in grid" :key="k">
       <div class="grid">
-        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @touchstart.stop.prevent="openMenu(k,$event)"  @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
           <div class="icon" :class="{unique:v.quality.name=='独特'}" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
@@ -18,6 +18,7 @@
       <div class="button" @click="sell">一键出售</div>
     </div>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+      <li @click="showItemInfo($event,currentItem.itemType,currentItem,'touch')" v-if="$store.state.operatorSchemaIsMobile">查看</li>
       <li @click="equipTheEquipment()">装备</li>
       <li @click="lockTheEquipment(true)" v-if="!currentItem.locked">锁定</li>
       <li @click="lockTheEquipment(false)" v-if="currentItem.locked">解锁</li>
@@ -50,7 +51,7 @@ export default {
       } else {
         document.body.removeEventListener("click", this.closeMenu);
       }
-    }
+    },
   },
   computed: {
     itemNum() {
@@ -156,7 +157,12 @@ export default {
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
       const maxLeft = offsetWidth - menuMinWidth; // left boundary
-      const left = e.clientX - offsetLeft + 15; // 15: margin right
+      if(e.type ==  'touchstart'){
+        var left = e.changedTouches[0].clientX - offsetLeft + 15; // 15: margin right
+      }else{
+        var left = e.clientX - offsetLeft + 15; // 15: margin right
+      }
+      
 
       if (left > maxLeft) {
         this.left = maxLeft;
@@ -170,7 +176,10 @@ export default {
     closeMenu() {
       this.visible = false;
     },
-    showItemInfo($event, type, item) {
+    showItemInfo($event, type, item,SchemaIsMobile) {
+      if(SchemaIsMobile != 'touch'&&this.$store.state.operatorSchemaIsMobile){
+        return
+      }
       var p = this.findComponentUpward(this, 'index')
       p.showItemInfo($event, type, item)
     },

@@ -181,7 +181,6 @@ export default {
 
       setTimeout(() => {
         // this.battleCom(event)
-        console.log(this.dungeons)
        if (this.dungeons.type == "endless") {
           this.$store.commit("set_sys_info", {
             msg: `
@@ -189,7 +188,6 @@ export default {
               `,
             type: "win",
           });
-          console.log(this.$store.state.playerAttribute.endlessLv)
           this.$store.commit("set_endless_lv", this.$store.state.playerAttribute.endlessLv+1);
           this.$store.commit("set_player_curhp", 9999999);
         } else {
@@ -281,7 +279,6 @@ export default {
         this.caculateTrophy(event)
 
       } else {
-        console.log(this.pro)
         // 玩家死亡
         this.$store.commit('set_player_curhp', 'full')
         clearInterval(this.pro)

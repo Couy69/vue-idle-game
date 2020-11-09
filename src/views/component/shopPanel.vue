@@ -2,17 +2,8 @@
   <div class="shop">
     <div class="content">
       <div class="grid" v-for="(v, k) in grid" :key="k">
-        <div
-          class="title"
-          v-if="v.lv"
-          @contextmenu.prevent="openMenu(k, $event)"
-          @mouseover="showItemInfo($event, v.itemType, v)"
-          @mouseleave="closeItemInfo"
-        >
-          <div
-            class="icon"
-            :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }"
-          >
+        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k, $event)" @mouseover="showItemInfo($event, v.itemType, v)" @mouseleave="closeItemInfo" @touchstart.stop.prevent="openMenu(k,$event)">
+          <div class="icon" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
           <span class="info" :style="{'font-size':(parseInt(v.gold)>99999?0.18:0.22)+'rem'}">{{v.gold}}</span>
@@ -20,20 +11,17 @@
       </div>
     </div>
     <div class="handle">
-      
+
       <div class="info">
         <span v-show="timeStart" class="timeStart">下次刷新次数获取：{{timeo}}s</span>
         <span>剩余刷新次数：{{refreshTime}}次。</span>
       </div>
-      
+
       <div class="button" @click="refreshShopItems">刷新</div>
       <!-- <div class="button" @click="sell">一键出售</div> -->
     </div>
-    <ul
-      v-show="visible"
-      :style="{ left: left + 'px', top: top + 'px' }"
-      class="contextmenu"
-    >
+    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+      <li @click="showItemInfo($event,currentItem.itemType,currentItem,'touch')" v-if="$store.state.operatorSchemaIsMobile">查看</li>
       <li @click="buyTheEquipment()">购买</li>
     </ul>
   </div>
@@ -50,10 +38,11 @@ export default {
       visible: false,
       currentItem: {},
       currentItemIndex: "",
-      refreshTime:5,
-      timeo:60,
-      timeStart:false,
-      timeInterval:'',
+      refreshTime: 5,
+      timeo: 60,
+      timeStart: false,
+      timeInterval: '',
+      isTouch: false,
     };
   },
   mixins: [assist],
@@ -68,21 +57,21 @@ export default {
         document.body.removeEventListener("click", this.closeMenu);
       }
     },
-    refreshTime(value){
-      if(value<5){
-        
-        if(this.timeStart){
+    refreshTime(value) {
+      if (value < 5) {
+
+        if (this.timeStart) {
           return
         }
         this.timeStart = true
-        this.timeInterval = setInterval(()=>{
+        this.timeInterval = setInterval(() => {
           this.timeo--
-          if(this.timeo<=0){
+          if (this.timeo <= 0) {
             this.refreshTime++
             this.timeo = 60
           }
-        },1000)
-      }else{
+        }, 1000)
+      } else {
         this.timeStart = false
         this.timeo = 5
         clearInterval(this.timeInterval)
@@ -94,17 +83,17 @@ export default {
   },
   methods: {
     refreshShopItems() {
-      if(this.refreshTime>5){
-        this.refreshTime=5
+      if (this.refreshTime > 5) {
+        this.refreshTime = 5
       }
-      if(this.refreshTime<1){
+      if (this.refreshTime < 1) {
         this.$store.commit("set_sys_info", {
           msg: `
               刷新次数不够了，等等吧。
             `,
           type: "warning",
         });
-        return 
+        return
       }
       this.refreshTime--
       this.grid = new Array(5).fill({});
@@ -114,7 +103,7 @@ export default {
       for (let i = 0; i < 5; i++) {
         var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
         //装备等级最高110
-        lv>110?110:lv
+        lv = lv > 110 ? 110 : lv
         this.createShopItem(lv);
       }
     },
@@ -157,7 +146,7 @@ export default {
           var item = b.createNewItem(equipQua, lv);
         }
         item = JSON.parse(item);
-        item.gold = parseInt(item.lv * item.quality.qualityCoefficient * (200+10*item.lv))
+        item.gold = parseInt(item.lv * item.quality.qualityCoefficient * (200 + 10 * item.lv))
         for (let i = 0; i < this.grid.length; i++) {
           if (JSON.stringify(this.grid[i]).length < 3) {
             this.$set(this.grid, i, item);
@@ -169,12 +158,15 @@ export default {
     openMenu(k, e) {
       this.currentItemIndex = k;
       this.currentItem = this.grid[k];
-      console.log(e);
       const menuMinWidth = 105;
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
       const maxLeft = offsetWidth - menuMinWidth; // left boundary
-      const left = e.clientX - offsetLeft - 15; // 15: margin right
+      if(e.type ==  'touchstart'){
+        var left = e.changedTouches[0].clientX - offsetLeft + 15; // 15: margin right
+      }else{
+        var left = e.clientX - offsetLeft + 15; // 15: margin right
+      }
 
       if (left > maxLeft) {
         this.left = maxLeft;
@@ -188,7 +180,10 @@ export default {
     closeMenu() {
       this.visible = false;
     },
-    showItemInfo($event, type, item) {
+    showItemInfo($event, type, item,SchemaIsMobile) {
+      if (SchemaIsMobile != 'touch' && this.$store.state.operatorSchemaIsMobile) {
+        return
+      }
       var p = this.findComponentUpward(this, "index");
       p.showItemInfo($event, type, item);
     },
@@ -245,12 +240,12 @@ export default {
   align-items: center;
   width: 100%;
   height: 0.5rem;
-  .info{
+  .info {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     flex: 1;
-    margin-left: .2rem;
+    margin-left: 0.2rem;
   }
 }
 .content {
@@ -283,10 +278,10 @@ export default {
       border-radius: 0.04rem;
     }
   }
-  .info{
+  .info {
     position: absolute;
-    bottom: -.26rem;
-    font-size: .24rem;
+    bottom: -0.26rem;
+    font-size: 0.24rem;
   }
 }
 .contextmenu {
