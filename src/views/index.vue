@@ -217,7 +217,7 @@ export default {
       GMOpened: false,
       needComparison: true,
       saveData: {},
-      debounceTime:{},  //防抖计时器
+      debounceTime: {},  //防抖计时器
     };
   },
   components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel },
@@ -227,11 +227,11 @@ export default {
       if (this.debounceTime) {
         clearTimeout(this.debounceTime);
       }
-      this.debounceTime = setTimeout( ()=> {
+      this.debounceTime = setTimeout(() => {
         this.debounceTime = null;
         this.initial()
       }, 200);
-      
+
     };
     this.initial()
 
@@ -312,8 +312,8 @@ export default {
 
   },
   methods: {
-    navToGithub(){
-      window.open('https://github.com/Couy69/vue-idle-game','_blank'); 
+    navToGithub() {
+      window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
     windowVisibilitychange() {
       if (!this.inDungeons) {
@@ -327,7 +327,7 @@ export default {
         }, 1000)
       }
     },
-    saveGame() {
+    async saveGame() {
       var data = {}
       var backpackPanel = this.findComponentDownward(
         this,
@@ -352,6 +352,25 @@ export default {
             `,
         type: 'win'
       });
+
+    //   try {
+    //     let data = await this.$api.post(
+    //       "v1/userInfo/add",
+    //       {
+    //         name:'couy',
+    //         password:'123456',
+    //         endlessLv:'2',
+    //         playtime:'12分11秒',
+    //         saveData:saveData,
+    //       }
+    //     );
+    //     console.log(data)
+    //     if (data.status == 200) {
+
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
     },
     clearSysInfo() {
       this.$store.commit('clear_sys_info')
@@ -459,10 +478,10 @@ export default {
       let rem = (wW * 100) / designSize;
       document.documentElement.style.fontSize = rem + "px";
 
-      if(document.documentElement.clientWidth<768){
-        this.$store.commit('set_operator_schema',true)
-      }else{
-        this.$store.commit('set_operator_schema',false)
+      if (document.documentElement.clientWidth < 768) {
+        this.$store.commit('set_operator_schema', true)
+      } else {
+        this.$store.commit('set_operator_schema', false)
       }
     },
     contextmenu(e) {
@@ -978,13 +997,13 @@ a {
     white-space: nowrap;
   }
 }
-.github{
+.github {
   position: fixed;
-  width:.35rem;
-  height:.35rem;
+  width: 0.35rem;
+  height: 0.35rem;
   background: url(../assets/icons/github.svg);
   display: flex;
-  bottom: .2rem;
-  right: .2rem;
+  bottom: 0.2rem;
+  right: 0.2rem;
 }
 </style>

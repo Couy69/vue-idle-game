@@ -302,6 +302,7 @@ export default {
 
       }
     },
+    //战利品计算
     caculateTrophy(event) {
       var items= []
       var lv = this.dungeons.lv
