@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "core-js": "^2.6.5",
     "js-base64": "^3.5.2",
     "vue": "^2.6.10",

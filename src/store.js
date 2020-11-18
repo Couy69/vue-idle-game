@@ -277,6 +277,9 @@ export default new Vuex.Store({
     set_player_gold(state, data) {
       this.state.playerAttribute.GOLD += parseInt(data);
     },
+    reset_player_gold(state, data){
+      this.state.playerAttribute.GOLD = parseInt(data);
+    },
     set_endless_lv(state, data) {
       this.state.playerAttribute.endlessLv = parseInt(data);
     },

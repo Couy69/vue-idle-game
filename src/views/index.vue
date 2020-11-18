@@ -124,11 +124,11 @@
     <div class="menu">
       <div class="Backpack" @click="openMenuPanel('backpack')">
         <img src="../assets/icons/menu/quest_icon_02.png" alt="">
-        <span>背包</span>
+        <span>背 包</span>
       </div>
       <div class="Backpack" @click="openMenuPanel('shop')">
         <img src="../assets/icons/menu/quest_icon_03.png" alt="">
-        <span>商店</span>
+        <span>商 店</span>
       </div>
       <!-- <div class="Backpack" @click="openMenuPanel('backpack')">
         <img src="../assets/icons/menu/icon_80.png" alt="">
@@ -136,7 +136,15 @@
       </div> -->
       <div class="Backpack" @click="saveGame">
         <img src="../assets/icons/menu/icon_85.png" alt="">
-        <span>保存</span>
+        <span>保 存</span>
+      </div>
+      <div class="Backpack" @click="exportSavedata">
+        <img src="../assets/icons/menu/icon-export.png" alt="">
+        <span>导出存档</span>
+      </div>
+      <div class="Backpack" @click="importSaveDataPanelOpened =true">
+        <img src="../assets/icons/menu/icon-import.png" alt="">
+        <span>导入存档</span>
       </div>
       <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
@@ -167,6 +175,23 @@
         <i class="close" @click="closePanel"></i>
       </div>
       <shopPanel></shopPanel>
+    </div>
+    <div class="dialog-backpackPanel" v-show="exportSaveDataPanelOpened">
+      <div class="title">
+        <span>导出存档</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <textarea class="savedata-textarea" v-model="saveDateString"></textarea>
+    </div>
+    <div class="dialog-backpackPanel" v-show="importSaveDataPanelOpened">
+      <div class="title">
+        <span>导入存档</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <textarea class="savedata-textarea" v-model="saveDateString" placeholder="清先输入存档数据"></textarea>
+      <div class="footer">
+        <div class="button" @click="importSaveData">导入</div>
+      </div>
     </div>
     <div class="dialog-backpackPanel gm-panel" v-if="GMOpened">
       <div class="title">
@@ -211,12 +236,15 @@ export default {
       armor: {},
       backpackPanelOpened: false,
       shopPanelOpened: false,
+      importSaveDataPanelOpened: false,
+      exportSaveDataPanelOpened: false,
       itemDialogStyle: {},
       GMEquipLv: 1,
       GMEquipQu: 2,
       GMOpened: false,
       needComparison: true,
       saveData: {},
+      saveDateString:'',
       debounceTime: {},  //防抖计时器
     };
   },
@@ -248,7 +276,7 @@ export default {
         this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
         this.$store.commit('set_player_acc', this.$deepCopy(this.saveData.playerEquipment.playerAcc))
 
-        this.$store.commit('set_player_gold', parseInt(this.saveData.gold) || 0)
+        this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
       }
       else {
@@ -314,6 +342,54 @@ export default {
   methods: {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
+    },
+    exportSavedata(){
+      this.exportSaveDataPanelOpened =true
+      var data = {
+        playerEquipment: {
+          playerWeapon: this.$store.state.playerAttribute.weapon,
+          playerArmor: this.$store.state.playerAttribute.armor,
+          playerAcc: this.$store.state.playerAttribute.acc,
+        },
+        backpackEquipment: backpackPanel.grid,
+        gold: this.$store.state.playerAttribute.GOLD,
+        endlessLv: this.$store.state.playerAttribute.endlessLv,
+      }
+      this.saveDateString = Base64.encode(Base64.encode(JSON.stringify(data)))
+    },
+    importSaveData(){
+      if(!this.saveDateString){
+        this.$store.commit("set_sys_info", {
+          msg: `
+                清先输入存档数据！
+              `,
+          type: 'warning'
+        });
+      }
+      try {
+        this.saveData = JSON.parse(Base64.decode(Base64.decode(this.saveDateString)))
+        this.$store.commit('set_player_weapon', this.$deepCopy(this.saveData.playerEquipment.playerWeapon))
+        this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
+        this.$store.commit('set_player_acc', this.$deepCopy(this.saveData.playerEquipment.playerAcc))
+
+        this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
+        this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
+        this.$store.commit("set_sys_info", {
+          msg: `
+                存档成功导入了
+              `,
+          type: 'win'
+        });
+        this.closePanel()
+      } catch (error) {
+        console.log(error)
+        this.$store.commit("set_sys_info", {
+          msg: `
+                糟糕，存档坏了！
+              `,
+          type: 'warning'
+        });
+      }
     },
     windowVisibilitychange() {
       if (!this.inDungeons) {
@@ -465,8 +541,9 @@ export default {
 
     },
     closePanel() {
-      this.backpackPanelOpened = this.shopPanelOpened = false
+      this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = false
       this.GMOpened = false
+      this.saveDateString = ''
     },
     initial() {
       let html = document.documentElement;
@@ -885,6 +962,11 @@ a {
       background-image: url(../assets/icons/close.png);
       background-size: cover;
     }
+  }
+  .savedata-textarea{
+    width: 300px;
+    height:180px;
+    background: rgba($color: #ffffff, $alpha: 0.8);
   }
 }
 .item-close {
