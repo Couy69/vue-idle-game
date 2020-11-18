@@ -275,7 +275,6 @@ export default {
         this.$store.commit('set_player_weapon', this.$deepCopy(this.saveData.playerEquipment.playerWeapon))
         this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
         this.$store.commit('set_player_acc', this.$deepCopy(this.saveData.playerEquipment.playerAcc))
-
         this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
       }
@@ -344,6 +343,10 @@ export default {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
     exportSavedata(){
+      let backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+      );
       this.exportSaveDataPanelOpened =true
       var data = {
         playerEquipment: {
@@ -374,6 +377,8 @@ export default {
 
         this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
+        var backpackPanel = this.findComponentDownward(this, 'backpackPanel')
+        backpackPanel.grid = this.saveData.backpackEquipment
         this.$store.commit("set_sys_info", {
           msg: `
                 存档成功导入了
