@@ -140,11 +140,11 @@
       </div>
       <div class="Backpack" @click="exportSavedata">
         <img src="../assets/icons/menu/icon-export.png" alt="">
-        <span>导出存档</span>
+        <span class="compact">导出</span>
       </div>
       <div class="Backpack" @click="importSaveDataPanelOpened =true">
         <img src="../assets/icons/menu/icon-import.png" alt="">
-        <span>导入存档</span>
+        <span class="compact">导入</span>
       </div>
       <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
@@ -181,14 +181,20 @@
         <span>导出存档</span>
         <i class="close" @click="closePanel"></i>
       </div>
-      <textarea class="savedata-textarea" v-model="saveDateString"></textarea>
+      <div class="body"><textarea id="imSavedata" class="savedata-textarea" v-model="saveDateString"></textarea></div>
+
+      <div class="footer">
+        <div class="button" @click="copySavaData">复制文本到剪贴板</div>
+      </div>
     </div>
     <div class="dialog-backpackPanel" v-show="importSaveDataPanelOpened">
       <div class="title">
         <span>导入存档</span>
         <i class="close" @click="closePanel"></i>
       </div>
-      <textarea class="savedata-textarea" v-model="saveDateString" placeholder="清先输入存档数据"></textarea>
+      <div class="body">
+        <span class="prompt-message">* 手机用户长按没有粘贴请尝试使用输入法剪贴板功能</span>
+        <textarea id="exSavadata" class="savedata-textarea" @focus="saveDateString = ''" v-model="saveDateString" placeholder="清先输入存档数据"></textarea></div>
       <div class="footer">
         <div class="button" @click="importSaveData">导入</div>
       </div>
@@ -244,7 +250,7 @@ export default {
       GMOpened: false,
       needComparison: true,
       saveData: {},
-      saveDateString:'',
+      saveDateString: '',
       debounceTime: {},  //防抖计时器
     };
   },
@@ -342,12 +348,27 @@ export default {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
-    exportSavedata(){
+    copySavaData() {
+      var imSavadataTextArea = document.getElementById("imSavedata");
+      imSavadataTextArea.select(); // 选中文本
+      document.execCommand("copy"); // 执行浏览器复制命令
+      this.$store.commit("set_sys_info", {
+        msg: `
+                已经复制存档了，建议保存到备忘录
+              `,
+        type: 'win'
+      });
+      this.closePanel()
+    },
+    pasteSaveData() {
+
+    },
+    exportSavedata() {
       let backpackPanel = this.findComponentDownward(
         this,
         "backpackPanel",
       );
-      this.exportSaveDataPanelOpened =true
+      this.exportSaveDataPanelOpened = true
       var data = {
         playerEquipment: {
           playerWeapon: this.$store.state.playerAttribute.weapon,
@@ -360,8 +381,8 @@ export default {
       }
       this.saveDateString = Base64.encode(Base64.encode(JSON.stringify(data)))
     },
-    importSaveData(){
-      if(!this.saveDateString){
+    importSaveData() {
+      if (!this.saveDateString) {
         this.$store.commit("set_sys_info", {
           msg: `
                 清先输入存档数据！
@@ -434,24 +455,24 @@ export default {
         type: 'win'
       });
 
-    //   try {
-    //     let data = await this.$api.post(
-    //       "v1/userInfo/add",
-    //       {
-    //         name:'couy',
-    //         password:'123456',
-    //         endlessLv:'2',
-    //         playtime:'12分11秒',
-    //         saveData:saveData,
-    //       }
-    //     );
-    //     console.log(data)
-    //     if (data.status == 200) {
+      //   try {
+      //     let data = await this.$api.post(
+      //       "v1/userInfo/add",
+      //       {
+      //         name:'couy',
+      //         password:'123456',
+      //         endlessLv:'2',
+      //         playtime:'12分11秒',
+      //         saveData:saveData,
+      //       }
+      //     );
+      //     console.log(data)
+      //     if (data.status == 200) {
 
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
+      //     }
+      //   } catch (error) {
+      //     console.log(error);
+      //   }
     },
     clearSysInfo() {
       this.$store.commit('clear_sys_info')
@@ -929,9 +950,12 @@ a {
     flex-direction: column;
     cursor: pointer;
     margin: 0 0.2rem;
+    justify-content: space-between;
     span {
       color: #fff;
       font-size: 0.3rem;
+      line-height: 0.3rem;
+      padding: 0.1rem 0;
       font-weight: bold;
       text-shadow: 1px 1px 3px rgb(0, 0, 0);
     }
@@ -968,10 +992,28 @@ a {
       background-size: cover;
     }
   }
-  .savedata-textarea{
+  .body {
+    padding: 0.1rem;
+    display: flex;
+    flex-direction: column;
+    .prompt-message{
+      font-size: .12rem;
+      margin:0.04rem 0;
+    }
+  }
+  .savedata-textarea {
     width: 300px;
-    height:180px;
+    height: 180px;
+    user-select: text;
+    padding: 2px;
     background: rgba($color: #ffffff, $alpha: 0.8);
+  }
+  .footer {
+    border-top: 1px solid #ccc;
+    padding: 0.06rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 .item-close {
