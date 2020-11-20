@@ -857,7 +857,7 @@ a {
       width: calc(100% - 0.3rem);
       left: 0.15rem;
       height: 1rem;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(54,121,176,.68);
       text-align: center;
       font-size: 0.4rem;
       line-height: 1rem;

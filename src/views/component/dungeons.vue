@@ -2,8 +2,9 @@
   <div class="dungeons">
     <div class="progress-bar"></div>
     <div class="icon-bar">
-      <div class="player" :style="{left:left+'%'}">
-        <img src="../../assets/icons/map/player1.png" alt="">
+      <div class="player" :style="{left:left+'%','backgroundPosition':parseInt(left%4)*32+'px 96px'}">
+        <!-- <img src="../../assets/icons/map/player-s.png" alt=""> -->
+        <!-- :style="{background-position:}" -->
       </div>
       <div class="monster" v-for="(v,k) in dungeons.eventType" :key="k" :style="{left:(100/dungeons.eventNum)*(k+1)+'%'}">
         <img :src="'./icons/map/'+v.type+'.png'" alt="">
@@ -100,6 +101,7 @@ export default {
   },
   mounted() {
     // this.evenHandle()
+
   },
   methods: {
     evenHandle() {
@@ -407,21 +409,23 @@ export default {
     position: relative;
     & > div {
       position: absolute;
-      height: 40px;
-      width: 40px;
+      height: 34px;
+      width: 34px;
       top: 50%;
       transform: translate(-50%, -50%);
       display: flex;
-      img {
-        width: 40px;
-        height: 40px;
+      img{
+        height: 34px;
+      width: 34px;
       }
     }
     .player {
       z-index: 2;
-      img {
-        transform: rotateY(180deg);
-      }
+      height: 48px;
+      width: 32px;
+      // background-position: -0px 96px !important;
+      background-repeat: no-repeat;
+      background: url(../../assets/icons/map/player-s.png);
     }
     .monster {
       left: 20%;
