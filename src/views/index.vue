@@ -1,44 +1,112 @@
 <template>
   <div class="main" @contextmenu.prevent="contextmenu($event)">
     <div class="user-status">
-      <div class="hp" title="血量">
-        <img src="../assets/icons/S_Holy01.png" alt="">
-        <div class="value">
-          {{attribute.CURHP.value}}/{{attribute.MAXHP.value}}
-        </div>
-      </div>
+
+      <cTooltip placement="bottom">
+        <template v-slot:content>
+          <div class="hp">
+            <img src="../assets/icons/S_Holy01.png" alt="">
+            <div class="value">
+              {{attribute.CURHP.value}}/{{attribute.MAXHP.value}}
+            </div>
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 当前生命值/最大生命值</p>
+          <p class="info">* 每秒会回复1%的最大生命值</p>
+        </template>
+
+      </cTooltip>
+
+      <!-- <cTooltip placement="bottom">
+        <template v-slot:content>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* </p>
+        </template>
+      </cTooltip> -->
+
       <div class="other">
-        <div class="item" title="攻击力">
-          <img src="../assets/icons/S_Sword06.png" alt="">
-          <div class="value">
-            {{attribute.ATK.value}}
-          </div>
-        </div>
-        <div class="item" title="防御力及减伤比例">
-          <img src="../assets/icons/icon_11.png" alt="">
-          <div class="value">
-            {{attribute.DEF.value}} <span style="font-size:.14rem;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
-          </div>
-        </div>
-        <div class="item" title="暴击率">
-          <img src="../assets/icons/icon_78.png" alt="">
-          <div class="value">
-            {{attribute.CRIT.value}}%
-          </div>
-        </div>
-        <div class="item" title="暴击伤害">
-          <img src="../assets/icons/S_Sword01.png" alt="">
-          <div class="value">
-            {{attribute.CRITDMG.value}}%
-          </div>
-        </div>
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item" title="攻击力">
+              <img src="../assets/icons/S_Sword06.png" alt="">
+              <div class="value">
+                {{attribute.ATK.value}}
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色攻击力</p>
+          </template>
+        </cTooltip>
+
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/icon_11.png" alt="">
+              <div class="value">
+                {{attribute.DEF.value}} <span style="font-size:.14rem;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色防御力以及计算后的减伤比例</p>
+            <p class="info">* 减伤比例采用非线性计算，护甲越高收益越低</p>
+          </template>
+        </cTooltip>
+
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/icon_78.png" alt="">
+              <div class="value">
+                {{attribute.CRIT.value}}%
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色当前的暴击率</p>
+          </template>
+        </cTooltip>
+
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/S_Sword01.png" alt="">
+              <div class="value">
+                {{attribute.CRITDMG.value}}%
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 暴击伤害初始为150%</p>
+          </template>
+        </cTooltip>
 
       </div>
     </div>
     <div class="user-item">
       <div class="uii">
-        <div class="gold" v-if="attribute.DPS">DPS: <span>{{(attribute.DPS).toFixed(2)}}</span></div>
-        <div class="gold">GOLD: <span>{{userGold}}</span></div>
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="gold" v-if="attribute.DPS">DPS: <span>{{(attribute.DPS).toFixed(2)}}</span></div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* DPS:角色每秒伤害</p>
+            <p class="info">* 这个只是伤害数据，并没有统计防御属性，所以只是作为战斗力评估的一个依据</p>
+          </template>
+        </cTooltip>
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="gold">金币: <span>{{userGold}}</span></div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 你拥有的金币数量</p>
+            <p class="info">* 在这里，钱就是万能的</p>
+          </template>
+        </cTooltip>
+
       </div>
 
       <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon,false)" @mouseleave="closeItemInfo">
@@ -220,6 +288,7 @@ import accPanel from './component/accPanel'
 import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
 import dungeons from './component/dungeons'
+import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
 import { Base64 } from 'js-base64';
 import '../assets/js/handle';
@@ -254,7 +323,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -455,24 +524,24 @@ export default {
         type: 'win'
       });
 
-      //   try {
-      //     let data = await this.$api.post(
-      //       "v1/userInfo/add",
-      //       {
-      //         name:'couy',
-      //         password:'123456',
-      //         endlessLv:'2',
-      //         playtime:'12分11秒',
-      //         saveData:saveData,
-      //       }
-      //     );
-      //     console.log(data)
-      //     if (data.status == 200) {
+        // try {
+        //   let data = await this.$api.post(
+        //     "v1/userInfo/add",
+        //     {
+        //       name:'couy',
+        //       password:'123456',
+        //       endlessLv:'2',
+        //       playtime:'12分11秒',
+        //       saveData:saveData,
+        //     }
+        //   );
+        //   console.log(data)
+        //   if (data.status == 200) {
 
-      //     }
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
+        //   }
+        // } catch (error) {
+        //   console.log(error);
+        // }
     },
     clearSysInfo() {
       this.$store.commit('clear_sys_info')
@@ -710,7 +779,8 @@ a {
       border: 2px solid #ccc;
       margin-top: 0.2rem;
       flex-wrap: wrap;
-      & > div {
+      & > div,
+      .item {
         cursor: pointer;
         width: 50%;
         height: 50%;
@@ -722,7 +792,11 @@ a {
           margin-left: 0.1rem;
           font-size: 0.24rem;
           font-weight: normal;
+          flex: 1;
         }
+      }
+      .item {
+        width: 100%;
       }
     }
   }
@@ -754,7 +828,7 @@ a {
       height: 0.7rem;
       margin: 0.1rem;
       margin-top: 0.08rem;
-      width: calc(50%);
+      width: calc(100%);
       display: flex;
       align-items: center;
       padding-left: 0.1rem;
@@ -857,7 +931,7 @@ a {
       width: calc(100% - 0.3rem);
       left: 0.15rem;
       height: 1rem;
-      background: rgba(54,121,176,.68);
+      background: rgba(54, 121, 176, 0.68);
       text-align: center;
       font-size: 0.4rem;
       line-height: 1rem;
@@ -996,9 +1070,9 @@ a {
     padding: 0.1rem;
     display: flex;
     flex-direction: column;
-    .prompt-message{
-      font-size: .12rem;
-      margin:0.04rem 0;
+    .prompt-message {
+      font-size: 0.12rem;
+      margin: 0.04rem 0;
     }
   }
   .savedata-textarea {

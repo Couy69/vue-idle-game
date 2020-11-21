@@ -14,6 +14,7 @@
     </div>
     <div class="backpack-capacity" :class="{'height-capacity':itemNum/grid.length>0.8}">{{itemNum}}/{{grid.length}}</div>
     <div class="handle">
+      <div class="handle-checkbox" @click="autoSell=!autoSell"><input type="checkbox" name="" v-model="autoSell">自动出售</div>
       <div class="button" @click="neaten">一键整理</div>
       <div class="button" @click="sell">一键出售</div>
     </div>
@@ -38,6 +39,7 @@ export default {
       visible: false,
       currentItem: {},
       currentItemIndex: '',
+      autoSell:false,
     };
   },
   mixins: [assist],
@@ -209,7 +211,7 @@ export default {
       }
 
     },
-    sellTheEquipment(withoutWarning) {
+    sellTheEquipment(withoutWarning,sellMsg) {
       if (this.currentItem.locked) {
 
         !withoutWarning&&this.$store.commit("set_sys_info", {
@@ -225,7 +227,7 @@ export default {
       this.$store.commit("set_player_gold", parseInt(gold));
       this.$store.commit("set_sys_info", {
         msg: `
-              出售装备获得金币${parseInt(gold)}
+              ${sellMsg}出售装备获得金币${parseInt(gold)}
             `,
         type: 'trophy',
       });
@@ -251,6 +253,18 @@ export default {
   align-items: center;
   width: 100%;
   height: 0.5rem;
+  .handle-checkbox{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    input{
+      width: .17rem;
+      height:.17rem;
+      margin-right: 2px;
+      margin-top: 1px;
+      
+    }
+  }
 }
 .grid {
   width: 0.6rem;
