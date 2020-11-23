@@ -33,20 +33,20 @@ body {
 }
 
 /*声明 WebFont*/
-@font-face {
-  font-family: 'MaShanZheng';
-  src:
-    url('../fonts/MaShanZheng-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'NotoSansSC';
-  src:
-    url('../fonts/NotoSansSC-Regular.otf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+// @font-face {
+//   font-family: 'MaShanZheng';
+//   src:
+//     url('../fonts/MaShanZheng-Regular.ttf') format('truetype');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+// @font-face {
+//   font-family: 'NotoSansSC';
+//   src:
+//     url('../fonts/NotoSansSC-Regular.otf') format('truetype');
+//   font-weight: normal;
+//   font-style: normal;
+// }
 #app {
   font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }

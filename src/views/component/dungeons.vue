@@ -364,6 +364,7 @@ export default {
           // 当开启了自动出售并且新获得的装备品质低于史诗时，自动出售
           if (backpackPanel.autoSell && (item.quality.name=='破旧'||item.quality.name=='普通')) {
             backpackPanel.currentItem = item
+            backpackPanel.currentItemIndex = -1
             backpackPanel.sellTheEquipment(true,'自动出售：')
           } else {
             for (let i = 0; i < backpackPanel.grid.length; i++) {

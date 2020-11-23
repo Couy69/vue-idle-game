@@ -214,10 +214,10 @@
         <img src="../assets/icons/menu/icon-import.png" alt="">
         <span class="compact">导入</span>
       </div>
-      <div class="Backpack" @click="GMOpened = true">
+      <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div>
+      </div> -->
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -382,9 +382,9 @@ export default {
   },
   mounted() {
     // 自动回血
-    // this.autoHealthRecovery = setInterval(() => {
-    //   this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
-    // }, 1000)
+    this.autoHealthRecovery = setInterval(() => {
+      this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
+    }, 1000)
 
     // 自动保存
     setInterval(() => {
