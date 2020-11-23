@@ -8,7 +8,7 @@
         <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+acc.quality.color}">
           <img :src="acc.type.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:acc.quality.color}">{{acc.type.name}}</div>
+        <div class='name' :style="{color:acc.quality.color}">{{acc.type.name}} {{acc.enchantlvl?'(+'+acc.enchantlvl+')':''}}</div>
       </div>
       <div class='type'>
         <div :style="{color:acc.quality.color}">{{acc.quality.name}}</div>

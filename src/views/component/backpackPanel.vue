@@ -21,6 +21,8 @@
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="showItemInfo($event,currentItem.itemType,currentItem,'touch')" v-if="$store.state.operatorSchemaIsMobile">查看</li>
       <li @click="equipTheEquipment()">装备</li>
+      <li @click="strengthenEquipment()">强化</li>
+      <li @click="strengthenEquipment()">重铸</li>
       <li @click="lockTheEquipment(true)" v-if="!currentItem.locked">锁定</li>
       <li @click="lockTheEquipment(false)" v-if="currentItem.locked">解锁</li>
       <li @click="sellTheEquipment()">出售</li>
@@ -155,6 +157,7 @@ export default {
     openMenu(k, e) {
       this.currentItemIndex = k
       this.currentItem = this.grid[k]
+      this.$store.commit('set_need_strengthen_equipment',this.currentItem)
       const menuMinWidth = 105;
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
@@ -211,6 +214,11 @@ export default {
       }
 
     },
+    strengthenEquipment(v){
+      var p = this.findComponentUpward(this, 'index')
+      p.closePanel()
+      p.strengthenEquipmentPanelOpened = true
+    },
     sellTheEquipment(withoutWarning,sellMsg) {
       if (this.currentItem.locked) {
 
@@ -227,7 +235,7 @@ export default {
       this.$store.commit("set_player_gold", parseInt(gold));
       this.$store.commit("set_sys_info", {
         msg: `
-              ${sellMsg}出售装备获得金币${parseInt(gold)}
+              ${sellMsg?sellMsg:''}出售装备获得金币${parseInt(gold)}
             `,
         type: 'trophy',
       });

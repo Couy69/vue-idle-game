@@ -32,6 +32,39 @@ body {
   font-size: 14px;
 }
 
+/*声明 WebFont*/
+@font-face {
+  font-family: 'MaShanZheng';
+  src:
+    url('../fonts/MaShanZheng-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NotoSansSC';
+  src:
+    url('../fonts/NotoSansSC-Regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+#app {
+  font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
+}
+div,button,span,p,h1,h2,h3,h4,h5,b,input{
+  font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
+}
+
+/*使用选择器指定字体*/
+.panel-title {
+    font-family: 'MaShanZheng' !important;
+    display: flex;
+    align-items: center !important;
+    justify-content: center;
+    font-size: .22rem;
+    padding: .2rem .1rem;
+    color:#efb96e
+}
+
 
 /* 滚动条 */
 ::-webkit-scrollbar-thumb:horizontal {
@@ -91,6 +124,9 @@ body {
 .unique {
   background: linear-gradient(125deg, #c90e0d36, #5656d647, 40%, #867d1033, #2c846f4d) !important;
 }
+
+
+
 
 @media screen and (max-width:768px) {
 

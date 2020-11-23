@@ -114,7 +114,7 @@
           <div class='icon' :class="{unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}}</div>
+          <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}} {{playerWeapon.enchantlvl?'(+'+playerWeapon.enchantlvl+')':''}}</div>
         </div>
       </div>
       <div class="armor" @mouseover="showItemInfo($event,'armor',playerArmor,false)" @mouseleave="closeItemInfo">
@@ -122,7 +122,7 @@
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.type.name}}</div>
+          <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.type.name}} {{playerArmor.enchantlvl?'(+'+playerArmor.enchantlvl+')':''}}</div>
         </div>
       </div>
       <div class="acc" @mouseover="showItemInfo($event,'acc',playerAcc,false)" @mouseleave="closeItemInfo">
@@ -130,7 +130,7 @@
           <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerAcc.quality.color}">
             <img :src="playerAcc.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.type.name}}</div>
+          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.type.name}} {{playerAcc.enchantlvl?'(+'+playerAcc.enchantlvl+')':''}}</div>
         </div>
       </div>
     </div>
@@ -214,10 +214,10 @@
         <img src="../assets/icons/menu/icon-import.png" alt="">
         <span class="compact">导入</span>
       </div>
-      <!-- <div class="Backpack" @click="GMOpened = true">
+      <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div> -->
+      </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -243,6 +243,13 @@
         <i class="close" @click="closePanel"></i>
       </div>
       <shopPanel></shopPanel>
+    </div>
+    <div class="dialog-backpackPanel" v-show="strengthenEquipmentPanelOpened">
+      <div class="title">
+        <span>强化装备</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <strengthenEquipment></strengthenEquipment>
     </div>
     <div class="dialog-backpackPanel" v-show="exportSaveDataPanelOpened">
       <div class="title">
@@ -287,6 +294,7 @@ import armorPanel from './component/armorPanel'
 import accPanel from './component/accPanel'
 import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
+import strengthenEquipment from './component/strengthenEquipment'
 import dungeons from './component/dungeons'
 import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
@@ -301,8 +309,9 @@ export default {
       sysInfo: {},
       weaponShow: false,
       armorShow: false,
-      autoHealthRecovery: '',
       accShow: false,
+      equiShow: false,
+      autoHealthRecovery: '',
       weapon: {},
       inDungeons: false,  //是否在副本进程中
       reChallenge: false,
@@ -313,6 +322,7 @@ export default {
       shopPanelOpened: false,
       importSaveDataPanelOpened: false,
       exportSaveDataPanelOpened: false,
+      strengthenEquipmentPanelOpened: false,
       itemDialogStyle: {},
       GMEquipLv: 1,
       GMEquipQu: 2,
@@ -323,7 +333,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip,strengthenEquipment },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -372,9 +382,9 @@ export default {
   },
   mounted() {
     // 自动回血
-    this.autoHealthRecovery = setInterval(() => {
-      this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
-    }, 1000)
+    // this.autoHealthRecovery = setInterval(() => {
+    //   this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
+    // }, 1000)
 
     // 自动保存
     setInterval(() => {
@@ -636,7 +646,7 @@ export default {
 
     },
     closePanel() {
-      this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = false
+      this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = this.strengthenEquipmentPanelOpened = false
       this.GMOpened = false
       this.saveDateString = ''
     },

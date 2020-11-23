@@ -8,7 +8,7 @@
         <div class='icon' :class="{unique:weapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+weapon.quality.color}">
           <img :src="weapon.type.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:weapon.quality.color}">{{weapon.type.name}}</div>
+        <div class='name' :style="{color:weapon.quality.color}">{{weapon.type.name}} {{weapon.enchantlvl?'(+'+weapon.enchantlvl+')':''}}</div>
       </div>
       <div class='type'>
         <div :style="{color:weapon.quality.color}">{{weapon.quality.name}}</div>

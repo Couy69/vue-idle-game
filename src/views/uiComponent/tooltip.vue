@@ -38,6 +38,7 @@ export default {
 .c-tooltip,.c-tooltip-content {
   position: relative;
   width: 100%;
+  cursor: pointer;
 }
 .c-tooltip-tip {
   bottom:-.05rem;

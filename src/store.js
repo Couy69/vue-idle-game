@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    needStrengthenEquipment:{},  //设定当前需要强化的装备
     sysInfo: [{
       type: '',
       msg: "欢迎你，菜鸟勇士。"
@@ -285,6 +286,9 @@ export default new Vuex.Store({
     },
     set_operator_schema(state, data) {
       this.state.operatorSchemaIsMobile = data;
+    },
+    set_need_strengthen_equipment(state, data) {
+      this.state.needStrengthenEquipment = data;
     },
     set_player_curhp(state, data) {
       var CURHP = this.state.playerAttribute.attribute.CURHP,
