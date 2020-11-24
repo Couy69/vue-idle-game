@@ -19,7 +19,8 @@
       </div>
       <div class="entry">
         <div v-for="v in armor.type.entry" :key="v.id">
-          <div>{{v.name}} : {{v.showVal}}</div>
+          <!-- <div>{{v.name}} : {{v.showVal}}</div> -->
+          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="armor.enchantlvl">(+{{Math.round(v.value*(1.05**(armor.enchantlvl)**1.1)-v.value)}})</span></div>
         </div>
       </div>
       <div class="extraEntry">
@@ -142,6 +143,30 @@ export default {
             'value': '8',
             'showVal': '8',
             'name': '生命值'
+          }]
+        },
+        {
+          name: '哈皮毛毛连身衣',
+          des: '哈皮毛毛',
+          iconSrc: './icons/A_A9.png',
+          entry: [{
+            'valCoefficient': 0.8,
+            'value': '11',
+            'showVal': '+11',
+            type: 'DEF',
+            'name': '防御力'
+          }, {
+            type: 'HP',
+            'valCoefficient': 0.8,
+            'value': '8',
+            'showVal': '8',
+            'name': '生命值'
+          }, {
+            'valCoefficient': 0.4,
+            'value': '11',
+            'showVal': '+11',
+            type: 'ATK',
+            'name': '攻击力'
           }]
         }
       ],

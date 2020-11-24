@@ -19,7 +19,8 @@
       </div>
       <div class="entry">
         <div v-for="v in acc.type.entry" :key="v.id">
-          <div>{{v.name}} : {{v.showVal}}</div>
+          <!-- <div>{{v.name}} : {{v.showVal}}</div> -->
+          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="acc.enchantlvl">(+{{Math.round(v.value*(1.05**(acc.enchantlvl)**1.1)-v.value)}})</span></div>
         </div>
       </div>
       <div class="extraEntry">

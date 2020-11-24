@@ -362,17 +362,22 @@ export default {
         this.$store.commit("set_player_gold", event.trophy.gold);
         items.map(item => {
           // 当开启了自动出售并且新获得的装备品质低于史诗时，自动出售
-          if (backpackPanel.autoSell && (item.quality.name=='破旧'||item.quality.name=='普通')) {
-            backpackPanel.currentItem = item
-            backpackPanel.currentItemIndex = -1
-            backpackPanel.sellTheEquipment(true,'自动出售：')
+          if (backpackPanel.autoSell && (item.quality.name == '破旧' || item.quality.name == '普通')) {
+            var gold = item.lv * item.quality.qualityCoefficient * 10
+            this.$store.commit("set_player_gold", parseInt(gold));
+            this.$store.commit("set_sys_info", {
+              msg: `
+              自动出售装备获得金币：${parseInt(gold)}
+            `,
+              type: 'trophy',
+            });
           } else {
             for (let i = 0; i < backpackPanel.grid.length; i++) {
               if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
                 this.$set(backpackPanel.grid, i, item)
                 break;
               }
-            }  
+            }
           }
         })
       } else {

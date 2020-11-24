@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import vueInstance from './main'
-
+import handle from './assets/js/handle'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -186,7 +186,15 @@ export default new Vuex.Store({
           showValue: '',
         },
       }
-      entry = [].concat(warpon.type.entry).concat(warpon.extraEntry).concat(armor.type.entry).concat(armor.extraEntry).concat(acc.type.entry).concat(acc.extraEntry)
+      
+      let warponStrEntry = vueInstance.$deepCopy(warpon.type.entry)
+      let armorStrEntry = vueInstance.$deepCopy(armor.type.entry)
+      let accStrEntry = vueInstance.$deepCopy(acc.type.entry)
+      handle.CalculateStrAttr(warponStrEntry,warpon.enchantlvl||0)
+      handle.CalculateStrAttr(armorStrEntry,armor.enchantlvl||0)
+      handle.CalculateStrAttr(accStrEntry,acc.enchantlvl||0)
+
+      entry = [].concat(warponStrEntry).concat(warpon.extraEntry).concat(armorStrEntry).concat(armor.extraEntry).concat(accStrEntry).concat(acc.extraEntry)
       entry.map(item => {
         switch (item.type) {
           case 'ATK':

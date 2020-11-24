@@ -19,7 +19,8 @@
       </div>
       <div class="entry">
         <div v-for="v in weapon.type.entry" :key="v.id">
-          <div>{{v.name}} : {{v.showVal}}</div>
+          <!-- <div>{{v.name}} : {{v.showVal}}</div> -->
+          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="weapon.enchantlvl">(+{{Math.round(v.value*(1.05**(weapon.enchantlvl)**1.1)-v.value)}})</span></div>
         </div>
       </div>
       <div class="extraEntry">
@@ -42,7 +43,7 @@ export default {
   data() {
     return {
       weapon: {
-        
+
       },
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
@@ -72,7 +73,7 @@ export default {
         probability: '0',
         color: '#ff0000', extraEntryNum: 5,
       }],
-      uniqueCategory:[{
+      uniqueCategory: [{
         name: '创世亡命剑',
         des: '只有被选中的勇士才能唤醒它真正的力量。',
         iconSrc: './icons/U_Sword01.png',
@@ -88,14 +89,14 @@ export default {
           'value': '8',
           'showVal': '+8%',
           'name': '暴击率'
-        },{
+        }, {
           'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
           type: 'CRITDMG',
           'name': '暴击伤害'
         }]
-      },{
+      }, {
         name: '无名剑',
         des: '没有人知道它的来历。',
         iconSrc: './icons/U_Sword02.png',
@@ -112,7 +113,7 @@ export default {
           'showVal': '+8%',
           'name': '暴击率'
         }]
-      },{
+      }, {
         name: '死亡之刃',
         des: '万物生自守恒，源力破则失。',
         iconSrc: './icons/U_Sword04.png',
@@ -128,14 +129,14 @@ export default {
           'value': '8',
           'showVal': '+8%',
           'name': '暴击率'
-        },{
+        }, {
           'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
           type: 'CRITDMG',
           'name': '暴击伤害'
         }]
-      },{
+      }, {
         name: '霜龙利刃',
         des: '傲雪冷心绝，万念化冰华。',
         iconSrc: './icons/U_Sword05.png',
@@ -151,14 +152,14 @@ export default {
           'value': '8',
           'showVal': '+8%',
           'name': '暴击率'
-        },{
+        }, {
           'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
           type: 'CRITDMG',
           'name': '暴击伤害'
         }]
-      },{
+      }, {
         name: '阿加雷斯血色巨剑',
         des: '诚既勇兮又以武，终刚强兮不可凌。身既死兮神以灵，子魂魄兮为鬼雄。',
         iconSrc: './icons/U_Sword03.png',
@@ -174,7 +175,7 @@ export default {
           'value': '8',
           'showVal': '+8%',
           'name': '暴击率'
-        },{
+        }, {
           'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
@@ -248,7 +249,7 @@ export default {
           'name': '攻击力'
         }]
       }
-      ,
+        ,
       {
         name: '紫炎波刃剑',
         des: '传说中的狂战士最喜爱的剑。',
@@ -289,7 +290,7 @@ export default {
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
-        },{
+        }, {
           'valCoefficient': 1.3,
           'value': '11',
           'showVal': '+11',
@@ -323,17 +324,17 @@ export default {
         'value': '8',
         'showVal': '+8%',
         'name': '防御力'
-      },{
+      }, {
         'value': '11%',
         'showVal': '+11%',
         type: 'ATKPERCENT',
         'name': '攻击力'
-      },{
+      }, {
         'value': '11%',
         'showVal': '+11%',
         type: 'DEFPERCENT',
         'name': '防御力'
-      },{
+      }, {
         'value': '11%',
         'showVal': '+11%',
         type: 'HPPERCENT',
@@ -363,34 +364,34 @@ export default {
       return parseInt(Math.random() * (Max || 39)) + 1
     },
     createType(weapon) {
-      if(weapon.quality.name=='独特'){
+      if (weapon.quality.name == '独特') {
         var index = Math.floor((Math.random() * this.uniqueCategory.length));
-      var type = this.uniqueCategory[index], lv = weapon.lv
-      }else{
-var index = Math.floor((Math.random() * this.category.length));
-      var type = this.category[index], lv = weapon.lv
+        var type = this.uniqueCategory[index], lv = weapon.lv
+      } else {
+        var index = Math.floor((Math.random() * this.category.length));
+        var type = this.category[index], lv = weapon.lv
       }
-      
+
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
@@ -445,44 +446,44 @@ var index = Math.floor((Math.random() * this.category.length));
           case 'ATK':
             var random = parseInt(lv * 0.5 + (Math.random() * lv / 2 + 1))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
             random = parseInt(random * weapon.quality.qualityCoefficient)
-            random = random||1
+            random = random || 1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'ATKPERCENT':
             var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
-            random = random||1
+            random = random || 1
             item.value = random
-            item.showVal = '+' + random  + '%'
+            item.showVal = '+' + random + '%'
             break;
           case 'DEFPERCENT':
             var random = parseFloat(lv * 0.1 + (Math.random() * lv / 8 + 1)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
-            random = random||1
+            random = random || 1
             item.value = random
-            item.showVal = '+' + random  + '%'
+            item.showVal = '+' + random + '%'
             break;
           case 'HPPERCENT':
             var random = parseFloat(lv * 0.13 + (Math.random() * lv / 8 + 1)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
-            random = random||1
+            random = random || 1
             item.value = random
-            item.showVal = '+' + random  + '%'
+            item.showVal = '+' + random + '%'
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
@@ -541,9 +542,9 @@ var index = Math.floor((Math.random() * this.category.length));
       border-radius: 0.04rem;
     }
     .name {
-      height: .46rem;
-      margin-left: .20rem;
-      line-height: .46rem;
+      height: 0.46rem;
+      margin-left: 0.2rem;
+      line-height: 0.46rem;
     }
   }
   .type {

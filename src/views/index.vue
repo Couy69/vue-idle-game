@@ -13,7 +13,7 @@
         </template>
         <template v-slot:tip>
           <p class="info">* 当前生命值/最大生命值</p>
-          <p class="info">* 每秒会回复1%的最大生命值</p>
+          <p class="info">* 每秒会回复2%的最大生命值</p>
         </template>
 
       </cTooltip>
