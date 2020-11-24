@@ -5,7 +5,7 @@
     </div> -->
     <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color + 'b8'}"  v-if="JSON.stringify(armor)!='{}'">
       <div class="title">
-        <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
+        <div class='icon' :class="{unique:armor.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:armor.quality.color}">{{armor.type.name}} {{armor.enchantlvl?'(+'+armor.enchantlvl+')':''}}</div>
@@ -65,7 +65,151 @@ export default {
         qualityCoefficient: 2,
         probability: '0.05',
         color: '#f78918', extraEntryNum: 4,
+      }, {
+        name: '独特',
+        qualityCoefficient: 2.2,
+        probability: '0',
+        color: '#ff0000', extraEntryNum: 5,
       }],
+      uniqueCategory: [{
+        name: '红月的夜行衣',
+        des: '',
+        iconSrc: './icons/U_Armor06.png',
+        entry: [{
+          'valCoefficient': 1.1,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 1.2,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 0.8,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },{
+        name: '肃清者戎衣',
+        des: '相传看到这一袭黑衣的人都死了。',
+        iconSrc: './icons/U_Armor05.png',
+        entry: [{
+          'valCoefficient': 1.1,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 0.6,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 1.4,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },{
+        name: '争执连身衣',
+        des: '',
+        iconSrc: './icons/U_Armor01.png',
+        entry: [{
+          'valCoefficient': 1.0,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 1.1,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },{
+        name: '剑豪盔甲',
+        des: '',
+        iconSrc: './icons/U_Armor02.png',
+        entry: [{
+          'valCoefficient': 1.1,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 1.3,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 0.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },{
+        name: '隐武士铠甲',
+        des: '',
+        iconSrc: './icons/U_Armor03.png',
+        entry: [{
+          'valCoefficient': 1.3,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 1.0,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },{
+        name: '芬撒里尔追踪者',
+        des: '',
+        iconSrc: './icons/U_Armor04.png',
+        entry: [{
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 0.9,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 1.0,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
+      },],
       category: [
         {
           name: '紫金守护胸甲',
@@ -220,8 +364,13 @@ export default {
       return parseInt(Math.random() * (Max || 39)) + 1
     },
     createType(armor) {
-      var index = Math.floor((Math.random() * this.category.length));
-      let type = this.category[index], lv = armor.lv
+      if (armor.quality.name == '独特') {
+        var index = Math.floor((Math.random() * this.uniqueCategory.length));
+        var type = this.uniqueCategory[index], lv = armor.lv
+      } else {
+        var index = Math.floor((Math.random() * this.category.length));
+        var type = this.category[index], lv = armor.lv
+      }
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':

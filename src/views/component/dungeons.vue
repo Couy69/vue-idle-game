@@ -248,6 +248,10 @@ export default {
         monsterAttribute.HP = monsterAttribute.HP + endlessLv * 110
       }
 
+      //设定一个怪物加强系数
+      monsterAttribute.ATK = monsterAttribute.ATK*(1+this.dungeons.lv/50)
+      monsterAttribute.HP = monsterAttribute.HP*(1+this.dungeons.lv/50)
+
       var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 
@@ -305,10 +309,22 @@ export default {
       var items = []
       var lv = this.dungeons.lv
       if (event.type == 'boss' && this.dungeons.type != 'endless') {
-        if (Math.random() > 0.965) {
-          var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
-          var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
-          items.push(JSON.parse(item))
+        if (Math.random() > 0.96) {
+          var random = Math.random()
+          if(random<=0.3&&random>0){
+            var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
+            var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
+            items.push(JSON.parse(item))
+          }else if(random<=0.6&&random>0.3){
+            var b = this.findBrothersComponents(this, 'armorPanel', false)[0]
+            var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
+            items.push(JSON.parse(item))
+          }else{
+            var b = this.findBrothersComponents(this, 'accPanel', false)[0]
+            var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
+            items.push(JSON.parse(item))
+          }
+          
         }
       }
       var trophy = event.trophy

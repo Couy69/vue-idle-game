@@ -231,7 +231,7 @@ export default {
         return
       }
       this.$set(this.grid, this.currentItemIndex, {});
-      var gold = this.currentItem.lv * this.currentItem.quality.qualityCoefficient * 10
+      var gold = this.currentItem.lv * this.currentItem.quality.qualityCoefficient * 30
       this.$store.commit("set_player_gold", parseInt(gold));
       this.$store.commit("set_sys_info", {
         msg: `
@@ -297,6 +297,8 @@ export default {
       img {
         width: 80%;
         height: 80%;
+        max-width: .32rem;
+        max-height: .32rem;
       }
     }
   }

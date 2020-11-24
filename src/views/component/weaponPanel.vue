@@ -101,7 +101,7 @@ export default {
         des: '没有人知道它的来历。',
         iconSrc: './icons/U_Sword02.png',
         entry: [{
-          'valCoefficient': 1.5,
+          'valCoefficient': 2.2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
