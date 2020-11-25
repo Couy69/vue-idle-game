@@ -108,27 +108,27 @@ export default {
       }
     },
     createShopItem(lv) {
-      var equip = [0, 0.5, 0.35, 0.15];
+      var equip = [0.4, 0.34, 0.25,0.01];
       var equipQua = -1;
       var r = Math.random();
       if (r <= equip[0]) {
-        // 获得破旧装备
-        equipQua = 0;
-      } else if (r < equip[1] + equip[0] && r >= equip[0]) {
         // 获得普通装备
         equipQua = 1;
+      } else if (r < equip[1] + equip[0] && r >= equip[0]) {
+        // 获得神器装备
+        equipQua = 2;
       } else if (
         r < equip[2] + equip[1] + equip[0] &&
         r >= equip[1] + equip[0]
       ) {
-        // 获得神器装备
-        equipQua = 2;
+        // 获得史诗装备
+        equipQua = 3;
       } else if (
         r < equip[3] + equip[2] + equip[1] + equip[0] &&
         r >= equip[2] + equip[1] + equip[0]
       ) {
-        // 获得史诗装备
-        equipQua = 3;
+        // 获得独特装备
+        equipQua = 4;
       } else {
         // 未获得装备
       }
@@ -146,7 +146,7 @@ export default {
           var item = b.createNewItem(equipQua, lv);
         }
         item = JSON.parse(item);
-        item.gold = parseInt(item.lv * item.quality.qualityCoefficient * (200 + 10 * item.lv))
+        item.gold = parseInt(item.lv * item.quality.qualityCoefficient * (200 + 20 * item.lv))
         for (let i = 0; i < this.grid.length; i++) {
           if (JSON.stringify(this.grid[i]).length < 3) {
             this.$set(this.grid, i, item);

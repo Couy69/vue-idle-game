@@ -47,11 +47,18 @@ body {
 //   font-weight: normal;
 //   font-style: normal;
 // }
+@font-face {
+  font-family: 'sarasa';
+  src:
+    url('../fonts/sarasa-ui-cl-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 #app {
   font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }
 div,button,span,p,h1,h2,h3,h4,h5,b,input{
-  font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
+  font-family:'sarasa','NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }
 
 /*使用选择器指定字体*/
@@ -125,7 +132,15 @@ div,button,span,p,h1,h2,h3,h4,h5,b,input{
   background: linear-gradient(125deg, #c90e0d36, #5656d647, 40%, #867d1033, #2c846f4d) !important;
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: 0.3s;
+}
 
+.fade-enter,
+.fade-leave-to {
+  transform: translateX(100%);
+}
 
 
 @media screen and (max-width:768px) {

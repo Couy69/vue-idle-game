@@ -67,7 +67,7 @@ export default {
         color: '#f78918', extraEntryNum: 4,
       }, {
         name: '独特',
-        qualityCoefficient: 2.2,
+        qualityCoefficient: 2.35,
         probability: '0',
         color: '#ff0000', extraEntryNum: 5,
       }],
@@ -76,7 +76,7 @@ export default {
         des: '',
         iconSrc: './icons/U_Acc02.png',
         entry: [{
-            'valCoefficient': 0.9,
+            'valCoefficient': 1.2,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
@@ -99,7 +99,7 @@ export default {
         des: '',
         iconSrc: './icons/U_Acc01.png',
         entry: [{
-            'valCoefficient': 0.8,
+            'valCoefficient': 1.0,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
@@ -122,7 +122,7 @@ export default {
         des: '',
         iconSrc: './icons/U_Acc03.png',
         entry: [{
-            'valCoefficient': 0.8,
+            'valCoefficient': 1.0,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
@@ -145,42 +145,30 @@ export default {
         des: '',
         iconSrc: './icons/U_Acc04.png',
         entry: [{
-            'valCoefficient': 0.8,
+            'valCoefficient': 1.6,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
             'name': '暴击伤害'
           },{
-            'valCoefficient': 0.6,
+            'valCoefficient': 1.1,
             'value': '11',
             'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          },{
-            'valCoefficient': 0.8,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }]
+            type: 'ATK',
+            'name': '攻击力'
+          },]
       },{
         name: '月夜见尊的意志',
         des: '',
-        iconSrc: './icons/U_Acc04.png',
+        iconSrc: './icons/U_Acc05.png',
         entry: [{
-            'valCoefficient': 0.9,
+            'valCoefficient': 1.5,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
             'name': '暴击伤害'
           },{
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          },{
-            'valCoefficient': 0.8,
+            'valCoefficient': 1.2,
             'value': '11',
             'showVal': '+11',
             type: 'HP',
@@ -265,7 +253,7 @@ export default {
           des: '冰龙凝雪',
           iconSrc: './icons/Ac_7.png',
           entry: [{
-            'valCoefficient': 0.8,
+            'valCoefficient': 0.75,
             'value': '11',
             'showVal': '+11',
             type: 'CRITDMG',
@@ -480,13 +468,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Lato-Regular";
-  src: url(../../assets/fonts/Lato-Regular.ttf);
-}
 .accPanel {
-  font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
-    "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
   width: 3.00rem;
   height: auto;

@@ -182,6 +182,68 @@ export default {
           type: 'CRITDMG',
           'name': '暴击伤害'
         }]
+      },{
+        name: '神龙纳格林之刃',
+        des: '神龙纳格林的爪子锻造的利刃',
+        iconSrc: './icons/U_Sword06.png',
+        entry: [{
+          'valCoefficient': 2.5,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        },  {
+          'valCoefficient': 2.2,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
+        }]
+      },{
+        name: '大师大冒险家之剑',
+        des: '大师大冒险家之剑',
+        iconSrc: './icons/U_Sword07.png',
+        entry: [{
+          'valCoefficient': 1.5,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }, {
+          type: 'HP',
+          'valCoefficient': 1.6,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        }]
+      },{
+        name: '六翼天使武刃',
+        des: '六翼天使武刃',
+        iconSrc: './icons/U_Sword08.png',
+        entry: [{
+          'valCoefficient': 1.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        },{
+          type: 'DEF',
+          'valCoefficient': 1.5,
+          'value': '8',
+          'showVal': '8',
+          'name': '防御力'
+        }]
+      },{
+        name: '数珠丸恒次',
+        des: '具体情况不明，传说为日莲上人所有',
+        iconSrc: './icons/U_Sword09.png',
+        entry: [{
+          'valCoefficient': 3.0,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
       },],
       category: [{
         name: '狱岩石太刀',
@@ -513,13 +575,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Lato-Regular";
-  src: url(../../assets/fonts/Lato-Regular.ttf);
-}
 .weaponPanel {
-  font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
-    "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
   width: 3rem;
   height: auto;

@@ -1298,7 +1298,7 @@ export const dungeonsConfig = {
               ATK: 6200,
             },
             trophy: {
-              gold: 10000,
+              gold: 20000,
               equip: [
                 0.2, 0.3, 0.35, 0.15
               ],
@@ -1380,7 +1380,7 @@ export const dungeonsConfig = {
               ATK: 15000,
             },
             trophy: {
-              gold: 20000,
+              gold: 40000,
               equip: [
                 0.2, 0.3, 0.35, 0.15
               ],
@@ -1395,18 +1395,18 @@ export const dungeonsConfig = {
           needDPS: '3000',
           id: '4',
           eventNum: '5',
-          lv: 1,
+          lv: 100,
           desc:'这里是无尽挑战，挑战将不会有装备掉落，试试你的极限吧',
           eventType: [{
             name: '无尽梦魇',
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 10000,
+              HP: 20000,
               ATK: 6750,
             },
             trophy: {
-              gold: 1500,
+              gold: 15000,
               equip: [
                 0, 0, 0, 0
               ],
@@ -1416,11 +1416,11 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 10000,
+              HP: 20000,
               ATK: 7050,
             },
             trophy: {
-              gold: 1500,
+              gold: 15000,
               equip: [
                 0, 0, 0, 0
               ],
@@ -1430,11 +1430,11 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 10000,
+              HP: 20000,
               ATK: 7150,
             },
             trophy: {
-              gold: 1500,
+              gold: 15000,
               equip: [
                 0, 0, 0, 0
               ],
@@ -1444,11 +1444,11 @@ export const dungeonsConfig = {
             type: 'monster',
             eventType: 'battle',
             attribute: {
-              HP: 10000,
+              HP: 20000,
               ATK: 7250,
             },
             trophy: {
-              gold: 1500,
+              gold: 15000,
               equip: [
                 0, 0, 0, 0
               ],
@@ -1458,11 +1458,11 @@ export const dungeonsConfig = {
             type: 'boss',
             eventType: 'battle',
             attribute: {
-              HP: 15000,
-              ATK: 10000,
+              HP: 25000,
+              ATK: 15000,
             },
             trophy: {
-              gold: 4000,
+              gold: 100000,
               equip: [
                 0, 0, 0, 0
               ],

@@ -53,6 +53,7 @@
           <template v-slot:tip>
             <p class="info">* 角色防御力以及计算后的减伤比例</p>
             <p class="info">* 减伤比例采用非线性计算，护甲越高收益越低</p>
+            <p class="info">* 显示为近似值，实际上永远不会到达100%减伤</p>
           </template>
         </cTooltip>
 
@@ -214,10 +215,10 @@
         <img src="../assets/icons/menu/icon-import.png" alt="">
         <span class="compact">导入</span>
       </div>
-      <div class="Backpack" @click="GMOpened = true">
+      <!-- <div class="Backpack" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div>
+      </div> -->
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -285,7 +286,7 @@
         <div class="button" @click="createGMEquip">确定</div>
       </div>
     </div>
-    <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game"></a>
+    <extras></extras>
   </div>
 </template>
 <script>
@@ -296,6 +297,7 @@ import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
 import strengthenEquipment from './component/strengthenEquipment'
 import dungeons from './component/dungeons'
+import extras from './component/extras'
 import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
 import { Base64 } from 'js-base64';
@@ -333,7 +335,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip,strengthenEquipment },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -534,24 +536,24 @@ export default {
         type: 'win'
       });
 
-        // try {
-        //   let data = await this.$api.post(
-        //     "v1/userInfo/add",
-        //     {
-        //       name:'couy',
-        //       password:'123456',
-        //       endlessLv:'2',
-        //       playtime:'12分11秒',
-        //       saveData:saveData,
-        //     }
-        //   );
-        //   console.log(data)
-        //   if (data.status == 200) {
+      // try {
+      //   let data = await this.$api.post(
+      //     "v1/userInfo/add",
+      //     {
+      //       name:'couy',
+      //       password:'123456',
+      //       endlessLv:'2',
+      //       playtime:'12分11秒',
+      //       saveData:saveData,
+      //     }
+      //   );
+      //   console.log(data)
+      //   if (data.status == 200) {
 
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
+      //   }
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
     clearSysInfo() {
       this.$store.commit('clear_sys_info')
@@ -724,10 +726,6 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-@font-face {
-  font-family: "Lato-Regular";
-  src: url(../assets/fonts/Lato-Regular.ttf);
-}
 * {
   box-sizing: border-box;
   user-select: none;
@@ -737,8 +735,6 @@ a {
 }
 .main {
   background: #111;
-  font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
-    "Avenir", Helvetica, Arial, sans-serif !important;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -1209,14 +1205,5 @@ a {
     border: 1px solid #fff;
     white-space: nowrap;
   }
-}
-.github {
-  position: fixed;
-  width: 0.35rem;
-  height: 0.35rem;
-  background: url(../assets/icons/github.svg);
-  display: flex;
-  bottom: 0.2rem;
-  right: 0.2rem;
 }
 </style>

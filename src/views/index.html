@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  @font-face {
+  font-family: 'sarasa';
+  src:
+    url('../assets/fonts/sarasa-ui-cl-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+#app {
+  font-family: 'sarasa' !important;
+}
+div,button,span,p,h1,h2,h3,h4,h5,b,input{
+  font-family:'sarasa' !important;
+}
+</style>
+<body>
+  <div>尊敬背包装备商店强化装备导出存档复制文本到剪贴板手机用户长按没有粘贴请尝试使用输入法剪贴板功能导入清先输入存档数据已经复制存档了，建议保存到备忘录清先输入存档数据！存档成功导入了 糟糕，存档坏了！游戏进度已经保存了。当前生命值/最大生命值每秒会回复2%的最大生命值角色攻击力</div>
+  <p class="info">* 角色防御力以及计算后的减伤比例</p>
+            <p class="info">* 减伤比例采用非线性计算，护甲越高收益越低</p>
+            <p class="info">* 显示为近似值，实际上永远不会到达100%减伤</p>
+            <p class="info">* 角色当前的暴击率</p>
+            <p class="info">* 暴击伤害初始为150%</p>
+            <p class="info">* DPS:角色每秒伤害</p>
+            <p class="info">* 这个只是伤害数据，并没有统计防御属性，所以只是作为战斗力评估的一个依据</p>
+            <p class="info">* 你拥有的金币数量</p>
+            <p class="info">* 在这里，钱就是万能的稀有掉落：独特uniqueCategory: [{
+              name: '真·毛毛指环',
+              des: '',
+              iconSrc: './icons/U_Acc02.png',
+              entry: [{
+                  'valCoefficient': 1.2,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },{
+                  'valCoefficient': 0.7,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                },]
+            },{
+              name: '死神名片戒指',
+              des: '',
+              iconSrc: './icons/U_Acc01.png',
+              entry: [{
+                  'valCoefficient': 1.0,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },{
+                  'valCoefficient': 0.8,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+            },{
+              name: '先驱者戒指',
+              des: '',
+              iconSrc: './icons/U_Acc03.png',
+              entry: [{
+                  'valCoefficient': 1.0,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },{
+                  'valCoefficient': 0.7,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+            },{
+              name: '素盏呜尊的意志',
+              des: '',
+              iconSrc: './icons/U_Acc04.png',
+              entry: [{
+                  'valCoefficient': 1.6,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 1.1,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                },]
+            },{
+              name: '月夜见尊的意志',
+              des: '',
+              iconSrc: './icons/U_Acc05.png',
+              entry: [{
+                  'valCoefficient': 1.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 1.2,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+            },],
+            category: [
+              {
+                name: '生命指环',
+                des: '据说拥有增强佩戴者体质的神秘功效',
+                iconSrc: './icons/Ac_9.png',
+                entry: [{
+                  'valCoefficient': 1.1,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '毛毛指环',
+                des: '喵喵戒指，上面有没有摸到毛毛jio的怨念',
+                iconSrc: './icons/Ac_11.png',
+                entry: [{
+                  'valCoefficient': 0.9,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                },{
+                  'valCoefficient': 0.3,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                },{
+                  'valCoefficient': 0.8,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },]
+              },
+              {
+                name: '御魂之戒',
+                des: '出来吧，卡赞！吸纳所有彷徨的灵魂！   ——鬼剑士约翰',
+                iconSrc: './icons/Ac_10.png',
+                entry: [{
+                  'valCoefficient': 0.7,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                },]
+              },
+              {
+                name: '十字军项链',
+                des: '十字军佩戴的项链',
+                iconSrc: './icons/Ac_1.png',
+                entry: [{
+                  'valCoefficient': 0.9,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '冰龙凝雪',
+                des: '冰龙凝雪',
+                iconSrc: './icons/Ac_7.png',
+                entry: [{
+                  'valCoefficient': 0.75,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRITDMG',
+                  'name': '暴击伤害'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '银魂之眼',
+                des: '银魂之眼',
+                iconSrc: './icons/Ac_5.png',
+                entry: [{
+                  'valCoefficient': 1.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'CRIT',
+                  'name': '暴击率'
+                },{
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'HP',
+                  'name': '生命值'
+                }]
+              }
+            ],
+            extraEntry: [{
+              'value': '11',
+              'showVal': '+11',
+              type: 'ATK',
+              'name': '攻击力'
+            }, {
+              type: 'CRIT',
+              'value': '8',
+              'showVal': '+8%',
+              'name': '暴击率'
+            }, {
+              type: 'CRITDMG',
+              'value': '20',
+              'showVal': '+20%',
+              'name': '暴击伤害'
+            }, {
+              type: 'HP',
+              'value': '20',
+              'showVal': '+20',
+              'name': '生命值'
+            }, {
+              type: 'DEF',
+              'value': '8',
+              'showVal': '+8%',
+              'name': '防御力'
+            }]uniqueCategory: [{
+              name: '红月的夜行衣',
+              des: '',
+              iconSrc: './icons/U_Armor06.png',
+              entry: [{
+                'valCoefficient': 1.1,
+                'value': '11',
+                'showVal': '+11',
+                type: 'DEF',
+                'name': '防御力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 1.2,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }, {
+                'valCoefficient': 0.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            }, {
+              name: '肃清者戎衣',
+              des: '相传看到这一袭黑衣的人都死了。',
+              iconSrc: './icons/U_Armor05.png',
+              entry: [{
+                type: 'HP',
+                'valCoefficient': 1.8,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }, {
+                'valCoefficient': 2.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            }, {
+              name: '争执连身衣',
+              des: '',
+              iconSrc: './icons/U_Armor01.png',
+              entry: [{
+                'valCoefficient': 1.0,
+                'value': '11',
+                'showVal': '+11',
+                type: 'DEF',
+                'name': '防御力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 1.1,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }, {
+                'valCoefficient': 1.2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            }, {
+              name: '剑豪盔甲',
+              des: '',
+              iconSrc: './icons/U_Armor02.png',
+              entry: [{
+                'valCoefficient': 2.1,
+                'value': '11',
+                'showVal': '+11',
+                type: 'DEF',
+                'name': '防御力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 2.3,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }]
+            }, {
+              name: '隐武士铠甲',
+              des: '',
+              iconSrc: './icons/U_Armor03.png',
+              entry: [{
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'DEF',
+                'name': '防御力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 1.0,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }, {
+                'valCoefficient': 0.9,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            }, {
+              name: '芬撒里尔追踪者',
+              des: '',
+              iconSrc: './icons/U_Armor04.png',
+              entry: [{
+                'valCoefficient': 0.9,
+                'value': '11',
+                'showVal': '+11',
+                type: 'DEF',
+                'name': '防御力'
+              }, {
+                'valCoefficient': 1.7,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }, {
+                'valCoefficient': 1.0,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            },],
+            category: [
+              {
+                name: '紫金守护胸甲',
+                des: '够肉才能输出',
+                iconSrc: './icons/A_A2.png',
+                entry: [{
+                  'valCoefficient': 2,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                }, {
+                  type: 'HP',
+                  'valCoefficient': 0.6,
+                  'value': '8',
+                  'showVal': '8',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '战士重铠',
+                des: '六级战士使用的重型铠甲',
+                iconSrc: './icons/A_A5.png',
+                entry: [{
+                  'valCoefficient': 1.1,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                }, {
+                  type: 'HP',
+                  'valCoefficient': 0.7,
+                  'value': '8',
+                  'showVal': '8',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '天权轻甲',
+                des: '舍弃了防御性能的轻甲，因为更加轻便，攻击性能更加突出',
+                iconSrc: './icons/A_A7.png',
+                entry: [{
+                  'valCoefficient': 0.7,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                }, {
+                  type: 'HP',
+                  'valCoefficient': 0.5,
+                  'value': '8',
+                  'showVal': '8',
+                  'name': '生命值'
+                }, {
+                  'valCoefficient': 0.5,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                }]
+              },
+              {
+                name: '赤柳血铠',
+                des: '似乎会给使用者提供生命气息',
+                iconSrc: './icons/A_A3.png',
+                entry: [{
+                  'valCoefficient': 0.9,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                }, {
+                  type: 'HP',
+                  'valCoefficient': 1.2,
+                  'value': '8',
+                  'showVal': '8',
+                  'name': '生命值'
+                }]
+              },
+              {
+                name: '哈皮毛毛连身衣',
+                des: '哈皮毛毛',
+                iconSrc: './icons/A_A9.png',
+                entry: [{
+                  'valCoefficient': 0.8,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'DEF',
+                  'name': '防御力'
+                }, {
+                  type: 'HP',
+                  'valCoefficient': 0.8,
+                  'value': '8',
+                  'showVal': '8',
+                  'name': '生命值'
+                }, {
+                  'valCoefficient': 0.4,
+                  'value': '11',
+                  'showVal': '+11',
+                  type: 'ATK',
+                  'name': '攻击力'
+                }]
+              }
+            ],uniqueCategory: [{
+              name: '创世亡命剑',
+              des: '只有被选中的勇士才能唤醒它真正的力量。',
+              iconSrc: './icons/U_Sword01.png',
+              entry: [{
+                'valCoefficient': 1.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 1.5,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }, {
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            }, {
+              name: '无名剑',
+              des: '没有人知道它的来历。',
+              iconSrc: './icons/U_Sword02.png',
+              entry: [{
+                'valCoefficient': 2.2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 2.5,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }]
+            }, {
+              name: '死亡之刃',
+              des: '万物生自守恒，源力破则失。',
+              iconSrc: './icons/U_Sword04.png',
+              entry: [{
+                'valCoefficient': 1.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 1.5,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }, {
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            }, {
+              name: '霜龙利刃',
+              des: '傲雪冷心绝，万念化冰华。',
+              iconSrc: './icons/U_Sword05.png',
+              entry: [{
+                'valCoefficient': 1.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 1.5,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }, {
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            }, {
+              name: '阿加雷斯血色巨剑',
+              des: '诚既勇兮又以武，终刚强兮不可凌。身既死兮神以灵，子魂魄兮为鬼雄。',
+              iconSrc: './icons/U_Sword03.png',
+              entry: [{
+                'valCoefficient': 1.8,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 1.5,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }, {
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            },{
+              name: '神龙纳格林之刃',
+              des: '神龙纳格林的爪子锻造的利刃',
+              iconSrc: './icons/U_Sword06.png',
+              entry: [{
+                'valCoefficient': 2.5,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              },  {
+                'valCoefficient': 2.2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            },{
+              name: '大师大冒险家之剑',
+              des: '大师大冒险家之剑',
+              iconSrc: './icons/U_Sword07.png',
+              entry: [{
+                'valCoefficient': 1.5,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 1.6,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }]
+            },{
+              name: '六翼天使武刃',
+              des: '六翼天使武刃',
+              iconSrc: './icons/U_Sword08.png',
+              entry: [{
+                'valCoefficient': 1.9,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              },{
+                type: 'DEF',
+                'valCoefficient': 1.5,
+                'value': '8',
+                'showVal': '8',
+                'name': '防御力'
+              }]
+            },{
+              name: '数珠丸恒次',
+              des: '具体情况不明，传说为日莲上人所有',
+              iconSrc: './icons/U_Sword09.png',
+              entry: [{
+                'valCoefficient': 3.0,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            },],
+            category: [{
+              name: '狱岩石太刀',
+              des: '用狱岩石制作的太刀，据说拥有让使用者潜力爆发的神秘力量',
+              iconSrc: './icons/W_Sword016.png',
+              entry: [{
+                'valCoefficient': 1.2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 1.3,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }]
+            },
+            {
+              name: '战士长剑',
+              des: '六级战士使用的长剑',
+              iconSrc: './icons/W_Sword007.png',
+              entry: [{
+                'valCoefficient': 1.2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'DEF',
+                'valCoefficient': 0.5,
+                'value': '8',
+                'showVal': '8',
+                'name': '防御力'
+              }]
+            },
+            {
+              name: '赤柳血刃',
+              des: '似乎会给使用者提供生命气息',
+              iconSrc: './icons/W_Sword019.png',
+              entry: [{
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'HP',
+                'valCoefficient': 1.1,
+                'value': '8',
+                'showVal': '8',
+                'name': '生命值'
+              }]
+            },
+            {
+              name: '普通长剑',
+              des: '朴实无华普通长剑，有的只有强力的攻击力',
+              iconSrc: './icons/W_Sword001.png',
+              entry: [{
+                'valCoefficient': 1.7,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            }
+              ,
+            {
+              name: '紫炎波刃剑',
+              des: '传说中的狂战士最喜爱的剑。',
+              iconSrc: './icons/W_Sword021.png',
+              entry: [{
+                'valCoefficient': 1.7,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }]
+            },
+            {
+              name: '毛毛的爪子',
+              des: '这？这也是武器？',
+              iconSrc: './icons/W_Fist003.png',
+              entry: [{
+                'valCoefficient': 2,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                type: 'CRIT',
+                'valCoefficient': 0.7,
+                'value': '8',
+                'showVal': '+8%',
+                'name': '暴击率'
+              }]
+            },
+            {
+              name: '冰晶之刃',
+              des: '剑锋覆盖着冰晶，碰到的敌人都会被冻住。',
+              iconSrc: './icons/W_Sword018.png',
+              entry: [{
+                'valCoefficient': 1.4,
+                'value': '11',
+                'showVal': '+11',
+                type: 'ATK',
+                'name': '攻击力'
+              }, {
+                'valCoefficient': 1.3,
+                'value': '11',
+                'showVal': '+11',
+                type: 'CRITDMG',
+                'name': '暴击伤害'
+              }]
+            }
+            ],</p>
+</body>
+</html>

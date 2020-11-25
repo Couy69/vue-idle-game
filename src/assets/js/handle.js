@@ -59,7 +59,6 @@ function CalculateStrAttr(entry, lv) {
     }
     
   })
-  console.log(entry)
   return entry
 }
 

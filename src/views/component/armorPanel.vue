@@ -3,7 +3,7 @@
     <!-- <div class="btn" style="position:relative;z-index:999;">
       <button @click="createNewarmor">随机生成</button>
     </div> -->
-    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color + 'b8'}"  v-if="JSON.stringify(armor)!='{}'">
+    <div class="armorPanel" :style="{'box-shadow':' 0 0 5px 5px '+armor.quality.color + 'b8'}" v-if="JSON.stringify(armor)!='{}'">
       <div class="title">
         <div class='icon' :class="{unique:armor.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+armor.quality.color}">
           <img :src="armor.type.iconSrc" alt="">
@@ -94,30 +94,24 @@ export default {
           type: 'ATK',
           'name': '攻击力'
         }]
-      },{
+      }, {
         name: '肃清者戎衣',
         des: '相传看到这一袭黑衣的人都死了。',
         iconSrc: './icons/U_Armor05.png',
         entry: [{
-          'valCoefficient': 1.1,
-          'value': '11',
-          'showVal': '+11',
-          type: 'DEF',
-          'name': '防御力'
-        }, {
           type: 'HP',
-          'valCoefficient': 0.6,
+          'valCoefficient': 1.8,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 1.4,
+          'valCoefficient': 2.8,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }]
-      },{
+      }, {
         name: '争执连身衣',
         des: '',
         iconSrc: './icons/U_Armor01.png',
@@ -134,36 +128,30 @@ export default {
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 0.9,
+          'valCoefficient': 1.2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
         }]
-      },{
+      }, {
         name: '剑豪盔甲',
         des: '',
         iconSrc: './icons/U_Armor02.png',
         entry: [{
-          'valCoefficient': 1.1,
+          'valCoefficient': 2.1,
           'value': '11',
           'showVal': '+11',
           type: 'DEF',
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.3,
+          'valCoefficient': 2.3,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
-        }, {
-          'valCoefficient': 0.6,
-          'value': '11',
-          'showVal': '+11',
-          type: 'ATK',
-          'name': '攻击力'
         }]
-      },{
+      }, {
         name: '隐武士铠甲',
         des: '',
         iconSrc: './icons/U_Armor03.png',
@@ -186,7 +174,7 @@ export default {
           type: 'ATK',
           'name': '攻击力'
         }]
-      },{
+      }, {
         name: '芬撒里尔追踪者',
         des: '',
         iconSrc: './icons/U_Armor04.png',
@@ -197,11 +185,11 @@ export default {
           type: 'DEF',
           'name': '防御力'
         }, {
-          type: 'HP',
-          'valCoefficient': 0.9,
-          'value': '8',
-          'showVal': '8',
-          'name': '生命值'
+          'valCoefficient': 1.7,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
         }, {
           'valCoefficient': 1.0,
           'value': '11',
@@ -505,13 +493,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Lato-Regular";
-  src: url(../../assets/fonts/Lato-Regular.ttf);
-}
 .armorPanel {
-  font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
-    "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
   width: 3rem;
   height: auto;

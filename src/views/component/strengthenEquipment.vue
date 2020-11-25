@@ -151,9 +151,9 @@ export default {
       }else if(lv==8){
         probabilityOfSuccess = 0.45
       }else if(lv==9){
-        probabilityOfSuccess = 0.2
+        probabilityOfSuccess = 0.3
       }else{
-        probabilityOfSuccess = 0.1
+        probabilityOfSuccess = 0.2
       }
       let r = Math.random()
       if(r<probabilityOfSuccess){
@@ -195,6 +195,7 @@ export default {
     //修改成功时保存这个装备
     changeTheEquiment(){
       var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
+      this.equiment.locked = true;
       this.$set(backpackPanel.grid, backpackPanel.currentItemIndex, this.$deepCopy(this.equiment));
     }
   }
@@ -206,13 +207,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-@font-face {
-  font-family: "Lato-Regular";
-  src: url(../../assets/fonts/Lato-Regular.ttf);
-}
 .equimentPanel {
-  font-family: Lato-Regular, "Noto Sans SC", "Noto Sans", "Source Sans Pro",
-    "Avenir", Helvetica, Arial, sans-serif !important;
   color: #f1f1f1;
   width: 4rem;
   height: auto;
