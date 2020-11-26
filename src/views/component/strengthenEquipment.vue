@@ -195,6 +195,8 @@ export default {
     //修改成功时保存这个装备
     changeTheEquiment(){
       var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
+      var index = this.findComponentUpward(this, 'index')
+      index.saveGame()
       this.equiment.locked = true;
       this.$set(backpackPanel.grid, backpackPanel.currentItemIndex, this.$deepCopy(this.equiment));
     }

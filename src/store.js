@@ -279,6 +279,9 @@ export default new Vuex.Store({
       var time = +new Date()
       var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
       this.state.sysInfo[this.state.sysInfo.length - 1].time = date.toJSON().substr(11, 8).replace('T', ' ')
+      if(this.state.sysInfo.length>50){
+        this.state.sysInfo.shift()
+      }
     },
     clear_sys_info(state, data) {
       this.state.sysInfo.splice(1, this.state.sysInfo.length)

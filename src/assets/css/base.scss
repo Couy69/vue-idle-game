@@ -61,6 +61,14 @@ div,button,span,p,h1,h2,h3,h4,h5,b,input{
   font-family:'sarasa','NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }
 
+input,textarea{
+  border:1px solid #ccc;
+  border-radius: 4px;
+  padding: .06rem;
+  font-size: .13rem;
+  background-color: #e0e8ea;
+}
+
 /*使用选择器指定字体*/
 .panel-title {
     font-family: 'MaShanZheng' !important;

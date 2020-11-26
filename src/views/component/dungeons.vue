@@ -177,7 +177,6 @@ export default {
     },
     eventEnd() {
 
-
       setTimeout(() => {
         // this.battleCom(event)
         if (this.dungeons.type == "endless") {
@@ -222,10 +221,23 @@ export default {
         let backpackPanelSign = backpackPanel.itemNum / backpackPanel.grid.length < 0.8
         if (p.reChallenge && backpackPanelSign) {
           p.eventBegin()
+        } else if (p.reEChallenge) {
+          this.$store.commit("set_endless_lv", this.$store.state.playerAttribute.endlessLv - 1);
+          p.eventBegin()
+        } else if (p.upEChallenge) {
+          p.endlessLv = this.$store.state.playerAttribute.endlessLv
+          p.dungeons.lv = this.$store.state.playerAttribute.endlessLv
+          p.eventBegin()
         } else {
           p.dungeons = ''
           p.inDungeons = false
         }
+
+        // if(p.reEChallenge){
+        //   this.$store.commit("set_endless_lv", this.$store.state.playerAttribute.endlessLv - 1);
+        // }
+        // if(p.upEChallenge){
+        // }
 
       }, 100)
     },
@@ -252,8 +264,8 @@ export default {
 
       } else {
         //设定一个怪物加强系数
-        monsterAttribute.ATK = monsterAttribute.ATK * (1 + this.dungeons.lv / 75)
-        monsterAttribute.HP = monsterAttribute.HP * (1 + this.dungeons.lv / 75)
+        monsterAttribute.ATK = monsterAttribute.ATK * (1 + this.dungeons.lv / 55)
+        monsterAttribute.HP = monsterAttribute.HP * (1 + this.dungeons.lv / 55)
       }
 
       var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
@@ -312,8 +324,13 @@ export default {
     caculateTrophy(event) {
       var items = []
       var lv = this.dungeons.lv
+      // 获取独特装备
       if (event.type == 'boss' && this.dungeons.type != 'endless') {
-        if (Math.random() > 0.96) {
+        var randow = 0.96
+        if(this.dungeons.name == '黑色火山'){
+          randow = 0.92
+        }
+        if (Math.random() > randow) {
           var random = Math.random()
           if (random <= 0.3 && random > 0) {
             var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
@@ -355,9 +372,7 @@ export default {
       } else {
         // 未获得装备
       }
-
       if (equipQua != -1) {
-
         // this.createEquip(equipQua,lv)
         var index = Math.floor((Math.random() * 3));
         if (index == 0) {
@@ -401,14 +416,20 @@ export default {
           }
         })
       } else {
+        //金币获取倍率
+        var goldObtainRatio = 1
+        if (this.dungeons.type == 'endless') {
+          var endlessLv = this.$store.state.playerAttribute.endlessLv
+          goldObtainRatio+= endlessLv/50
+        }
         this.$store.commit("set_sys_info", {
           msg: `
-              获得了:金币${event.trophy.gold}
+              获得了:金币${parseInt(event.trophy.gold*goldObtainRatio)}
             `,
           type: 'trophy',
           equip: []
         });
-        this.$store.commit("set_player_gold", event.trophy.gold);
+        this.$store.commit("set_player_gold", parseInt(event.trophy.gold*goldObtainRatio));
       }
 
     }

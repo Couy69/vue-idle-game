@@ -17,7 +17,8 @@
         <span>剩余刷新次数：{{refreshTime}}次。</span>
       </div>
 
-      <div class="button" @click="refreshShopItems">刷新</div>
+      <div class="button" @click="goldRefreshShopItems">10000金币刷新</div>
+      <div class="button" @click="refreshShopItems">免费刷新</div>
       <!-- <div class="button" @click="sell">一键出售</div> -->
     </div>
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
@@ -96,6 +97,19 @@ export default {
         return
       }
       this.refreshTime--
+      this.grid = new Array(5).fill({});
+      var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
+      var alv = Number(this.$store.state.playerAttribute.armor.lv);
+      var acclv = Number(this.$store.state.playerAttribute.acc.lv);
+      for (let i = 0; i < 5; i++) {
+        var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
+        //装备等级最高110
+        lv = lv > 110 ? 110 : lv
+        this.createShopItem(lv);
+      }
+    },
+    goldRefreshShopItems(){
+      this.$store.commit("set_player_gold", -10000);
       this.grid = new Array(5).fill({});
       var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
       var alv = Number(this.$store.state.playerAttribute.armor.lv);

@@ -9,28 +9,7 @@ import vue from '../../main'
 export async function getAxiosInstance() {
   var baseURL, instance
 
-  baseURL = 'http://localhost:3001/';
-  
-  /** 
-   * 跳转登录页
-   * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
-   */
-  const toLogin = () => {
-    vue.$message('登录过期，请重新登录');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userInfo');
-    vue.$router.push({
-      name: "login"
-    });
-    setTimeout(() => {
-      router.replace({
-        path: '/login',
-        query: {
-          redirect: router.currentRoute.fullPath
-        }
-      });
-    }, 1000)
-  }
+  baseURL = 'http://couy.xyz:3001/';
 
   /** 
    * 请求失败后的错误统一处理 
@@ -41,25 +20,35 @@ export async function getAxiosInstance() {
     switch (status) {
       // 401: 未登录状态，跳转登录页
       case 401:
-        toLogin();
-        vue.$message({
-          message: response.data.message || '服务器有点问题，请稍后重试',
-          type: "warning"
+        vue.$store.commit("set_sys_info", {
+          msg: `
+          😭${response.data.msg|| '服务器有点问题，请稍后重试'}
+          `,
+          type: 'warning'
         });
         break;
       case 403:
-        vue.$message({
-          message: response.data.message || '服务器有点问题，请稍后重试',
-          type: "warning"
+        vue.$store.commit("set_sys_info", {
+          msg: `
+          😭${response.data.msg|| '服务器有点问题，请稍后重试'}
+          `,
+          type: 'warning'
         });
         break;
       case 404:
-        vue.$message('请求的资源不存在');
+        vue.$store.commit("set_sys_info", {
+          msg: `
+          😭${response.data.msg|| '服务器有点问题，请稍后重试'}
+          `,
+          type: 'warning'
+        });
         break;
       default:
-        vue.$message({
-          message: response.data.message || '服务器有点问题，请稍后重试',
-          type: "warning"
+        vue.$store.commit("set_sys_info", {
+          msg: `
+          😭${response.data.msg|| '服务器有点问题，请稍后重试'}
+          `,
+          type: 'warning'
         });
     }
   }
@@ -97,12 +86,12 @@ export async function getAxiosInstance() {
 
         return Promise.reject(response);
       } else {
-        //网络连接问题
-        vue.$message({
-          message: '网络连接有问题',
-          type: "warning"
+        vue.$store.commit("set_sys_info", {
+          msg: `
+          😭${response.data.msg|| '服务器有点问题，请稍后重试'}
+          `,
+          type: 'warning'
         });
-        console.log('请求失败')
       }
     });
 

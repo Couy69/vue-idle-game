@@ -23,9 +23,23 @@
         </div>
 
         <div class="footer">
-          <span>创作不易，给个star？</span>
-          <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game">
-          </a>
+          <div class="footer-github">
+            <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game">
+            </a>
+            <span>创作不易，给个star？</span>
+
+          </div>
+          <div class="footer-suggest">
+            <div>
+              <textarea placeholder="发现了bug?抑或是有什么建议？欢迎提出来。" v-model="suggest" />
+              </div>
+            <div>
+              <input type="text" v-model="name" placeholder="你的昵称？">
+              <div class="button" @click="submitSuggest()">提交</div>
+            </div>
+          </div>
+          
+          
         </div>
       </div>
     </transition>
@@ -39,7 +53,24 @@ export default {
     return {
       checkedUpdateInfo: false,
       showExtrasInfo: false,
-      update: [{
+      name: '',
+      suggest: '',
+      disabled:false,
+      update: [
+        {
+        title: '2020-11-26 (1.2.1)',
+        desc: '- 现在可以在更新公告下方直接提意见了，或者是反馈bug。',
+        adjust: [
+          '-  商店支持金币刷新了',
+          '-  无尽挑战添加自动挑战',
+        ],
+        majorization: [
+          '- 现在强化后会保存游戏',
+          '- 继续加强副本',
+          '- 装备数值调整',
+        ],
+      },
+        {
         title: '2020-11-25 (1.2.0)',
         desc: '- 时隔半个多月的更新,这次修改的内容比较多',
         adjust: [
@@ -101,6 +132,42 @@ export default {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
+    async submitSuggest() {
+      if(this.disabled){
+        return
+      }
+      try {
+        let data = await this.$api.post(
+          "v1/Suggest/add",
+          {
+            name: this.name,
+            suggest: this.suggest,
+          }
+        );
+        console.log(data)
+        if (data.data.error_code == 20000) {
+          this.$store.commit("set_sys_info", {
+            msg: `
+              你的建议已经提交了哦，十分感谢😘
+            `,
+            type: 'win'
+          });
+        } else {
+          this.$store.commit("set_sys_info", {
+            msg: `
+              提交失败：${data.data.msg}
+            `,
+            type: 'win'
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      this.disabled = true
+      setTimeout(()=>{
+        this.disabled = false
+      },1000)
+    }
   }
 };
 
@@ -193,42 +260,44 @@ export default {
     text-align: left;
     h1 {
       margin: 0.06rem 0;
-      font-size: .23rem;
+      font-size: 0.23rem;
       letter-spacing: 1px;
     }
     span {
       margin: 0.06rem;
-      font-size: .13rem;
+      font-size: 0.13rem;
       letter-spacing: 1px;
     }
     h2 {
       padding-left: 0.2rem;
       line-height: 0.3rem;
       margin: 0.1rem 0;
-      font-size: .18rem;
+      font-size: 0.18rem;
       letter-spacing: 1px;
     }
     p {
       padding-left: 0.25rem;
       line-height: 0.2rem;
       color: #fafafa;
-      font-size: .13rem;
+      font-size: 0.13rem;
       letter-spacing: 1px;
     }
   }
 }
 .footer {
+  border-top: 1px solid #444;
   position: absolute;
   bottom: 0;
   left: 0;
   background: #111;
   width: 100%;
-  height: 0.5rem;
+  height: 2rem;
   padding: 0.1rem 0.3rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   .github {
+    margin-bottom: 0.1rem;
     margin-left: 0.1rem;
     background: #fafafa;
     display: block;
@@ -237,6 +306,34 @@ export default {
     border-radius: 50%;
     background-image: url(../../assets/icons/github.svg);
     background-size: cover;
+  }
+  .footer-suggest {
+    flex: 1;
+    padding: 0 0.2rem;
+    & > div {
+      width: 100%;
+      display: flex;
+      margin: 0.1rem;
+      justify-content: space-between;
+    }
+    textarea {
+      width: 90%;
+      height: 1rem;
+      max-width: 4rem;
+      max-height: 1.5rem;
+    }
+  }
+  .footer-github {
+    width: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    & > div {
+      display: flex;
+      margin: 0.1rem;
+      justify-content: space-between;
+    }
   }
 }
 </style>

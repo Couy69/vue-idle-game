@@ -101,7 +101,7 @@ export default {
         des: '没有人知道它的来历。',
         iconSrc: './icons/U_Sword02.png',
         entry: [{
-          'valCoefficient': 2.2,
+          'valCoefficient': 2.7,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -187,7 +187,7 @@ export default {
         des: '神龙纳格林的爪子锻造的利刃',
         iconSrc: './icons/U_Sword06.png',
         entry: [{
-          'valCoefficient': 2.5,
+          'valCoefficient': 2.8,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -204,7 +204,7 @@ export default {
         des: '大师大冒险家之剑',
         iconSrc: './icons/U_Sword07.png',
         entry: [{
-          'valCoefficient': 1.5,
+          'valCoefficient': 1.9,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -228,7 +228,7 @@ export default {
           'name': '攻击力'
         },{
           type: 'DEF',
-          'valCoefficient': 1.5,
+          'valCoefficient': 1.6,
           'value': '8',
           'showVal': '8',
           'name': '防御力'
@@ -238,7 +238,7 @@ export default {
         des: '具体情况不明，传说为日莲上人所有',
         iconSrc: './icons/U_Sword09.png',
         entry: [{
-          'valCoefficient': 3.0,
+          'valCoefficient': 3.9,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',

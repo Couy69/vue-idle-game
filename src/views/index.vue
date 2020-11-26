@@ -91,7 +91,9 @@
       <div class="uii">
         <cTooltip placement="bottom">
           <template v-slot:content>
-            <div class="gold" v-if="attribute.DPS">DPS: <span>{{(attribute.DPS).toFixed(2)}}</span></div>
+            <div class="gold" v-if="attribute.DPS" :style="{fontSize:attribute.DPS>=10000?'.18rem':'.22rem'}">DPS: 
+              <span :style="{fontSize:attribute.DPS>=10000?'.18rem':'.22rem'}">{{(attribute.DPS).toFixed(2)}}</span>
+            </div>
           </template>
           <template v-slot:tip>
             <p class="info">* DPS:角色每秒伤害</p>
@@ -100,7 +102,7 @@
         </cTooltip>
         <cTooltip placement="bottom">
           <template v-slot:content>
-            <div class="gold">金币: <span>{{userGold}}</span></div>
+            <div class="gold" :style="{fontSize:userGold>=1000000?'.18rem':'.22rem'}">金币: <span :style="{fontSize:userGold>=1000000?'.14rem':'.16rem'}">{{userGold}}</span></div>
           </template>
           <template v-slot:tip>
             <p class="info">* 你拥有的金币数量</p>
@@ -164,6 +166,10 @@
         <div class="handle">
           <div v-if="dungeons.type!='endless'">
             <input type="checkbox" name="" v-model="reChallenge"> 重复挑战
+          </div>
+          <div class="handle-column" style="display:flex;flex-direction:column" v-else>
+            <p><input type="checkbox" name="" v-model="upEChallenge"> 向上挑战</p>
+            <p><input type="checkbox" name="" v-model="reEChallenge"> 重复挑战</p>
           </div>
           <div class="dungeons-btn" @click="eventBegin()">开始挑战</div>
         </div>
@@ -317,6 +323,8 @@ export default {
       weapon: {},
       inDungeons: false,  //是否在副本进程中
       reChallenge: false,
+      upEChallenge: false,
+      reEChallenge: false,
       dungeons: '',
       acc: {},
       armor: {},
@@ -423,7 +431,12 @@ export default {
         element.scrollTop = element.scrollHeight + 20
       })
     },
-
+    upEChallenge(){
+      this.reEChallenge = !this.upEChallenge
+    },
+    reEChallenge(){
+      this.upEChallenge = !this.reEChallenge
+    },
   },
   methods: {
     navToGithub() {
@@ -1175,6 +1188,14 @@ a {
       min-width: 15px;
       margin-right: 0.05rem;
     }
+  }
+  .handle-column{
+    display: flex;
+    flex-direction: column;
+    p{
+      display: flex;
+      align-items: center;
+    } 
   }
   .jjj {
     font-size: 0.14rem;
