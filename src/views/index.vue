@@ -205,12 +205,8 @@
         <img src="../assets/icons/menu/quest_icon_03.png" alt="">
         <span>商 店</span>
       </div>
-      <!-- <div class="Backpack" @click="openMenuPanel('backpack')">
-        <img src="../assets/icons/menu/icon_80.png" alt="">
-        <span>装备强化</span>
-      </div> -->
       <div class="Backpack" @click="saveGame">
-        <img src="../assets/icons/menu/icon_85.png" alt="">
+        <img src="../assets/icons/menu/icon_save.png" alt="">
         <span>保 存</span>
       </div>
       <div class="Backpack" @click="exportSavedata">
@@ -221,10 +217,10 @@
         <img src="../assets/icons/menu/icon-import.png" alt="">
         <span class="compact">导入</span>
       </div>
-      <!-- <div class="Backpack" @click="GMOpened = true">
+      <div class="Backpack" v-if="GMmodel" @click="GMOpened = true">
         <img src="../assets/icons/menu/icon_85.png" alt="">
         <span>GM</span>
-      </div> -->
+      </div>
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -287,12 +283,15 @@
         <i class="close" @click="closePanel"></i>
       </div>
       <div class="content">
-        lv:<input v-model="GMEquipLv" type="text" placeholder="随机生成一套输入等级的装备">
-        稀有度：<input v-model="GMEquipQu" type="text" placeholder="装备质量">
-        <div class="button" @click="createGMEquip">确定</div>
+        <div class="body">
+          <span class="prompt-message">* 随机生成一套指定等级与质量的装备</span>
+        lv:<input v-model="GMEquipLv" type="number" placeholder="装备等级1~110">
+        稀有度：<input v-model="GMEquipQu" type="number" placeholder="装备质量0~4">
+        <div class="button" @click="createGMEquip">确定</div></div>
       </div>
     </div>
     <extras></extras>
+    <qa></qa>
   </div>
 </template>
 <script>
@@ -304,6 +303,7 @@ import shopPanel from './component/shopPanel'
 import strengthenEquipment from './component/strengthenEquipment'
 import dungeons from './component/dungeons'
 import extras from './component/extras'
+import qa from './component/qa'
 import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
 import { Base64 } from 'js-base64';
@@ -313,6 +313,7 @@ export default {
   mixins: [assist],
   data() {
     return {
+      GMmodel: false,
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
@@ -334,8 +335,8 @@ export default {
       exportSaveDataPanelOpened: false,
       strengthenEquipmentPanelOpened: false,
       itemDialogStyle: {},
-      GMEquipLv: 1,
-      GMEquipQu: 2,
+      GMEquipLv: '',
+      GMEquipQu: '',
       GMOpened: false,
       needComparison: true,
       saveData: {},
@@ -343,7 +344,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras,qa },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -437,6 +438,14 @@ export default {
     reEChallenge(){
       this.upEChallenge = !this.reEChallenge
     },
+    GMEquipLv(){
+      this.GMEquipLv = this.GMEquipLv>110?110:this.GMEquipLv
+      this.GMEquipLv = this.GMEquipLv<1?1:this.GMEquipLv
+    },
+    GMEquipQu(){
+      this.GMEquipQu = this.GMEquipQu>4?4:this.GMEquipQu
+      this.GMEquipQu = this.GMEquipQu<0?0:this.GMEquipQu
+    }
   },
   methods: {
     navToGithub() {
