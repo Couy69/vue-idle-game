@@ -148,6 +148,7 @@ export default {
       var ra = auto?2:1
       var needGold = this.strengthenNeedGold*ra
       if (this.$store.state.playerAttribute.GOLD < needGold) {
+        this.stopAutoStreng()
         this.$store.commit("set_sys_info", {
           msg: `
               钱不够啊，强化啥呢。

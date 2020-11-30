@@ -678,6 +678,12 @@ export default {
       this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = this.strengthenEquipmentPanelOpened = false
       this.GMOpened = false
       this.saveDateString = ''
+
+      let equimentPanel = this.findComponentDownward(
+        this,
+        "equimentPanel",
+      );
+      equimentPanel.stopAutoStreng()
     },
     initial() {
       let html = document.documentElement;
