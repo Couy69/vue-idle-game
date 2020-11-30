@@ -19,6 +19,8 @@ const vue = new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+import Message from './views/uiComponent/message/index'
+Vue.prototype.$message = Message
 
 Vue.prototype.$deepCopy = function(data){
   return JSON.parse(JSON.stringify(data))

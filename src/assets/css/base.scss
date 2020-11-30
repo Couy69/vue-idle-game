@@ -149,6 +149,18 @@ input,textarea{
 .fade-leave-to {
   transform: translateX(100%);
 }
+.icon {
+  display: inline-block;
+  width: 0.25rem;
+  height: 0.25rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 2px;
+  background-position: center;
+}
+.icon-setting {
+  background-image: url(../icons/menu/setting.png);
+}
 
 
 @media screen and (max-width:768px) {
@@ -381,10 +393,43 @@ input,textarea{
       }
     }
 
-    .github {
-      background-color: #cccccc47;
-      border-radius: 50%;
-    }
   }
 
+  .drawer-update{
+    width: 100% !important;
+  }
+  .qa{
+    left: 1.5rem;
+    width: 0.45rem;
+    height: 0.50rem;
+    span{
+      font-size: .12rem !important;
+    }
+    img{
+      width: 0.25rem;
+      height: 0.25rem;
+    }
+  }
+  .extras{
+    left:.8rem;width: 0.45rem;
+    height: 0.50rem;
+    span{
+      font-size: .12rem !important;
+    }
+    img{
+      width: 0.25rem;
+      height: 0.25rem;
+    }
+  }
+  .setting{
+    left:.1rem;width: 0.45rem;
+    height: 0.50rem;
+    span{
+      font-size: .12rem !important;
+    }
+    img{
+      width: 0.25rem;
+      height: 0.25rem;
+    }
+  }
 }

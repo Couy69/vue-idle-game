@@ -292,6 +292,7 @@
     </div>
     <extras></extras>
     <qa></qa>
+    <setting></setting>
   </div>
 </template>
 <script>
@@ -303,6 +304,7 @@ import shopPanel from './component/shopPanel'
 import strengthenEquipment from './component/strengthenEquipment'
 import dungeons from './component/dungeons'
 import extras from './component/extras'
+import setting from './component/setting'
 import qa from './component/qa'
 import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
@@ -344,7 +346,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras,qa },
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras,qa ,setting},
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -532,7 +534,7 @@ export default {
         }, 1000)
       }
     },
-    async saveGame() {
+    async saveGame(needInfo) {
       var data = {}
       var backpackPanel = this.findComponentDownward(
         this,
@@ -551,7 +553,7 @@ export default {
       var saveData = Base64.encode(Base64.encode(JSON.stringify(data)))
       localStorage.setItem('_sd', saveData)
 
-      this.$store.commit("set_sys_info", {
+      needInfo&&this.$store.commit("set_sys_info", {
         msg: `
               游戏进度已经保存了。
             `,
@@ -654,6 +656,9 @@ export default {
             `,
         type: 'warning'
       });
+      setTimeout(()=>{
+        
+      })
     },
     openMenuPanel(type) {
       this.backpackPanelOpened = this.shopPanelOpened = false

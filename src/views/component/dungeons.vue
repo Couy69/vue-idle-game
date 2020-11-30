@@ -23,6 +23,7 @@ export default {
       left: 0,
       pro: {},
       timeOut: {},
+      battleComTime: {},
       nextEvent: 1,
       dungeons: {
         battleTime: 2000,
@@ -157,7 +158,7 @@ export default {
             `,
             type: 'battle'
           });
-          setTimeout(() => {
+          this.battleComTime = setTimeout(() => {
             this.battleCom(event)
           }, 2000)
           break;
@@ -170,6 +171,7 @@ export default {
     forcedToStopEvent() {
       clearInterval(this.pro)
       clearTimeout(this.timeOut)
+      clearTimeout(this.battleComTime)
       this.pro = {}
       this.left = 0
       this.nextEvent = 1
@@ -327,7 +329,7 @@ export default {
       // 获取独特装备
       if (event.type == 'boss' && this.dungeons.type != 'endless') {
         var randow = 0.96
-        if(this.dungeons.name == '黑色火山'){
+        if (this.dungeons.name == '黑色火山') {
           randow = 0.92
         }
         if (Math.random() > randow) {
@@ -397,13 +399,13 @@ export default {
         this.$store.commit("set_player_gold", event.trophy.gold);
         items.map(item => {
           // 当开启了自动出售并且新获得的装备品质低于史诗时，自动出售
-          if (backpackPanel.autoSell && (item.quality.name == '破旧' || item.quality.name == '普通')) {
+          if (backpackPanel.autoSell[equipQua]) {
             var gold = item.lv * item.quality.qualityCoefficient * 10
             this.$store.commit("set_player_gold", parseInt(gold));
             this.$store.commit("set_sys_info", {
               msg: `
-              自动出售装备获得金币：${parseInt(gold)}
-            `,
+                自动出售装备获得金币：${parseInt(gold)}
+              `,
               type: 'trophy',
             });
           } else {
@@ -420,16 +422,16 @@ export default {
         var goldObtainRatio = 1
         if (this.dungeons.type == 'endless') {
           var endlessLv = this.$store.state.playerAttribute.endlessLv
-          goldObtainRatio+= endlessLv/50
+          goldObtainRatio += endlessLv / 50
         }
         this.$store.commit("set_sys_info", {
           msg: `
-              获得了:金币${parseInt(event.trophy.gold*goldObtainRatio)}
+              获得了:金币${parseInt(event.trophy.gold * goldObtainRatio)}
             `,
           type: 'trophy',
           equip: []
         });
-        this.$store.commit("set_player_gold", parseInt(event.trophy.gold*goldObtainRatio));
+        this.$store.commit("set_player_gold", parseInt(event.trophy.gold * goldObtainRatio));
       }
 
     }

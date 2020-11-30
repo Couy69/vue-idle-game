@@ -1,7 +1,7 @@
 <template>
   <div class="qa">
     <!-- <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game"></a> -->
-    <div class="update-info github" @click="drawerOpen" type="primary">
+    <div class="update-info" @click="drawerOpen" type="primary">
       <img src="../../assets/icons/menu/Q&A.png" alt="">
       <span>Q&A</span>
       <i class="new" v-if="!checkedUpdateInfo"></i>
@@ -11,6 +11,7 @@
         <i class="close" @click="closePanel"></i>
         <h1>Q&A</h1>
         <p>这里是之前玩家提的一些问题</p>
+        <p>收到了很多反馈我就不一一放出来了，不过提的建议我都会在更新时将你的名字po出来</p>
         <div class="scroll">
           <div class="info" v-for="(item,index) in update" :key="index">
             <h1>{{item.name}}<span>({{item.created_at}})</span>:</h1>
@@ -69,6 +70,16 @@ export default {
         suggest: '已经装备的装备能不能强化呢',
         created_at: '2020-11-27 10:44:04',
         standby1: '脱下来才可以强化哦',
+      },{
+        name: 'masy',
+        suggest: '不能后台吗？发现一后台就自动暂停了。',
+        created_at: '2020-11-28 09:18:31',
+        standby1: '后台这个是游览器的限制，切换到后台就暂停了当前应用，谷歌游览器用户可以尝试地址栏输入 chrome://flags/,搜索calc选项改成Disabled',
+      },{
+        name: 'MarkH2',
+        suggest: '能加入稀有度的說明嗎?',
+        created_at: '2020-11-28 14:34:37',
+        standby1: '稀有等级：破旧-普通-神器-史诗-独特，稀有度越高词条越多同时属性越好',
       }]
     };
   },
@@ -160,9 +171,9 @@ export default {
   width: 0.5rem;
   height: 0.55rem;
   display: flex;
-  bottom: 0.3rem;
-  right: 0.9rem;
-  z-index: 2;
+  bottom: 0.1rem;
+  right: 1.5rem;
+  z-index: 1;
   cursor: pointer;
   .update-info {
     margin-right: 0.2rem;

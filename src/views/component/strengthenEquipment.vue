@@ -11,6 +11,7 @@
           <p class="info">* 强化等级越高成功率越低</p>
           <p class="info">* 强化等级高于5时强化失败可能会降低强化等级</p>
           <p class="info">* 强化概率：6级80%，7级65%，8级45%，9级30%，10级以后20%</p>
+          <p class="info">* 自动强化金币花费是正常的两倍</p>
         </template>
       </cTooltip>
 
@@ -34,9 +35,18 @@
           </div>
         </div>
       </div>
-      <div class="btn-group">
+      <div class="btn-group" v-if='!autoStrengModel'>
         <p>需要金币：<span :class="{'red':userGold<strengthenNeedGold}">{{strengthenNeedGold}}</span></p>
-        <div class="button" @click="startStreng">强化至+{{parseInt(equiment.enchantlvl)+1}}</div>
+        <div class="button" @click="startStreng()">强化至+{{parseInt(equiment.enchantlvl)+1}}</div>
+      </div>
+      <div class="btn-group" v-if='!autoStrengModel'>
+        <p>自动强化目标等级：</p>
+        <p><input type="number" placeholder="目标等级" max="15" min="5" v-model="autoStrengLv"></p>
+        <div class="button" @click="startAutoStreng">自动强化</div>
+      </div>
+      <div class="btn-group" v-if='autoStrengModel'>
+        <p>自动强化中...</p>
+        <div class="button" @click="stopAutoStreng">中断自动强化</div>
       </div>
       <cTooltip placement="bottom">
         <template v-slot:content>
@@ -48,7 +58,7 @@
       </cTooltip>
 
       <div class="extraEntry">
-        <div class="extraEntry-item" v-for="(v,k) in equiment.extraEntry" :key="v.id" @click="recastTheEquiment(v,k)"  @mouseover="changeRecastStatus(v,k,true)" @mouseleave="changeRecastStatus(v,k,false)">
+        <div class="extraEntry-item" v-for="(v,k) in equiment.extraEntry" :key="v.id" @click="recastTheEquiment(v,k)" @mouseover="changeRecastStatus(v,k,true)" @mouseleave="changeRecastStatus(v,k,false)">
           <button class="btn btn-snake-border">
             <div class="btn-borders">
               <div class="border-top"></div>
@@ -77,7 +87,10 @@ export default {
   data() {
     return {
       equiment: {},
-      recast:false,
+      autoStrengModel: false,
+      autoStrengLv: 12,
+      autoStrengTime: '',
+      recast: false,
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
@@ -107,32 +120,34 @@ export default {
   },
   computed: {
     userGold() { return this.$store.state.playerAttribute.GOLD },
-    item() { return this.$store.state.needStrengthenEquipment},
-    strengthenNeedGold(){
-      var a = parseInt((this.equiment.lv+1)*(1.1**(this.equiment.enchantlvl)**1.1)*(10+this.equiment.lv/5))+100
+    item() { return this.$store.state.needStrengthenEquipment },
+    strengthenNeedGold() {
+      var a = parseInt((this.equiment.lv + 1) * (1.1 ** (this.equiment.enchantlvl) ** 1.1) * (10 + this.equiment.lv / 5)) + 100
       return a
     },
-    recastNeedGold(){
-      var a = parseInt(this.equiment.lv * this.equiment.quality.qualityCoefficient * (200 + 10 * this.equiment.lv)/4)
+    recastNeedGold() {
+      var a = parseInt(this.equiment.lv * this.equiment.quality.qualityCoefficient * (200 + 10 * this.equiment.lv) / 4)
       return a
     }
   },
   watch: {
     item() {
       this.equiment = this.$deepCopy(this.item)
-      if(!this.equiment.enchantlvl){
-        this.$set(this.equiment,'enchantlvl',0)
+      if (!this.equiment.enchantlvl) {
+        this.$set(this.equiment, 'enchantlvl', 0)
       }
     }
   },
   methods: {
-    changeRecastStatus(v,k,status){
+    changeRecastStatus(v, k, status) {
       v.recastStatus = status
-      this.$set(this.equiment.extraEntry,k,v)
+      this.$set(this.equiment.extraEntry, k, v)
     },
     // 强化装备
-    startStreng() {
-      if (this.$store.state.playerAttribute.GOLD < this.strengthenNeedGold) {
+    startStreng(auto) {
+      var ra = auto?2:1
+      var needGold = this.strengthenNeedGold*ra
+      if (this.$store.state.playerAttribute.GOLD < needGold) {
         this.$store.commit("set_sys_info", {
           msg: `
               钱不够啊，强化啥呢。
@@ -143,38 +158,57 @@ export default {
       }
       let lv = this.equiment.enchantlvl
       let probabilityOfSuccess = 1
-      if(lv<=5){
+      if (lv <= 5) {
         probabilityOfSuccess = 1
-      }else if(lv==6){
+      } else if (lv == 6) {
         probabilityOfSuccess = 0.8
-      }else if(lv==7){
+      } else if (lv == 7) {
         probabilityOfSuccess = 0.65
-      }else if(lv==8){
+      } else if (lv == 8) {
         probabilityOfSuccess = 0.45
-      }else if(lv==9){
+      } else if (lv == 9) {
         probabilityOfSuccess = 0.3
-      }else{
+      } else {
         probabilityOfSuccess = 0.2
       }
       let r = Math.random()
-      if(r<probabilityOfSuccess){
+      if (r < probabilityOfSuccess) {
         // 强化成功
         lv++
-      }else{
+      } else {
         // 强化失败
-        if(lv>=5){
-          lv= lv-1
+        if (lv >= 5) {
+          lv = lv - 1
         }
       }
 
-      this.$store.commit("set_player_gold", -parseInt(this.strengthenNeedGold));
+      this.$store.commit("set_player_gold", -parseInt(needGold));
 
       this.changeTheEquimentByLv(lv)
       this.changeTheEquiment()
     },
+    startAutoStreng() {
+      this.autoStrengModel = true
+      this.autoStrengTime = setInterval(() => {
+        this.startStreng(true)
+        if (this.equiment.enchantlvl == this.autoStrengLv) {
+          this.stopAutoStreng()
+          this.$store.commit("set_sys_info", {
+            msg: `
+              自动强化完成了，去看看你的装备吧。
+            `,
+            type: "win",
+          });
+        }
+      }, 300)
+    },
+    stopAutoStreng() {
+      this.autoStrengModel = false
+      clearInterval(this.autoStrengTime)
+    },
     // 重铸装备
-    recastTheEquiment(v,k){
-      console.log(v,k)
+    recastTheEquiment(v, k) {
+      console.log(v, k)
       if (this.$store.state.playerAttribute.GOLD < this.recastNeedGold) {
         this.$store.commit("set_sys_info", {
           msg: `
@@ -184,20 +218,20 @@ export default {
         });
         return
       }
-      let newEntry = handle.createRandomEntry(this.equiment.lv,this.equiment.quality.qualityCoefficient)
+      let newEntry = handle.createRandomEntry(this.equiment.lv, this.equiment.quality.qualityCoefficient)
       this.$set(this.equiment.extraEntry, k, newEntry);
       this.$store.commit("set_player_gold", -parseInt(this.recastNeedGold));
       this.changeTheEquiment()
     },
     //根据强化等级变动装备
-    changeTheEquimentByLv(lv){
+    changeTheEquimentByLv(lv) {
       this.equiment.enchantlvl = lv
     },
     //修改成功时保存这个装备
-    changeTheEquiment(){
+    changeTheEquiment() {
       var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
       var index = this.findComponentUpward(this, 'index')
-      index.saveGame()
+      index.saveGame(false)
       this.equiment.locked = true;
       this.$set(backpackPanel.grid, backpackPanel.currentItemIndex, this.$deepCopy(this.equiment));
     }
@@ -329,7 +363,7 @@ $blue: #ccc;
   white-space: nowrap;
   overflow: hidden;
   border-radius: 4px;
-  transition: .2s;
+  transition: 0.2s;
   &:hover {
     box-shadow: inset 0 0 7px 7px #53868ec9;
     .btn-borders {
@@ -582,11 +616,11 @@ $blue: #ccc;
     background-position: 0% 0%;
   }
 }
-.recast-info{
-  font-size: .14rem;
+.recast-info {
+  font-size: 0.14rem;
   color: #04e2ff;
 }
-.red{
-  color:red;
+.red {
+  color: red;
 }
 </style>

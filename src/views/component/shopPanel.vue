@@ -109,17 +109,27 @@ export default {
       }
     },
     goldRefreshShopItems(){
-      this.$store.commit("set_player_gold", -10000);
-      this.grid = new Array(5).fill({});
-      var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
-      var alv = Number(this.$store.state.playerAttribute.armor.lv);
-      var acclv = Number(this.$store.state.playerAttribute.acc.lv);
-      for (let i = 0; i < 5; i++) {
-        var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
-        //装备等级最高110
-        lv = lv > 110 ? 110 : lv
-        this.createShopItem(lv);
+      if (this.$store.state.playerAttribute.GOLD < 10000) {
+        this.$store.commit("set_sys_info", {
+          msg: `
+              钱不够啊，想啥呢。
+            `,
+          type: "warning",
+        });
+      }else{
+        this.$store.commit("set_player_gold", -10000);
+        this.grid = new Array(5).fill({});
+        var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
+        var alv = Number(this.$store.state.playerAttribute.armor.lv);
+        var acclv = Number(this.$store.state.playerAttribute.acc.lv);
+        for (let i = 0; i < 5; i++) {
+          var lv = parseInt((wlv + alv + acclv) / 3 + Math.random() * 6);
+          //装备等级最高110
+          lv = lv > 110 ? 110 : lv
+          this.createShopItem(lv);
+        }   
       }
+     
     },
     createShopItem(lv) {
       var equip = [0.4, 0.34, 0.25,0.01];

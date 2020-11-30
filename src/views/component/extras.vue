@@ -1,7 +1,7 @@
 <template>
   <div class="extras">
     <!-- <a class="github" target="_blank" @click="navToGithub" title="源码" src="https://github.com/Couy69/vue-idle-game"></a> -->
-    <div class="update-info github" @click="drawerOpen" type="primary">
+    <div class="update-info" @click="drawerOpen" type="primary">
       <img src="../../assets/icons/menu/extras.png" alt="">
       <span>更新日志</span>
       <i class="new" v-if="!checkedUpdateInfo"></i>
@@ -50,88 +50,102 @@
 import { assist } from '../../assets/js/assist';
 export default {
   name: "extras",
-  mixins:[assist],
+  mixins: [assist],
   data() {
     return {
       checkedUpdateInfo: false,
       showExtrasInfo: false,
       name: '',
       suggest: '',
-      disabled:false,
-      keyCode:[38,38,40,40,37,39,37,39,66,65,66,65],
-      reKeyCode:[],
+      disabled: false,
+      keyCode: [38, 38, 40, 40, 37, 39, 37, 39, 66, 65, 66, 65],
+      reKeyCode: [],
       update: [
         {
-        title: '2020-11-26 (1.2.1)',
-        desc: '- 现在可以在更新公告下方直接提意见了，或者是反馈bug。',
-        adjust: [
-          '-  商店支持金币刷新了',
-          '-  无尽挑战添加自动挑战',
-        ],
-        majorization: [
-          '- 现在强化后会保存游戏',
-          '- 继续加强副本',
-          '- 装备数值调整',
-        ],
-      },
+          title: '2020-11-30 (1.2.2)',
+          desc: '- 这次基本上都是些小优化。',
+          adjust: [
+            '-  现在支持自动强化了，可以在强化界面设定目标等级自动强化，不过花费金币为正常值的两倍',
+            '-  点击右下角清除存档可以重新开始游戏，请谨慎操作或者备份原有存档',
+          ],
+          majorization: [
+            '- 调整了一下手机端的显示，从后台来看用手机玩的用户好像也不少',
+          ],
+          bug: [
+            '- 修复手动结束挑战时出现的错误',
+          ]
+        },
         {
-        title: '2020-11-25 (1.2.0)',
-        desc: '- 时隔半个多月的更新,这次修改的内容比较多',
-        adjust: [
-          '-  添加导入导出存档功能：背包装备过多可能导致存档数据比较长，所以建议导出前处理一下背包装备 ',
-          '-  添加自动出售：背包栏可以开启自动出售，自动出售会卖出低品质的装备（低于神器）',
-          '-  添加装备强化与词条重铸：需要金币',
-          '-  添加独特级别的防具与饰品',
-        ],
-        majorization: [
-          '- 加强副本强度（一级副本基本没有加强，100级强度大概增加了五倍，这个强度变化是线性的）',
-          '- 加了一些动画',
-          '- 装备数值调整',
-          '- 独特装备掉率修改为4%,商店有较小概率刷新出独特装备',
-          '- 售出装备获得金币调高了三倍，增加了高级副本金币获取'
-        ],
-        bug: [
-          '- 修复自动出售可能将背包其余装备卖出的bug',
-        ]
-      }, {
-        title: '2020-11-09 (1.1.1)',
-        adjust: [
-          '-  适配移动端',
-        ],
-      },
-      {
-        title: '2020-11-06 (1.1.0)',
-        desc: '',
-        adjust: [
-          '- （功能）添加装备锁定功能',
-          '- （功能）装备新增百分比词条',
-          '- （功能）添加 60~100 级副本',
-          '- （功能）完成副本时可能掉落独特级别的装备（通关后 2.5%掉落率，无尽挑战不会掉落）',
-          '- （功能）通关后开启无尽挑战'
-        ],
-        majorization: [
-          '- （优化）调整了商店价格（前期更低，后期更高），现在商店等级最高为 110 级',
-          '- （优化）调整并添加了一些新装备',
-          '- （优化）上调了 90 与 100 级副本的难度'
-        ],
-        bug: [
-          '- （bug）修复了手动结束副本挑战可能导致副本加速的 bug'
-        ]
-      },]
+          title: '2020-11-26 (1.2.1)',
+          desc: '- 现在可以在更新公告下方直接提意见了，或者是反馈bug。',
+          adjust: [
+            '-  商店支持金币刷新了',
+            '-  无尽挑战添加自动挑战',
+          ],
+          majorization: [
+            '- 现在强化后会保存游戏',
+            '- 继续加强副本',
+            '- 装备数值调整',
+          ],
+        },
+        {
+          title: '2020-11-25 (1.2.0)',
+          desc: '- 时隔半个多月的更新,这次修改的内容比较多',
+          adjust: [
+            '-  添加导入导出存档功能：背包装备过多可能导致存档数据比较长，所以建议导出前处理一下背包装备 ',
+            '-  添加自动出售：背包栏可以开启自动出售，自动出售会卖出低品质的装备（低于神器）',
+            '-  添加装备强化与词条重铸：需要金币',
+            '-  添加独特级别的防具与饰品',
+          ],
+          majorization: [
+            '- 加强副本强度（一级副本基本没有加强，100级强度大概增加了五倍，这个强度变化是线性的）',
+            '- 加了一些动画',
+            '- 装备数值调整',
+            '- 独特装备掉率修改为4%,商店有较小概率刷新出独特装备',
+            '- 售出装备获得金币调高了三倍，增加了高级副本金币获取'
+          ],
+          bug: [
+            '- 修复自动出售可能将背包其余装备卖出的bug',
+          ]
+        }, {
+          title: '2020-11-09 (1.1.1)',
+          adjust: [
+            '-  适配移动端',
+          ],
+        },
+        {
+          title: '2020-11-06 (1.1.0)',
+          desc: '',
+          adjust: [
+            '- （功能）添加装备锁定功能',
+            '- （功能）装备新增百分比词条',
+            '- （功能）添加 60~100 级副本',
+            '- （功能）完成副本时可能掉落独特级别的装备（通关后 2.5%掉落率，无尽挑战不会掉落）',
+            '- （功能）通关后开启无尽挑战'
+          ],
+          majorization: [
+            '- （优化）调整了商店价格（前期更低，后期更高），现在商店等级最高为 110 级',
+            '- （优化）调整并添加了一些新装备',
+            '- （优化）上调了 90 与 100 级副本的难度'
+          ],
+          bug: [
+            '- （bug）修复了手动结束副本挑战可能导致副本加速的 bug'
+          ]
+        },]
     };
   },
   mounted() {
-    this.checkedUpdateInfo = localStorage.getItem('checkedUpdateInfo')
+    this.checkedUpdateInfo = localStorage.getItem('version') == "1.2.2" ? true : false
   },
   methods: {
-    eastereEgg1(e){
-      setTimeout(()=>{
+    eastereEgg1(e) {
+      setTimeout(() => {
         this.reKeyCode = []
-      },3000)
+      }, 3000)
       this.reKeyCode.push(e.keyCode)
-      if(JSON.stringify(this.reKeyCode) == JSON.stringify(this.keyCode)){
+      if (JSON.stringify(this.reKeyCode) == JSON.stringify(this.keyCode)) {
         var p = this.findComponentUpward(this, 'index')
-        if(!p.GMmodel){
+        if (!p.GMmodel) {
           p.GMmodel = true
           this.$store.commit("set_sys_info", {
             msg: `
@@ -144,24 +158,24 @@ export default {
               开启了GM模式，如果你是玩家的话，请不要滥用GM模式哦。
             `,
             type: 'win'
-          });  
-        }  
+          });
+        }
       }
     },
     drawerOpen() {
       this.showExtrasInfo = true
       this.checkedUpdateInfo = true
-      localStorage.setItem('checkedUpdateInfo', true)
+      localStorage.setItem('version', '1.2.2')
     },
     closePanel() {
-      localStorage.setItem('checkedUpdateInfo', true)
+      localStorage.setItem('version', '1.2.2')
       this.showExtrasInfo = false
     },
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
     async submitSuggest() {
-      if(this.disabled){
+      if (this.disabled) {
         return
       }
       try {
@@ -194,9 +208,9 @@ export default {
         console.log(error);
       }
       this.disabled = true
-      setTimeout(()=>{
+      setTimeout(() => {
         this.disabled = false
-      },1000)
+      }, 1000)
     }
   }
 };
@@ -209,8 +223,8 @@ export default {
   width: 0.5rem;
   height: 0.55rem;
   display: flex;
-  bottom: 0.3rem;
-  right: 0.3rem;
+  bottom: 0.1rem;
+  right: 0.8rem;
   z-index: 2;
   cursor: pointer;
   .update-info {

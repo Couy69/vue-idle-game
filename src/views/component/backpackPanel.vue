@@ -2,7 +2,7 @@
   <div class="backpackPanel">
     <div v-for="(v, k) in grid" :key="k">
       <div class="grid">
-        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @touchstart.stop.prevent="openMenu(k,$event)"  @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="v.lv" @contextmenu.prevent="openMenu(k,$event)" @touchstart.stop.prevent="openMenu(k,$event)" @mouseover="showItemInfo($event,v.itemType,v)" @mouseleave="closeItemInfo">
           <div class="icon" :class="{unique:v.quality.name=='独特'}" :style="{ 'box-shadow': 'inset 0 0 7px 2px ' + v.quality.color }">
             <img :src="v.type.iconSrc" alt="" />
           </div>
@@ -14,7 +14,25 @@
     </div>
     <div class="backpack-capacity" :class="{'height-capacity':itemNum/grid.length>0.8}">{{itemNum}}/{{grid.length}}</div>
     <div class="handle">
-      <div class="handle-checkbox" @click="autoSell=!autoSell"><input type="checkbox" name="" v-model="autoSell">自动出售</div>
+      <div class="handle-checkbox">
+        <!-- <input type="checkbox" name="" v-model="autoSell"> -->
+        <span  @click.stop="autoSellPanel = !autoSellPanel">
+          自动出售设置
+          <i class="icon icon-setting"></i>
+        </span>
+        <div class="autoSellSetting" v-if="autoSellPanel">
+          若勾选会在副本获得该品质装备时自动出售
+          <div>
+            <span @click="setAutoSell(0)"><input type="checkbox" name="" v-model="autoSell[0]">破旧</span>
+            <span @click="setAutoSell(1)"><input type="checkbox" name="" v-model="autoSell[1]">普通</span>
+          </div>
+          <div>
+            <span @click="setAutoSell(2)"><input type="checkbox" name="" v-model="autoSell[2]">神器</span>
+            <span @click="setAutoSell(3)"><input type="checkbox" name="" v-model="autoSell[3]">史诗</span>
+          </div>
+
+        </div>
+      </div>
       <div class="button" @click="neaten">一键整理</div>
       <div class="button" @click="sell">一键出售</div>
     </div>
@@ -41,7 +59,8 @@ export default {
       visible: false,
       currentItem: {},
       currentItemIndex: '',
-      autoSell:false,
+      autoSellPanel: false,
+      autoSell:[false,false,false,false]
     };
   },
   mixins: [assist],
@@ -132,6 +151,11 @@ export default {
 
   },
   methods: {
+    // 点击span仍然可以设置input的值，操作的是数组，所以需要$set来实现双向绑定
+    setAutoSell(index){
+      this.$set(this.autoSell,index,!this.autoSell[index])
+    },
+    // 整理
     neaten() {
       var tem = new Array(32).fill({}),
         temIndex = 0
@@ -144,6 +168,7 @@ export default {
       this.grid = this.$deepCopy(tem)
       tem = []
     },
+    // 一键出售
     sell() {
       this.grid.map((item, index) => {
         if (JSON.stringify(item) != '{}') {
@@ -152,22 +177,21 @@ export default {
           this.sellTheEquipment(true)
         }
       })
-
     },
     openMenu(k, e) {
       this.currentItemIndex = k
       this.currentItem = this.grid[k]
-      this.$store.commit('set_need_strengthen_equipment',this.currentItem)
+      this.$store.commit('set_need_strengthen_equipment', this.currentItem)
       const menuMinWidth = 105;
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
       const maxLeft = offsetWidth - menuMinWidth; // left boundary
-      if(e.type ==  'touchstart'){
+      if (e.type == 'touchstart') {
         var left = e.changedTouches[0].clientX - offsetLeft + 15; // 15: margin right
-      }else{
+      } else {
         var left = e.clientX - offsetLeft + 15; // 15: margin right
       }
-      
+
 
       if (left > maxLeft) {
         this.left = maxLeft;
@@ -181,8 +205,8 @@ export default {
     closeMenu() {
       this.visible = false;
     },
-    showItemInfo($event, type, item,SchemaIsMobile) {
-      if(SchemaIsMobile != 'touch'&&this.$store.state.operatorSchemaIsMobile){
+    showItemInfo($event, type, item, SchemaIsMobile) {
+      if (SchemaIsMobile != 'touch' && this.$store.state.operatorSchemaIsMobile) {
         return
       }
       var p = this.findComponentUpward(this, 'index')
@@ -214,15 +238,15 @@ export default {
       }
 
     },
-    strengthenEquipment(v){
+    strengthenEquipment(v) {
       var p = this.findComponentUpward(this, 'index')
       p.closePanel()
       p.strengthenEquipmentPanelOpened = true
     },
-    sellTheEquipment(withoutWarning,sellMsg) {
+    sellTheEquipment(withoutWarning, sellMsg) {
       if (this.currentItem.locked) {
 
-        !withoutWarning&&this.$store.commit("set_sys_info", {
+        !withoutWarning && this.$store.commit("set_sys_info", {
           msg: `
               装备已锁定，请先解锁再出售。
             `,
@@ -235,7 +259,7 @@ export default {
       this.$store.commit("set_player_gold", parseInt(gold));
       this.$store.commit("set_sys_info", {
         msg: `
-              ${sellMsg?sellMsg:''}出售装备获得金币${parseInt(gold)}
+              ${sellMsg ? sellMsg : ''}出售装备获得金币${parseInt(gold)}
             `,
         type: 'trophy',
       });
@@ -261,16 +285,20 @@ export default {
   align-items: center;
   width: 100%;
   height: 0.5rem;
-  .handle-checkbox{
+  .handle-checkbox {
     display: flex;
     align-items: center;
     cursor: pointer;
-    input{
-      width: .17rem;
-      height:.17rem;
+    position: relative;
+    span {
+      display: flex;
+      align-items: center;
+    }
+    input {
+      width: 0.17rem;
+      height: 0.17rem;
       margin-right: 2px;
       margin-top: 1px;
-      
     }
   }
 }
@@ -297,8 +325,8 @@ export default {
       img {
         width: 80%;
         height: 80%;
-        max-width: .32rem;
-        max-height: .32rem;
+        max-width: 0.32rem;
+        max-height: 0.32rem;
       }
     }
   }
@@ -361,5 +389,30 @@ export default {
 }
 .height-capacity {
   color: red;
+}
+.autoSellSetting {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0.1rem;
+  border-radius: 4px;
+  bottom: 0.3rem;
+  right:0rem;
+  width: 1.7rem;
+  div{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  span {
+    display: flex;
+    align-items: center;
+    padding: 0.06rem;
+    cursor: pointer;
+  }
+  input{
+    cursor: pointer;
+  }
 }
 </style>
