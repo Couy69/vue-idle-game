@@ -59,15 +59,15 @@
 
       <div class="extraEntry">
         <div class="extraEntry-item" v-for="(v,k) in equiment.extraEntry" :key="v.id" @click="recastTheEquiment(v,k)" @mouseover="changeRecastStatus(v,k,true)" @mouseleave="changeRecastStatus(v,k,false)">
-          <button class="btn btn-snake-border">
+          <button class="btn btn-snake-border"  :class="qualityClass">
             <div class="btn-borders">
               <div class="border-top"></div>
               <div class="border-right"></div>
               <div class="border-bottom"></div>
               <div class="border-left"></div>
             </div>
-            <div v-if="v.recastStatus" class="recast-info" :class="{red:userGold<recastNeedGold}">点击花费{{recastNeedGold}}金币重铸</div>
-            <div v-else>{{v.name}} : {{v.showVal}}</div>
+            <div v-if="v.recastStatus" class="recast-info" ><span :class="{red:userGold<recastNeedGold}"></span>点击花费{{recastNeedGold}}金币重铸</div>
+            <div v-else>{{v.name}} : {{v.showVal}} <span style="font-size:.12rem;margin-left:.06rem" v-if="v.EntryLevel"> ({{v.EntryLevel}})</span> </div>
           </button>
 
         </div>
@@ -91,6 +91,7 @@ export default {
       autoStrengLv: 12,
       autoStrengTime: '',
       recast: false,
+      qualityClass: '',
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
@@ -119,6 +120,7 @@ export default {
   mounted() {
   },
   computed: {
+
     userGold() { return this.$store.state.playerAttribute.GOLD },
     item() { return this.$store.state.needStrengthenEquipment },
     strengthenNeedGold() {
@@ -140,13 +142,15 @@ export default {
   },
   methods: {
     changeRecastStatus(v, k, status) {
+      // 设置是否处于重置状态中
+      this.qualityClass = ''
       v.recastStatus = status
       this.$set(this.equiment.extraEntry, k, v)
     },
     // 强化装备
     startStreng(auto) {
-      var ra = auto?2:1
-      var needGold = this.strengthenNeedGold*ra
+      var ra = auto ? 2 : 1
+      var needGold = this.strengthenNeedGold * ra
       if (this.$store.state.playerAttribute.GOLD < needGold) {
         this.stopAutoStreng()
         this.$store.commit("set_sys_info", {
@@ -221,6 +225,18 @@ export default {
       let newEntry = handle.createRandomEntry(this.equiment.lv, this.equiment.quality.qualityCoefficient)
       this.$set(this.equiment.extraEntry, k, newEntry);
       this.$store.commit("set_player_gold", -parseInt(this.recastNeedGold));
+      var a = parseInt(this.equiment.extraEntry[k].EntryLevel)
+      if (a < 25) {
+        this.qualityClass = 'D'
+      } else if (a < 50 && a >= 25) {
+        this.qualityClass = 'C'
+      } else if (a < 70 && a >= 50) {
+        this.qualityClass = 'B'
+      } else if (a < 90 && a >= 70) {
+        this.qualityClass = 'A'
+      } else {
+        this.qualityClass = 'S'
+      }
       this.changeTheEquiment()
     },
     //根据强化等级变动装备
@@ -289,7 +305,7 @@ export default {
   }
   .entry {
     width: 100%;
-    padding: 0.2rem 0.4rem;
+    padding: 0.2rem 0.3rem;
     display: flex;
     justify-content: space-around;
     font-size: 0.18rem;
@@ -365,10 +381,25 @@ $blue: #ccc;
   border-radius: 4px;
   transition: 0.2s;
   &:hover {
-    box-shadow: inset 0 0 7px 7px #53868ec9;
+    box-shadow: inset 0 0 7px 7px #53a28ec9;
     .btn-borders {
       display: flex !important;
     }
+  }
+  &.D:hover {
+    box-shadow: inset 0 0 7px 7px #a1a1a1a2;
+  }
+  &.C:hover {
+    box-shadow: inset 0 0 7px 7px #ffffffa2;
+  }
+  &.B:hover {
+    box-shadow: inset 0 0 7px 7px #ff00ffa2;
+  }
+  &.A:hover {
+    box-shadow: inset 0 0 7px 7px #f78918a2;
+  }
+  &.S:hover {
+    box-shadow: inset 0 0 7px 7px #ff0000a2;
   }
   .btn-text {
     color: $blue;

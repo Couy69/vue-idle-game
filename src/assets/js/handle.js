@@ -123,28 +123,28 @@ function createRandomEntry(lv, qualityCoefficient) {
     // },
   ]
 
-  let randomCoefficient = Math.random() 
+  let randomCoefficient = Math.random() ,EntryLevel = Math.floor(randomCoefficient*100)+'%'
   let entry = {}
-  let index = Math.floor((randomCoefficient  * extraEntry.length));
+  let index = Math.floor((Math.random()  * extraEntry.length));
   entry = extraEntry[index]
-
+  entry.EntryLevel = EntryLevel
   switch (entry.type) {
     case 'ATK':
-      var random = parseInt(lv * 0.5 + (randomCoefficient  * lv / 2 + 1))
+      var random = parseInt(lv * 1 + (randomCoefficient  * lv / 2 + 1))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random
       break;
     case 'DEF':
-      var random = parseInt((lv * 0.2 + (randomCoefficient  * lv / 2 + 1)))
+      var random = parseInt((lv * 0.4 + (randomCoefficient  * lv / 2 + 1)))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random
       break;
     case 'HP':
-      var random = parseInt((lv * 0.2 * 10 + (randomCoefficient  * lv / 2 + 1)))
+      var random = parseInt((lv * 0.2 * 15 + (randomCoefficient  * lv / 2 + 1)))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
