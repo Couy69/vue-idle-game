@@ -122,11 +122,11 @@ export default {
     userGold() { return this.$store.state.playerAttribute.GOLD },
     item() { return this.$store.state.needStrengthenEquipment },
     strengthenNeedGold() {
-      var a = parseInt((this.equiment.lv + 1) * (1.1 ** (this.equiment.enchantlvl) ** 1.1) * (10 + this.equiment.lv / 5)) + 100
+      var a = parseInt((parseInt(this.equiment.lv) + 1) * (1.1 ** (this.equiment.enchantlvl) ** 1.1) * (10 + parseInt(this.equiment.lv) / 5)) + 100
       return a
     },
     recastNeedGold() {
-      var a = parseInt(this.equiment.lv * this.equiment.quality.qualityCoefficient * (200 + 10 * this.equiment.lv) / 4)
+      var a = parseInt(parseInt(this.equiment.lv) * this.equiment.quality.qualityCoefficient * (200 + 10 * parseInt(this.equiment.lv)) / 4)
       return a
     }
   },
@@ -201,7 +201,7 @@ export default {
             type: "win",
           });
         }
-      }, 300)
+      }, 150)
     },
     stopAutoStreng() {
       this.autoStrengModel = false
@@ -209,7 +209,6 @@ export default {
     },
     // 重铸装备
     recastTheEquiment(v, k) {
-      console.log(v, k)
       if (this.$store.state.playerAttribute.GOLD < this.recastNeedGold) {
         this.$store.commit("set_sys_info", {
           msg: `

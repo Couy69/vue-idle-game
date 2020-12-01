@@ -44,6 +44,14 @@ export default new Vuex.Store({
           value: 0,
           showValue: '',
         },
+        BLO: {
+          value: 0,
+          showValue: '0',
+        },
+        EVA: {
+          value: 0,
+          showValue: '',
+        },
       },
       weapon: {
         "lv": 1,
@@ -185,6 +193,14 @@ export default new Vuex.Store({
           value: 0,
           showValue: '',
         },
+        EVA: {
+          value: 0,
+          showValue: '',
+        },
+        BLO: {
+          value: 0,
+          showValue: '0',
+        },
       }
       
       let warponStrEntry = vueInstance.$deepCopy(warpon.type.entry)
@@ -195,6 +211,9 @@ export default new Vuex.Store({
       handle.CalculateStrAttr(accStrEntry,acc.enchantlvl||0)
 
       entry = [].concat(warponStrEntry).concat(warpon.extraEntry).concat(armorStrEntry).concat(armor.extraEntry).concat(accStrEntry).concat(acc.extraEntry)
+      
+      // 命中几率初始为100%，用来计算最终的闪避几率
+      let HitChance = 1
       entry.map(item => {
         switch (item.type) {
           case 'ATK':
@@ -217,11 +236,17 @@ export default new Vuex.Store({
             attribute.CRITDMG.value += Number(item.value)
             attribute.CRITDMG.showValue = '+' + attribute.CRITDMG.value + '%'
             break;
+          case 'EVA':
+            HitChance = HitChance*(1-item.value/100)
+            break;
+          case 'BLO':
+            attribute.BLO.value += Number(item.value)
+            attribute.BLO.showValue = (attribute.BLO.value)
+            break;
           default:
             break;
         }
       })
-
       var ATKPERCENT=0,DEFPERCENT=0,HPPERCENT=0
       entry.map(item => {
         switch (item.type) {
@@ -244,6 +269,8 @@ export default new Vuex.Store({
       attribute.DEF.showValue = '+' + (attribute.DEF.value)
       attribute.MAXHP.value = parseInt(attribute.MAXHP.value * (100 + HPPERCENT) / 100)
       attribute.MAXHP.showValue = '+' + (attribute.MAXHP.value)
+      attribute.EVA.value = ((1-HitChance)*100).toFixed(1)
+      attribute.EVA.showValue = ((1-HitChance)*100).toFixed(1)+'%'
 
       // console.log(vueInstance.$store.state)
       attribute.MAXHP.value += 100
@@ -270,6 +297,7 @@ export default new Vuex.Store({
 
       //承受伤害比例
       attribute.REDUCDMG = 1 - 0.06 * armor / (1 + (0.06 * armor))
+
       // state.playerAttribute.attribute=attribute
       // vueInstance.$store.commit("set_player_attribute", attribute);
       this.state.playerAttribute.attribute = attribute

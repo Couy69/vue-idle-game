@@ -57,7 +57,7 @@ function CalculateStrAttr(entry, lv) {
       default:
         break;
     }
-    
+
   })
   return entry
 }
@@ -66,109 +66,136 @@ function CalculateStrAttr(entry, lv) {
  *  返回一条随机属性
  * @param {number} lv  装备强化等级
  */
-function createRandomEntry(lv,qualityCoefficient){
+function createRandomEntry(lv, qualityCoefficient) {
 
-  let extraEntry=[{
-    'value': '11',
-    'showVal': '+11',
-    type: 'ATK',
-    'name': '攻击力'
-  }, {
-    type: 'CRIT',
-    'value': '8',
-    'showVal': '+8%',
-    'name': '暴击率'
-  }, {
-    type: 'CRITDMG',
-    'value': '20',
-    'showVal': '+20%',
-    'name': '暴击伤害'
-  }, {
-    type: 'HP',
-    'value': '20',
-    'showVal': '+20',
-    'name': '生命值'
-  }, {
-    type: 'DEF',
-    'value': '8',
-    'showVal': '+8%',
-    'name': '防御力'
-  }, {
-    'value': '11%',
-    'showVal': '+11%',
-    type: 'ATKPERCENT',
-    'name': '攻击力'
-  }, {
-    'value': '11%',
-    'showVal': '+11%',
-    type: 'DEFPERCENT',
-    'name': '防御力'
-  }, {
-    'value': '11%',
-    'showVal': '+11%',
-    type: 'HPPERCENT',
-    'name': '生命值'
-  },]
+  let extraEntry = [{
+      'value': '11',
+      'showVal': '+11',
+      type: 'ATK',
+      'name': '攻击力'
+    }, {
+      type: 'CRIT',
+      'value': '8',
+      'showVal': '+8%',
+      'name': '暴击率'
+    }, {
+      type: 'CRITDMG',
+      'value': '20',
+      'showVal': '+20%',
+      'name': '暴击伤害'
+    }, {
+      type: 'HP',
+      'value': '20',
+      'showVal': '+20',
+      'name': '生命值'
+    }, {
+      type: 'DEF',
+      'value': '8',
+      'showVal': '+8%',
+      'name': '防御力'
+    }, {
+      'value': '11%',
+      'showVal': '+11%',
+      type: 'ATKPERCENT',
+      'name': '攻击力'
+    }, {
+      'value': '11%',
+      'showVal': '+11%',
+      type: 'DEFPERCENT',
+      'name': '防御力'
+    }, {
+      'value': '11%',
+      'showVal': '+11%',
+      type: 'HPPERCENT',
+      'name': '生命值'
+    },
+    {
+      'value': '11%',
+      'showVal': '+11%',
+      type: 'BLO',
+      'name': '格挡'
+    },
+    // {
+    //   'value': '11%',
+    //   'showVal': '+11%',
+    //   type: 'EVA',
+    //   'name': '闪避'
+    // },
+  ]
 
+  let randomCoefficient = Math.random() 
   let entry = {}
-  let index = Math.floor((Math.random() * extraEntry.length));
+  let index = Math.floor((randomCoefficient  * extraEntry.length));
   entry = extraEntry[index]
 
   switch (entry.type) {
     case 'ATK':
-      var random = parseInt(lv * 0.5 + (Math.random() * lv / 2 + 1))
+      var random = parseInt(lv * 0.5 + (randomCoefficient  * lv / 2 + 1))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random
       break;
     case 'DEF':
-      var random = parseInt((lv * 0.2 + (Math.random() * lv / 2 + 1)))
+      var random = parseInt((lv * 0.2 + (randomCoefficient  * lv / 2 + 1)))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random
       break;
     case 'HP':
-      var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2 + 1)))
+      var random = parseInt((lv * 0.2 * 10 + (randomCoefficient  * lv / 2 + 1)))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random
       break;
     case 'ATKPERCENT':
-      var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.11 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'DEFPERCENT':
-      var random = parseFloat(lv * 0.1 + (Math.random() * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.1 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'HPPERCENT':
-      var random = parseFloat(lv * 0.13 + (Math.random() * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.13 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'CRIT':
-      var random = parseInt(Math.random() * 5 + 5)
+      var random = parseInt(randomCoefficient  * 5 + 5)
       random = parseInt(random * qualityCoefficient)
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'CRITDMG':
-      var random = parseInt(Math.random() * 12 + 20)
+      var random = parseInt(randomCoefficient  * 12 + 20)
       random = parseInt(random * qualityCoefficient)
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
+    case 'BLO':
+      var random = parseInt((lv * 0.2 * 2 + (randomCoefficient  * lv / 2 + 1)))
+      random = parseInt(random * qualityCoefficient)
+      random = random || 1
+      entry.value = random
+      entry.showVal = '+' + random
+      break;
+      // case 'EVA':
+      //     var random = parseInt(randomCoefficient  * 12 + 3)
+      //     random = parseInt(random * qualityCoefficient)
+      //     entry.value = random
+      //     entry.showVal = '+' + random + '%'
+      //     break;
     default:
       break;
   }

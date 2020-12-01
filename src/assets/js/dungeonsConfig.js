@@ -26,7 +26,7 @@ export const dungeonsConfig = {
             trophy: {
               gold: 10,
               equip: [
-                1, 0, 0, 0
+                0.2, 0.1, 0.05, 0
               ],
             }
           }, {
@@ -40,7 +40,7 @@ export const dungeonsConfig = {
             trophy: {
               gold: 10,
               equip: [
-                0.0, 1, 0.00, 0
+                0.2, 0.1, 0.05, 0
               ],
             }
           }, {
@@ -54,7 +54,7 @@ export const dungeonsConfig = {
             trophy: {
               gold: 10,
               equip: [
-                0, 0, 1, 0
+                0.2, 0.1, 0.05, 0
               ],
             }
           }, {
@@ -68,7 +68,7 @@ export const dungeonsConfig = {
             trophy: {
               gold: 10,
               equip: [
-                0, 0, 0, 1
+                0.2, 0.1, 0.05, 0
               ],
             }
           }, {

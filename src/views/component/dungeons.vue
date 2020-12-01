@@ -250,6 +250,7 @@ export default {
         healthRecoverySpeed = this.$store.state.playerAttribute.healthRecoverySpeed,
         reducedDamage = this.$store.state.playerAttribute.attribute.REDUCDMG,
         playerDPS = playerAttribute.DPS,
+        playerBLO = playerAttribute.BLO.value,
         monsterAttribute = this.$deepCopy(event.attribute) //HP: 100,ATK: 1,
 
       // 战斗伤害计算公式 
@@ -270,7 +271,7 @@ export default {
         monsterAttribute.HP = monsterAttribute.HP * (1 + this.dungeons.lv / 55)
       }
 
-      var playerDeadTime = (playerAttribute.CURHP.value / reducedDamage / monsterAttribute.ATK),
+      var playerDeadTime = (playerAttribute.CURHP.value+playerBLO) / reducedDamage / monsterAttribute.ATK,
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 
       // 战斗获胜
@@ -278,6 +279,8 @@ export default {
         battleTime = monsterDeadTime
         var takeDmg = -battleTime * Number(monsterAttribute.ATK)
         takeDmg = parseInt(takeDmg * reducedDamage)
+        takeDmg = takeDmg + playerBLO
+        takeDmg = takeDmg>-1?-1:takeDmg
         this.$store.commit('set_player_curhp', takeDmg)
 
         // 无尽模式下怪物加强
@@ -312,6 +315,8 @@ export default {
         this.dungeons = {}
         var takeDmg = monsterDeadTime * Number(monsterAttribute.ATK)
         takeDmg = parseInt(takeDmg * reducedDamage)
+        takeDmg = takeDmg - playerBLO
+        takeDmg = takeDmg<1?1:takeDmg
         this.$store.commit("set_sys_info", {
           msg: `
               战斗失败！受到了${takeDmg}点伤害
@@ -399,7 +404,7 @@ export default {
         this.$store.commit("set_player_gold", event.trophy.gold);
         items.map(item => {
           // 当开启了自动出售并且新获得的装备品质低于史诗时，自动出售
-          if (backpackPanel.autoSell[equipQua]) {
+          if (backpackPanel.autoSell[equipQua]&&item.quality.name!="独特") {
             var gold = item.lv * item.quality.qualityCoefficient * 10
             this.$store.commit("set_player_gold", parseInt(gold));
             this.$store.commit("set_sys_info", {

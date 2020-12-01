@@ -30,7 +30,7 @@
         <cTooltip placement="bottom">
           <template v-slot:content>
             <div class="item" title="攻击力">
-              <img src="../assets/icons/S_Sword06.png" alt="">
+              <img src="../assets/icons/ATK.png" alt="">
               <div class="value">
                 {{attribute.ATK.value}}
               </div>
@@ -44,23 +44,7 @@
         <cTooltip placement="bottom">
           <template v-slot:content>
             <div class="item">
-              <img src="../assets/icons/icon_11.png" alt="">
-              <div class="value">
-                {{attribute.DEF.value}} <span style="font-size:.14rem;">({{Math.round((1-attribute.REDUCDMG)*100)}}%)</span>
-              </div>
-            </div>
-          </template>
-          <template v-slot:tip>
-            <p class="info">* 角色防御力以及计算后的减伤比例</p>
-            <p class="info">* 减伤比例采用非线性计算，护甲越高收益越低</p>
-            <p class="info">* 显示为近似值，实际上永远不会到达100%减伤</p>
-          </template>
-        </cTooltip>
-
-        <cTooltip placement="bottom">
-          <template v-slot:content>
-            <div class="item">
-              <img src="../assets/icons/icon_78.png" alt="">
+              <img src="../assets/icons/CRIT.png" alt="">
               <div class="value">
                 {{attribute.CRIT.value}}%
               </div>
@@ -74,7 +58,7 @@
         <cTooltip placement="bottom">
           <template v-slot:content>
             <div class="item">
-              <img src="../assets/icons/S_Sword01.png" alt="">
+              <img src="../assets/icons/CRITDMG.png" alt="">
               <div class="value">
                 {{attribute.CRITDMG.value}}%
               </div>
@@ -85,13 +69,60 @@
           </template>
         </cTooltip>
 
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/icon_11.png" alt="">
+              <div class="value">
+                {{attribute.DEF.value}} <span style="font-size:.12rem;">({{((1-attribute.REDUCDMG)*100).toFixed(2)}}%)</span>
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色防御力以及计算后的减伤比例</p>
+            <p class="info">* 减伤比例采用非线性计算，护甲越高收益越低</p>
+            <p class="info">* 显示为近似值，实际上永远不会到达100%减伤</p>
+          </template>
+        </cTooltip>
+
+        <!-- <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/S_EVA.png" alt="">
+              <div class="value">
+                {{attribute.EVA.showValue}}
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色闪避几率</p>
+            <p class="info">* 闪避几率采用非线性计算</p>
+            <p class="info">* 多个闪避来源自身乘法叠加</p>
+          </template>
+        </cTooltip> -->
+
+        <cTooltip placement="bottom">
+          <template v-slot:content>
+            <div class="item">
+              <img src="../assets/icons/S_BLO.png" alt="">
+              <div class="value">
+                {{attribute.BLO.showValue}}
+              </div>
+            </div>
+          </template>
+          <template v-slot:tip>
+            <p class="info">* 角色格挡伤害</p>
+            <p class="info">* 计算护甲后再计算格挡伤害就是最终受到的伤害</p>
+          </template>
+        </cTooltip>
+
       </div>
     </div>
     <div class="user-item">
       <div class="uii">
         <cTooltip placement="bottom">
           <template v-slot:content>
-            <div class="gold" v-if="attribute.DPS" :style="{fontSize:attribute.DPS>=10000?'.18rem':'.22rem'}">DPS: 
+            <div class="gold" v-if="attribute.DPS" :style="{fontSize:attribute.DPS>=10000?'.18rem':'.22rem'}">DPS:
               <span :style="{fontSize:attribute.DPS>=10000?'.18rem':'.22rem'}">{{(attribute.DPS).toFixed(2)}}</span>
             </div>
           </template>
@@ -152,6 +183,7 @@
         <div class="eventEnd button" @click='eventEnd'>结束挑战</div>
       </div>
       <div class="dungeons-Info" v-if="dungeons&&!inDungeons">
+        <i class="dungeons-re" @click="resetEndlessLv"></i>
         <i class="dungeons-close" @click="closeDungeonsInfo"></i>
         <div class="dungeons-title">{{dungeons.name}}</div>
         <div class="jjj">
@@ -285,9 +317,11 @@
       <div class="content">
         <div class="body">
           <span class="prompt-message">* 随机生成一套指定等级与质量的装备</span>
-        lv:<input v-model="GMEquipLv" type="number" placeholder="装备等级1~110">
-        稀有度：<input v-model="GMEquipQu" type="number" placeholder="装备质量0~4">
-        <div class="button" @click="createGMEquip">确定</div></div>
+          lv:<input v-model="GMEquipLv" type="number" placeholder="装备等级1~110">
+          稀有度：<input v-model="GMEquipQu" type="number" placeholder="装备质量0~4">
+          增加金币：<input v-model="GMGold" type="number" placeholder="增加金币">
+          <div class="button" @click="createGMEquip">确定</div>
+        </div>
       </div>
     </div>
     <extras></extras>
@@ -339,6 +373,7 @@ export default {
       itemDialogStyle: {},
       GMEquipLv: '',
       GMEquipQu: '',
+      GMGold: '',
       GMOpened: false,
       needComparison: true,
       saveData: {},
@@ -346,7 +381,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment,extras,qa ,setting},
+  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment, extras, qa, setting },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -434,19 +469,19 @@ export default {
         element.scrollTop = element.scrollHeight + 20
       })
     },
-    upEChallenge(){
+    upEChallenge() {
       this.reEChallenge = !this.upEChallenge
     },
-    reEChallenge(){
+    reEChallenge() {
       this.upEChallenge = !this.reEChallenge
     },
-    GMEquipLv(){
-      this.GMEquipLv = this.GMEquipLv>110?110:this.GMEquipLv
-      this.GMEquipLv = this.GMEquipLv<1?1:this.GMEquipLv
+    GMEquipLv() {
+      this.GMEquipLv = this.GMEquipLv > 110 ? 110 : this.GMEquipLv
+      this.GMEquipLv = this.GMEquipLv < 1 ? 1 : this.GMEquipLv
     },
-    GMEquipQu(){
-      this.GMEquipQu = this.GMEquipQu>4?4:this.GMEquipQu
-      this.GMEquipQu = this.GMEquipQu<0?0:this.GMEquipQu
+    GMEquipQu() {
+      this.GMEquipQu = this.GMEquipQu > 4 ? 4 : this.GMEquipQu
+      this.GMEquipQu = this.GMEquipQu < 0 ? 0 : this.GMEquipQu
     }
   },
   methods: {
@@ -553,7 +588,7 @@ export default {
       var saveData = Base64.encode(Base64.encode(JSON.stringify(data)))
       localStorage.setItem('_sd', saveData)
 
-      needInfo&&this.$store.commit("set_sys_info", {
+      needInfo && this.$store.commit("set_sys_info", {
         msg: `
               游戏进度已经保存了。
             `,
@@ -583,6 +618,7 @@ export default {
       this.$store.commit('clear_sys_info')
     },
     createGMEquip() {
+      this.$store.commit("set_player_gold", parseInt(this.GMGold));
       var b = this.findComponentDownward(this, "weaponPanel");
       var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
@@ -656,8 +692,25 @@ export default {
             `,
         type: 'warning'
       });
-      setTimeout(()=>{
-        
+      setTimeout(() => {
+
+      })
+    },
+    resetEndlessLv() {
+      this.$message({
+        message: '这将重置你的无尽等级，确认操作吗？',
+        title: '提示',
+        confirmBtnText: '重置',
+        onClose: () => {
+          this.$store.commit("set_endless_lv", 1);
+          this.closeDungeonsInfo()
+          this.$store.commit("set_sys_info", {
+            msg: `
+              无尽挑战层数重置到了1级。
+            `,
+            type: 'win'
+          });
+        }
       })
     },
     openMenuPanel(type) {
@@ -809,29 +862,33 @@ a {
     }
     .other {
       img {
-        width: 0.4rem;
-        height: 0.4rem;
+        width: 0.35rem !important;
+        height: 0.35rem !important;
       }
       display: flex;
       flex: 1;
-      padding: 0.2rem;
+      padding: 0.1rem;
       border: 2px solid #ccc;
       margin-top: 0.2rem;
       flex-wrap: wrap;
       & > div,
       .item {
         cursor: pointer;
-        width: 50%;
+        width: 33.3%;
         height: 50%;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding-left: 0.2rem;
+        padding-top: 0.1rem;
+        flex-direction: column;
         .value {
-          margin-left: 0.1rem;
-          font-size: 0.24rem;
+          margin-top: 0.06rem;
+          font-size: 0.23rem;
           font-weight: normal;
           flex: 1;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
         }
       }
       .item {
@@ -1187,6 +1244,17 @@ a {
     background-image: url(../assets/icons/close.png);
     background-size: cover;
   }
+  .dungeons-re {
+    cursor: pointer;
+    position: absolute;
+    top: 0.1rem;
+    right: 0.5rem;
+    display: block;
+    width: 0.23rem;
+    height: 0.23rem;
+    background-image: url(../assets/icons/re.png);
+    background-size: cover;
+  }
   .dungeons-title {
     margin-top: 0.1rem;
     font-size: 0.2rem;
@@ -1209,13 +1277,13 @@ a {
       margin-right: 0.05rem;
     }
   }
-  .handle-column{
+  .handle-column {
     display: flex;
     flex-direction: column;
-    p{
+    p {
       display: flex;
       align-items: center;
-    } 
+    }
   }
   .jjj {
     font-size: 0.14rem;
