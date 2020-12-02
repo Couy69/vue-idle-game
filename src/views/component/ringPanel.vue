@@ -1,36 +1,36 @@
 <template>
-  <div class="acc">
+  <div class="ring">
     <!-- <div class="btn" style="position:relative;z-index:999;">
-      <button @click="createNewacc">随机生成</button>
+      <button @click="createNewring">随机生成</button>
     </div> -->
-    <div class="accPanel" :style="{'box-shadow':' 0 0 5px 5px '+acc.quality.color + 'b8'}"  v-if="JSON.stringify(acc)!='{}'">
+    <div class="ringPanel" :style="{'box-shadow':' 0 0 5px 5px '+ring.quality.color + 'b8'}"  v-if="JSON.stringify(ring)!='{}'">
       <div class="title">
-        <div class='icon' :class="{unique:acc.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+acc.quality.color}">
-          <img :src="acc.type.iconSrc" alt="">
+        <div class='icon' :class="{unique:ring.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+ring.quality.color}">
+          <img :src="ring.type.iconSrc" alt="">
         </div>
-        <div class='name' :style="{color:acc.quality.color}">{{acc.type.name}} {{acc.enchantlvl?'(+'+acc.enchantlvl+')':''}}</div>
+        <div class='name' :style="{color:ring.quality.color}">{{ring.type.name}} {{ring.enchantlvl?'(+'+ring.enchantlvl+')':''}}</div>
       </div>
       <div class='type'>
-        <div :style="{color:acc.quality.color}">{{acc.quality.name}}</div>
-        <div>饰品</div>
+        <div :style="{color:ring.quality.color}">{{ring.quality.name}}</div>
+        <div>戒指</div>
       </div>
       <div class='lv'>
-        <div>lv{{acc.lv}}</div>
+        <div>lv{{ring.lv}}</div>
       </div>
       <div class="entry">
-        <div v-for="v in acc.type.entry" :key="v.id">
+        <div v-for="v in ring.type.entry" :key="v.id">
           <!-- <div>{{v.name}} : {{v.showVal}}</div> -->
-          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="acc.enchantlvl">(+{{Math.round(v.value*(1.05**(acc.enchantlvl)**1.1)-v.value)}})</span></div>
+          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="ring.enchantlvl">(+{{Math.round(v.value*(1.05**(ring.enchantlvl)**1.1)-v.value)}})</span></div>
         </div>
       </div>
       <div class="extraEntry">
-        <div v-for="v in acc.extraEntry" :key="v.id">
+        <div v-for="v in ring.extraEntry" :key="v.id">
           <div>{{v.name}} : {{v.showVal}}</div>
         </div>
       </div>
       <div class="des">
         <div>
-          {{acc.type.des}}
+          {{ring.type.des}}
         </div>
       </div>
     </div>
@@ -39,42 +39,42 @@
 </template>
 <script>
 export default {
-  name: "accPanel",
+  name: "ringPanel",
   data() {
     return {
-      acc: {},
+      ring: {},
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
       quality: [{
         name: '破旧',
-        qualityCoefficient: 0.7,
+        qualityCoefficient: 0.6,
         probability: '0.25',
         color: '#a1a1a1',
         extraEntryNum: 1,
       }, {
         name: '普通',
-        qualityCoefficient: 1,
+        qualityCoefficient: 0.9,
         probability: '0.55',
         color: '#fff', extraEntryNum: 2,
       }, {
         name: '神器',
-        qualityCoefficient: 1.5,
+        qualityCoefficient: 1.3,
         probability: '0.15',
         color: '#ff00ff', extraEntryNum: 3,
       }, {
         name: '史诗',
-        qualityCoefficient: 2,
+        qualityCoefficient: 1.6,
         probability: '0.05',
         color: '#f78918', extraEntryNum: 4,
       }, {
         name: '独特',
-        qualityCoefficient: 2.35,
+        qualityCoefficient: 2,
         probability: '0',
         color: '#ff0000', extraEntryNum: 5,
       }],
       uniqueCategory: [{
         name: '真·毛毛指环',
         des: '',
-        iconSrc: './icons/U_Acc02.png',
+        iconSrc: './icons/U_ring02.png',
         entry: [{
             'valCoefficient': 1.2,
             'value': '11',
@@ -97,7 +97,7 @@ export default {
       },{
         name: '死神名片戒指',
         des: '',
-        iconSrc: './icons/U_Acc01.png',
+        iconSrc: './icons/U_ring01.png',
         entry: [{
             'valCoefficient': 1.0,
             'value': '11',
@@ -120,7 +120,7 @@ export default {
       },{
         name: '先驱者戒指',
         des: '',
-        iconSrc: './icons/U_Acc03.png',
+        iconSrc: './icons/U_ring03.png',
         entry: [{
             'valCoefficient': 1.0,
             'value': '11',
@@ -143,7 +143,7 @@ export default {
       },{
         name: '素盏呜尊的意志',
         des: '',
-        iconSrc: './icons/U_Acc04.png',
+        iconSrc: './icons/U_ring04.png',
         entry: [{
             'valCoefficient': 1.6,
             'value': '11',
@@ -160,7 +160,7 @@ export default {
       },{
         name: '月夜见尊的意志',
         des: '',
-        iconSrc: './icons/U_Acc05.png',
+        iconSrc: './icons/U_ring05.png',
         entry: [{
             'valCoefficient': 1.5,
             'value': '11',
@@ -230,66 +230,6 @@ export default {
             'name': '攻击力'
           },]
         },
-        {
-          name: '十字军项链',
-          des: '十字军佩戴的项链',
-          iconSrc: './icons/Ac_1.png',
-          entry: [{
-            'valCoefficient': 0.9,
-            'value': '11',
-            'showVal': '+11',
-            type: 'DEF',
-            'name': '防御力'
-          },{
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }]
-        },
-        {
-          name: '冰龙凝雪',
-          des: '冰龙凝雪',
-          iconSrc: './icons/Ac_7.png',
-          entry: [{
-            'valCoefficient': 0.75,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRITDMG',
-            'name': '暴击伤害'
-          },{
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          },{
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }]
-        },
-        {
-          name: '银魂之眼',
-          des: '银魂之眼',
-          iconSrc: './icons/Ac_5.png',
-          entry: [{
-            'valCoefficient': 1.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          },{
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }]
-        }
       ],
       extraEntry: [{
         'value': '11',
@@ -324,62 +264,62 @@ export default {
   },
   watch: {
     item() {
-      this.acc = this.$deepCopy(this.item)
+      this.ring = this.$deepCopy(this.item)
     }
   },
   methods: {
     createNewItem(qualityIndex,lv) {
-      var acc ={}
-      acc.itemType= 'acc'
-      acc.quality = qualityIndex>-1?this.quality[qualityIndex]:this.createQua()
-      acc.lv = lv||this.createLv()
-      acc.type = this.createType(acc)
-      acc.extraEntry = this.createExtraEntry(acc)
-      return JSON.stringify(acc)
+      var ring ={}
+      ring.itemType= 'ring'
+      ring.quality = qualityIndex>-1?this.quality[qualityIndex]:this.createQua()
+      ring.lv = lv||this.createLv()
+      ring.type = this.createType(ring)
+      ring.extraEntry = this.createExtraEntry(ring)
+      return JSON.stringify(ring)
     },
     createLv(Max) {
       return parseInt(Math.random() * (Max || 39)) + 1
     },
-    createType(acc) {
-      if (acc.quality.name == '独特') {
+    createType(ring) {
+      if (ring.quality.name == '独特') {
         var index = Math.floor((Math.random() * this.uniqueCategory.length));
-        var type = this.uniqueCategory[index], lv = acc.lv
+        var type = this.uniqueCategory[index], lv = ring.lv
       } else {
         var index = Math.floor((Math.random() * this.category.length));
-        var type = this.category[index], lv = acc.lv
+        var type = this.category[index], lv = ring.lv
       }
       type.entry.map(item => {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient)
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient)
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient)
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 10)
-            random = parseInt(random * acc.quality.qualityCoefficient* item.valCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient* item.valCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 20 + 30)
-            random = parseInt(random * acc.quality.qualityCoefficient* item.valCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient* item.valCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -410,8 +350,8 @@ export default {
       }
       return quality
     },
-    createExtraEntry(acc) {
-      var n = acc.quality.extraEntryNum, extraEntry = [], lv = acc.lv
+    createExtraEntry(ring) {
+      var n = ring.quality.extraEntryNum, extraEntry = [], lv = ring.lv
       for (let i = 0; i < n; i++) {
         var index = Math.floor((Math.random() * this.extraEntry.length));
         extraEntry.push(this.extraEntry[index])
@@ -421,34 +361,34 @@ export default {
         switch (item.type) {
           case 'ATK':
             var random = parseInt(lv * 0.3 + (Math.random() * lv / 2))
-            random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = parseInt(random * ring.quality.qualityCoefficient) + 1
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'DEF':
             var random = parseInt((lv * 0.2 + (Math.random() * lv / 2)))
-            random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = parseInt(random * ring.quality.qualityCoefficient) + 1
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'HP':
             var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2)))
-            random = parseInt(random * acc.quality.qualityCoefficient) + 1
+            random = parseInt(random * ring.quality.qualityCoefficient) + 1
             random = random||1
             item.value = random
             item.showVal = '+' + random
             break;
           case 'CRIT':
             var random = parseInt(Math.random() * 5 + 5)
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'CRITDMG':
             var random = parseInt(Math.random() * 12 + 20)
-            random = parseInt(random * acc.quality.qualityCoefficient)
+            random = parseInt(random * ring.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
             break;
@@ -468,7 +408,7 @@ export default {
 * {
   box-sizing: border-box;
 }
-.accPanel {
+.ringPanel {
   color: #f1f1f1;
   width: 3.00rem;
   height: auto;

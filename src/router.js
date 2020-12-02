@@ -10,16 +10,6 @@ export default new Router({
       path: '/',
       name: 'index',
       component: () => import('./views/index.vue')
-    },
-    {
-      path: '/armor',
-      name: 'armor',
-      component: () => import('./views/component/armorPanel.vue')
-    },
-    {
-      path: '/acc',
-      name: 'acc',
-      component: () => import('./views/component/accPanel.vue')
     }
   ]
 })

@@ -1,0 +1,522 @@
+<template>
+  <div class="neck">
+    <!-- <div class="btn" style="position:relative;z-index:999;">
+      <button @click="createNewneck">随机生成</button>
+    </div> -->
+    <div class="neckPanel" :style="{'box-shadow':' 0 0 5px 5px '+neck.quality.color + 'b8'}" v-if="JSON.stringify(neck)!='{}'">
+      <div class="title">
+        <div class='icon' :class="{unique:neck.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+neck.quality.color}">
+          <img :src="neck.type.iconSrc" alt="">
+        </div>
+        <div class='name' :style="{color:neck.quality.color}">{{neck.type.name}} {{neck.enchantlvl?'(+'+neck.enchantlvl+')':''}}</div>
+      </div>
+      <div class='type'>
+        <div :style="{color:neck.quality.color}">{{neck.quality.name}}</div>
+        <div>项链</div>
+      </div>
+      <div class='lv'>
+        <div>lv{{neck.lv}}</div>
+      </div>
+      <div class="entry">
+        <div v-for="v in neck.type.entry" :key="v.id">
+          <!-- <div>{{v.name}} : {{v.showVal}}</div> -->
+          <div>{{v.name}} : {{v.showVal}} <span style="color:#68d5ed" v-if="neck.enchantlvl">(+{{Math.round(v.value*(1.05**(neck.enchantlvl)**1.1)-v.value)}})</span></div>
+        </div>
+      </div>
+      <div class="extraEntry">
+        <div v-for="v in neck.extraEntry" :key="v.id">
+          <div>{{v.name}} : {{v.showVal}}</div>
+        </div>
+      </div>
+      <div class="des">
+        <div>
+          {{neck.type.des}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+<script>
+export default {
+  name: "neckPanel",
+  data() {
+    return {
+      neck: {},
+      qualityProbability: [0.25, 0.55, 0.15, 0.05,],
+      quality: [{
+        name: '破旧',
+        qualityCoefficient: 0.6,
+        probability: '0.25',
+        color: '#a1a1a1',
+        extraEntryNum: 1,
+      }, {
+        name: '普通',
+        qualityCoefficient: 0.9,
+        probability: '0.55',
+        color: '#fff', extraEntryNum: 2,
+      }, {
+        name: '神器',
+        qualityCoefficient: 1.3,
+        probability: '0.15',
+        color: '#ff00ff', extraEntryNum: 3,
+      }, {
+        name: '史诗',
+        qualityCoefficient: 1.6,
+        probability: '0.05',
+        color: '#f78918', extraEntryNum: 4,
+      }, {
+        name: '独特',
+        qualityCoefficient: 2,
+        probability: '0',
+        color: '#ff0000', extraEntryNum: 5,
+      }],
+      uniqueCategory: [{
+        name: '十字旅团降魔项链',
+        des: '',
+        iconSrc: './icons/U_neck01.png',
+        entry: [{
+          'valCoefficient': 0.7,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }, {
+          'valCoefficient': 0.8,
+          'value': '11',
+          'showVal': '+11',
+          type: 'HP',
+          'name': '生命值'
+        }, {
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }]
+      }, {
+        name: '进阶黑暗龙王项链',
+        des: '',
+        iconSrc: './icons/U_neck02.png',
+        entry: [{
+          'valCoefficient': 1.0,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
+        }, {
+          'valCoefficient': 0.5,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRIT',
+          'name': '暴击率'
+        }, {
+          'valCoefficient': 0.8,
+          'value': '11',
+          'showVal': '+11',
+          type: 'HP',
+          'name': '生命值'
+        }]
+      }, {
+        name: '伟大单身部队成员的项链',
+        des: '真棒，真帅。有了这条帅气的项链，一辈子单身都不会孤独',
+        iconSrc: './icons/U_neck03.png',
+        entry: [{
+          'valCoefficient': 1.0,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
+        }, {
+          'valCoefficient': 1.2,
+          'value': '11',
+          'showVal': '+11',
+          type: 'BLOC',
+          'name': '格挡'
+        }, {
+          'valCoefficient': 0.7,
+          'value': '11',
+          'showVal': '+11',
+          type: 'HP',
+          'name': '生命值'
+        }]
+      }, {
+        name: '魔族之翼展',
+        des: '你能看到什么呢',
+        iconSrc: './icons/U_neck04.png',
+        entry: [{
+          'valCoefficient': 1.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'CRITDMG',
+          'name': '暴击伤害'
+        }, {
+          'valCoefficient': 1.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        },]
+      }, {
+        name: '伊帕娅之项链',
+        des: '',
+        iconSrc: './icons/U_neck05.png',
+        entry: [{
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'BLOC',
+          'name': '格挡'
+        }, {
+          'valCoefficient': 0.9,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          'valCoefficient': 1.3,
+          'value': '11',
+          'showVal': '+11',
+          type: 'HP',
+          'name': '生命值'
+        }]
+      }],
+      category: [
+        {
+          name: '十字军项链',
+          des: '十字军佩戴的项链',
+          iconSrc: './icons/Ac_1.png',
+          entry: [{
+            'valCoefficient': 0.9,
+            'value': '11',
+            'showVal': '+11',
+            type: 'DEF',
+            'name': '防御力'
+          }, {
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          }]
+        },
+        {
+          name: '冰龙凝雪',
+          des: '冰龙凝雪',
+          iconSrc: './icons/Ac_7.png',
+          entry: [{
+            'valCoefficient': 0.75,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRITDMG',
+            'name': '暴击伤害'
+          }, {
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRIT',
+            'name': '暴击率'
+          }, {
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          }]
+        },
+        {
+          name: '银魂之眼',
+          des: '银魂之眼',
+          iconSrc: './icons/Ac_5.png',
+          entry: [{
+            'valCoefficient': 1.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'CRIT',
+            'name': '暴击率'
+          }, {
+            'valCoefficient': 0.5,
+            'value': '11',
+            'showVal': '+11',
+            type: 'HP',
+            'name': '生命值'
+          }]
+        }
+      ],
+      extraEntry: [{
+        'value': '11',
+        'showVal': '+11',
+        type: 'ATK',
+        'name': '攻击力'
+      }, {
+        type: 'CRIT',
+        'value': '8',
+        'showVal': '+8%',
+        'name': '暴击率'
+      }, {
+        type: 'CRITDMG',
+        'value': '20',
+        'showVal': '+20%',
+        'name': '暴击伤害'
+      }, {
+        type: 'HP',
+        'value': '20',
+        'showVal': '+20',
+        'name': '生命值'
+      }, {
+        type: 'DEF',
+        'value': '8',
+        'showVal': '+8%',
+        'name': '防御力'
+      }, {
+        'value': '11%',
+        'showVal': '+11%',
+        type: 'BLOC',
+        'name': '格挡'
+      }]
+    };
+  },
+  props: ['item'],
+  mounted() {
+  },
+  watch: {
+    item() {
+      this.neck = this.$deepCopy(this.item)
+    }
+  },
+  methods: {
+    createNewItem(qualityIndex, lv) {
+      var neck = {}
+      neck.itemType = 'neck'
+      neck.quality = qualityIndex > -1 ? this.quality[qualityIndex] : this.createQua()
+      neck.lv = lv || this.createLv()
+      neck.type = this.createType(neck)
+      neck.extraEntry = this.createExtraEntry(neck)
+      return JSON.stringify(neck)
+    },
+    createLv(Max) {
+      return parseInt(Math.random() * (Max || 39)) + 1
+    },
+    createType(neck) {
+      if (neck.quality.name == '独特') {
+        var index = Math.floor((Math.random() * this.uniqueCategory.length));
+        var type = this.uniqueCategory[index], lv = neck.lv
+      } else {
+        var index = Math.floor((Math.random() * this.category.length));
+        var type = this.category[index], lv = neck.lv
+      }
+      type.entry.map(item => {
+        switch (item.type) {
+          case 'ATK':
+            var random = parseInt(lv * item.valCoefficient + (Math.random() * lv / 2 + 1))
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'DEF':
+            var random = parseInt((lv * item.valCoefficient + (Math.random() * lv / 2 + 1)))
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'HP':
+            var random = parseInt((lv * item.valCoefficient * 10 + (Math.random() * lv / 2 + 1)))
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'CRIT':
+            var random = parseInt(Math.random() * 5 + 10)
+            random = parseInt(random * neck.quality.qualityCoefficient * item.valCoefficient)
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'CRITDMG':
+            var random = parseInt(Math.random() * 20 + 30)
+            random = parseInt(random * neck.quality.qualityCoefficient * item.valCoefficient)
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'BLOC':
+            var random = parseInt((lv * 0.2 * 2 + (Math.random() * lv / 2 + 1)))
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+            break;
+          default:
+            break;
+        }
+      })
+      return type
+    },
+    createQua() {
+      var index = Math.floor((Math.random() * this.qualityProbability.length));
+      var a = this.qualityProbability[index], b = this.qualityProbability, quality
+      switch (a) {
+        case b[0]:
+          quality = this.quality[0]
+          break;
+        case b[1]:
+          quality = this.quality[1]
+          break;
+        case b[2]:
+          quality = this.quality[2]
+          break;
+        case b[3]:
+          quality = this.quality[3]
+          break;
+        default:
+          break;
+      }
+      return quality
+    },
+    createExtraEntry(neck) {
+      var n = neck.quality.extraEntryNum, extraEntry = [], lv = neck.lv
+      for (let i = 0; i < n; i++) {
+        var index = Math.floor((Math.random() * this.extraEntry.length));
+        extraEntry.push(this.extraEntry[index])
+      }
+      var b = this.$deepCopy(extraEntry)
+      b.map(item => {
+        switch (item.type) {
+          case 'ATK':
+            var random = parseInt(lv * 0.3 + (Math.random() * lv / 2))
+            random = parseInt(random * neck.quality.qualityCoefficient) + 1
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'DEF':
+            var random = parseInt((lv * 0.2 + (Math.random() * lv / 2)))
+            random = parseInt(random * neck.quality.qualityCoefficient) + 1
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'HP':
+            var random = parseInt((lv * 0.2 * 10 + (Math.random() * lv / 2)))
+            random = parseInt(random * neck.quality.qualityCoefficient) + 1
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          case 'CRIT':
+            var random = parseInt(Math.random() * 5 + 5)
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'CRITDMG':
+            var random = parseInt(Math.random() * 12 + 20)
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            item.value = random
+            item.showVal = '+' + random + '%'
+            break;
+          case 'BLOC':
+            var random = parseInt((lv * 0.2 * 2 + (Math.random() * lv / 2 + 1)))
+            random = parseInt(random * neck.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
+            break;
+          default:
+            break;
+        }
+      })
+      extraEntry = b
+      return extraEntry
+    }
+  }
+};
+
+
+</script>
+<style lang="scss" scoped>
+* {
+  box-sizing: border-box;
+}
+.neckPanel {
+  color: #f1f1f1;
+  width: 3rem;
+  height: auto;
+  background: rgba(0, 0, 0, 0.8);
+  border: #393839;
+  border-radius: 0.05rem;
+  padding: 0.16rem;
+  box-sizing: border-box;
+  .title {
+    display: flex;
+    padding-bottom: 0.1rem;
+    border-bottom: 1px solid #777;
+    .icon {
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.04rem;
+    }
+    .name {
+      height: 0.46rem;
+      margin-left: 0.2rem;
+      line-height: 0.46rem;
+    }
+  }
+  .type {
+    padding: 0.1rem;
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: space-between;
+  }
+  .lv {
+    padding-right: 0.1rem;
+    display: flex;
+    width: 100%;
+    align-content: center;
+    justify-content: flex-end;
+  }
+  .entry {
+    width: 100%;
+    padding-left: 0.2rem;
+    padding-bottom: 0.1rem;
+    border-bottom: 1px solid #777;
+    div {
+      text-align: left;
+    }
+  }
+  .extraEntry {
+    width: 100%;
+    padding-left: 0.2rem;
+    margin-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    color: #68d5ed;
+    border-bottom: 1px solid #777;
+    div {
+      text-align: left;
+    }
+  }
+}
+.des {
+  color: #777;
+  font-size: 0.12rem;
+  margin-top: 0.1rem;
+  text-align: left;
+  text-indent: 0.24rem;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.2rem;
+  button {
+    padding: 0.06rem 0.12rem;
+  }
+}
+</style>

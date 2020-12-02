@@ -250,7 +250,7 @@ export default {
         healthRecoverySpeed = this.$store.state.playerAttribute.healthRecoverySpeed,
         reducedDamage = this.$store.state.playerAttribute.attribute.REDUCDMG,
         playerDPS = playerAttribute.DPS,
-        playerBLO = playerAttribute.BLO.value,
+        playerBLOC = playerAttribute.BLOC.value,
         monsterAttribute = this.$deepCopy(event.attribute) //HP: 100,ATK: 1,
 
       // 战斗伤害计算公式 
@@ -260,18 +260,14 @@ export default {
       if (this.dungeons.type == 'endless') {
         var endlessLv = this.$store.state.playerAttribute.endlessLv || 0
         //设定一个怪物加强系数
-        monsterAttribute.ATK = monsterAttribute.ATK * (1 + 100 / 75)
-        monsterAttribute.HP = monsterAttribute.HP * (1 + 100 / 75)
-        monsterAttribute.ATK = monsterAttribute.ATK + endlessLv * 1000
-        monsterAttribute.HP = monsterAttribute.HP + endlessLv * 1100
+        monsterAttribute.ATK = monsterAttribute.ATK + endlessLv**1.5 * 1000
+        monsterAttribute.HP = monsterAttribute.HP + endlessLv**1.5 * 1100
 
       } else {
         //设定一个怪物加强系数
-        monsterAttribute.ATK = monsterAttribute.ATK * (1 + this.dungeons.lv / 55)
-        monsterAttribute.HP = monsterAttribute.HP * (1 + this.dungeons.lv / 55)
       }
 
-      var playerDeadTime = (playerAttribute.CURHP.value+playerBLO) / reducedDamage / monsterAttribute.ATK,
+      var playerDeadTime = (playerAttribute.CURHP.value+playerBLOC) / reducedDamage / monsterAttribute.ATK,
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 
       // 战斗获胜
@@ -279,7 +275,7 @@ export default {
         battleTime = monsterDeadTime
         var takeDmg = -battleTime * Number(monsterAttribute.ATK)
         takeDmg = parseInt(takeDmg * reducedDamage)
-        takeDmg = takeDmg + playerBLO
+        takeDmg = takeDmg + playerBLOC
         takeDmg = takeDmg>-1?-1:takeDmg
         this.$store.commit('set_player_curhp', takeDmg)
 
@@ -300,7 +296,9 @@ export default {
           });
         }
         this.caculateTrophy(event)
-
+        if(this.dungeons.lv>this.$store.state.playerAttribute.lv){
+          this.$store.commit('set_player_lv', this.dungeons.lv)
+        }
       } else {
         // 玩家死亡
         this.$store.commit('set_player_curhp', 'full')
@@ -315,7 +313,7 @@ export default {
         this.dungeons = {}
         var takeDmg = monsterDeadTime * Number(monsterAttribute.ATK)
         takeDmg = parseInt(takeDmg * reducedDamage)
-        takeDmg = takeDmg - playerBLO
+        takeDmg = takeDmg - playerBLOC
         takeDmg = takeDmg<1?1:takeDmg
         this.$store.commit("set_sys_info", {
           msg: `
@@ -343,12 +341,16 @@ export default {
             var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
             var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
             items.push(JSON.parse(item))
-          } else if (random <= 0.6 && random > 0.3) {
+          } else if (random <= 0.5 && random > 0.3) {
             var b = this.findBrothersComponents(this, 'armorPanel', false)[0]
             var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
             items.push(JSON.parse(item))
+          }else if (random <= 0.75 && random > 0.5) {
+            var b = this.findBrothersComponents(this, 'ringPanel', false)[0]
+            var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
+            items.push(JSON.parse(item))
           } else {
-            var b = this.findBrothersComponents(this, 'accPanel', false)[0]
+            var b = this.findBrothersComponents(this, 'neckPanel', false)[0]
             var item = b.createNewItem(4, parseInt(lv + Math.random() * 6))
             items.push(JSON.parse(item))
           }
@@ -381,15 +383,18 @@ export default {
       }
       if (equipQua != -1) {
         // this.createEquip(equipQua,lv)
-        var index = Math.floor((Math.random() * 3));
+        var index = Math.floor((Math.random() * 4));
         if (index == 0) {
           var b = this.findBrothersComponents(this, 'weaponPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
         } else if (index == 1) {
           var b = this.findBrothersComponents(this, 'armorPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
+        }else if (index == 2) {
+          var b = this.findBrothersComponents(this, 'ringPanel', false)[0]
+          var item = b.createNewItem(equipQua, lv)
         } else {
-          var b = this.findBrothersComponents(this, 'accPanel', false)[0]
+          var b = this.findBrothersComponents(this, 'neckPanel', false)[0]
           var item = b.createNewItem(equipQua, lv)
         }
         items.push(JSON.parse(item))

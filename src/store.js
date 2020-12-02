@@ -12,6 +12,7 @@ export default new Vuex.Store({
       msg: "欢迎你，菜鸟勇士。"
     }],
     playerAttribute: {
+      lv:1,
       GOLD: 0,
       healthRecoverySpeed: 1,
       endlessLv:0,
@@ -44,7 +45,7 @@ export default new Vuex.Store({
           value: 0,
           showValue: '',
         },
-        BLO: {
+        BLOC: {
           value: 0,
           showValue: '0',
         },
@@ -111,9 +112,38 @@ export default new Vuex.Store({
           "name": "生命值"
         }, ]
       },
-      acc: {
+      neck: {
         "lv": 1,
-        itemType: 'acc',
+        itemType: 'neck',
+        "quality": {
+          name: '破旧',
+          qualityCoefficient: 0.7,
+          probability: '0.25',
+          color: '#a1a1a1',
+          extraEntryNum: 1,
+        },
+        "type": {
+          "name": "新手项坠",
+          "des": "一个普通的指环",
+          "iconSrc": "./icons/Ac_3.png",
+          "entry": [{
+            "valCoefficient": 0.9,
+            "value": 20,
+            "showVal": "+20",
+            "type": "HP",
+            "name": "生命值"
+          }]
+        },
+        "extraEntry": [{
+          "type": "CRIT",
+          "value": 10,
+          "showVal": "+10%",
+          "name": "暴击率"
+        }]
+      },
+      ring: {
+        "lv": 1,
+        itemType: 'ring',
         "quality": {
           name: '破旧',
           qualityCoefficient: 0.7,
@@ -151,15 +181,20 @@ export default new Vuex.Store({
       this.state.playerAttribute.armor = data
       vueInstance.$store.commit('set_player_attribute')
     },
-    set_player_acc(state, data) {
-      this.state.playerAttribute.acc = data
+    set_player_ring(state, data) {
+      this.state.playerAttribute.ring = data
+      vueInstance.$store.commit('set_player_attribute')
+    },
+    set_player_neck(state, data) {
+      this.state.playerAttribute.neck = data
       vueInstance.$store.commit('set_player_attribute')
     },
     set_player_attribute(state, data) {
       var p = state.playerAttribute
       var warpon = p.weapon,
         armor = p.armor,
-        acc = p.acc,
+        ring = p.ring,
+        neck = p.neck,
         entry = [],
         chp = state.playerAttribute.attribute.CURHP.value,
         mhp = state.playerAttribute.attribute.MAXHP.value,
@@ -197,7 +232,7 @@ export default new Vuex.Store({
           value: 0,
           showValue: '',
         },
-        BLO: {
+        BLOC: {
           value: 0,
           showValue: '0',
         },
@@ -205,12 +240,14 @@ export default new Vuex.Store({
       
       let warponStrEntry = vueInstance.$deepCopy(warpon.type.entry)
       let armorStrEntry = vueInstance.$deepCopy(armor.type.entry)
-      let accStrEntry = vueInstance.$deepCopy(acc.type.entry)
+      let ringStrEntry = vueInstance.$deepCopy(ring.type.entry)
+      let neckStrEntry = vueInstance.$deepCopy(neck.type.entry)
       handle.CalculateStrAttr(warponStrEntry,warpon.enchantlvl||0)
       handle.CalculateStrAttr(armorStrEntry,armor.enchantlvl||0)
-      handle.CalculateStrAttr(accStrEntry,acc.enchantlvl||0)
+      handle.CalculateStrAttr(ringStrEntry,ring.enchantlvl||0)
+      handle.CalculateStrAttr(neckStrEntry,neck.enchantlvl||0)
 
-      entry = [].concat(warponStrEntry).concat(warpon.extraEntry).concat(armorStrEntry).concat(armor.extraEntry).concat(accStrEntry).concat(acc.extraEntry)
+      entry = [].concat(warponStrEntry).concat(warpon.extraEntry).concat(armorStrEntry).concat(armor.extraEntry).concat(ringStrEntry).concat(ring.extraEntry).concat(neckStrEntry).concat(neck.extraEntry)
       
       // 命中几率初始为100%，用来计算最终的闪避几率
       let HitChance = 1
@@ -239,9 +276,9 @@ export default new Vuex.Store({
           case 'EVA':
             HitChance = HitChance*(1-item.value/100)
             break;
-          case 'BLO':
-            attribute.BLO.value += Number(item.value)
-            attribute.BLO.showValue = (attribute.BLO.value)
+          case 'BLOC':
+            attribute.BLOC.value += Number(item.value)
+            attribute.BLOC.showValue = (attribute.BLOC.value)
             break;
           default:
             break;
@@ -322,6 +359,9 @@ export default new Vuex.Store({
     },
     set_endless_lv(state, data) {
       this.state.playerAttribute.endlessLv = parseInt(data);
+    },
+    set_player_lv(state, data) {
+      this.state.playerAttribute.lv = parseInt(data||1);
     },
     set_operator_schema(state, data) {
       this.state.operatorSchemaIsMobile = data;

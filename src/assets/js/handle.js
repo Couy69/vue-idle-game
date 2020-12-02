@@ -63,6 +63,99 @@ function CalculateStrAttr(entry, lv) {
 }
 
 /**
+ * 随机化生成副本
+ * @param {number} lv  副本等级
+ * @param {number} difficulty 副本难度
+ */
+function createRandomDungeons(lv, difficulty) {
+  lv = lv||1,difficulty = difficulty||1;
+  var df = difficulty/2+0.5
+  var dungeonsConfig = {
+    battleTime: 2000,
+    name: 'dungeon_name',
+    eventNum: '5',
+    lv: lv,
+    needDPS: lv*lv*2,
+    difficulty:difficulty,
+    top:Math.random()*70+10+'%',
+    left:Math.random()*70+10+'%',
+    eventType: [{
+      name: 'moster',
+      type: 'monster',
+      eventType: 'battle',
+      attribute: {
+        HP: parseInt(lv*lv*(Math.random()*5+15)*df),
+        ATK: parseInt(lv*lv*(Math.random()*1+2)*df),
+      },
+      trophy: {
+        gold: parseInt(lv*(Math.random()*5+15)*df),
+        equip: [
+          0.2*df, 0.1*df, 0.05*df, 0*df
+        ],
+      }
+    }, {
+      name: 'moster',
+      type: 'monster',
+      eventType: 'battle',
+      attribute: {
+        HP: parseInt(lv*lv*(Math.random()*5+15)*df),
+        ATK: parseInt(lv*lv*(Math.random()*1+2)*df),
+      },
+      trophy: {
+        gold: parseInt(lv*(Math.random()*5+15)*df),
+        equip: [
+          0.2*df, 0.1*df, 0.05*df, 0*df
+        ],
+      }
+    }, {
+      name: 'moster',
+      type: 'monster',
+      eventType: 'battle',
+      attribute: {
+        HP: parseInt(lv*lv*(Math.random()*5+15)*df),
+        ATK: parseInt(lv*lv*(Math.random()*1+2)*df),
+      },
+      trophy: {
+        gold: parseInt(lv*(Math.random()*5+15)*df),
+        equip: [
+          0.2, 0.1, 0.05*df, 0*df
+        ],
+      }
+    }, {
+      name: 'moster',
+      type: 'monster',
+      eventType: 'battle',
+      attribute: {
+        HP: parseInt(lv*lv*(Math.random()*5+15)*df),
+        ATK: parseInt(lv*lv*(Math.random()*1+2)*df),
+      },
+      trophy: {
+        gold: parseInt(lv*(Math.random()*5+15)*df),
+        equip: [
+          0.2*df, 0.1*df, 0.05*df, 0*df
+        ],
+      }
+    }, {
+      name: 'boss',
+      type: 'boss',
+      eventType: 'battle',
+      attribute: {
+        HP: parseInt(lv*lv*(Math.random()*5+35)*df),
+        ATK: parseInt(lv*lv*(Math.random()*1+3)*df),
+      },
+      trophy: {
+        gold: parseInt(lv*(Math.random()*50+15)*df),
+        equip: [
+          0.25, 0.55, 0.15*df, 0.05*df
+        ],
+      }
+    }, ]
+  }
+  return dungeonsConfig
+}
+
+
+/**
  *  返回一条随机属性
  * @param {number} lv  装备强化等级
  */
@@ -112,7 +205,7 @@ function createRandomEntry(lv, qualityCoefficient) {
     {
       'value': '11%',
       'showVal': '+11%',
-      type: 'BLO',
+      type: 'BLOC',
       'name': '格挡'
     },
     // {
@@ -183,7 +276,7 @@ function createRandomEntry(lv, qualityCoefficient) {
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
-    case 'BLO':
+    case 'BLOC':
       var random = parseInt((lv * 0.2 * 2 + (randomCoefficient  * lv / 2 + 1)))
       random = parseInt(random * qualityCoefficient)
       random = random || 1
@@ -205,5 +298,6 @@ function createRandomEntry(lv, qualityCoefficient) {
 export default {
   deepCopy,
   CalculateStrAttr,
-  createRandomEntry
+  createRandomEntry,
+  createRandomDungeons
 }

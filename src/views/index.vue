@@ -1,6 +1,21 @@
 <template>
   <div class="main" @contextmenu.prevent="contextmenu($event)">
     <div class="user-status">
+      
+      <cTooltip placement="bottom">
+        <template v-slot:content>
+          <div class="lv">
+            <div class="value">
+              <span>lv {{playerLv}}</span>
+              <span style="font-size:0.16rem">转生次数：0</span>
+            </div>
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 玩家当前等级与转生次数</p>
+        </template>
+
+      </cTooltip>
 
       <cTooltip placement="bottom">
         <template v-slot:content>
@@ -104,9 +119,9 @@
         <cTooltip placement="bottom">
           <template v-slot:content>
             <div class="item">
-              <img src="../assets/icons/S_BLO.png" alt="">
+              <img src="../assets/icons/S_BLOC.png" alt="">
               <div class="value">
-                {{attribute.BLO.showValue}}
+                {{attribute.BLOC.showValue}}
               </div>
             </div>
           </template>
@@ -159,12 +174,20 @@
           <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.type.name}} {{playerArmor.enchantlvl?'(+'+playerArmor.enchantlvl+')':''}}</div>
         </div>
       </div>
-      <div class="acc" @mouseover="showItemInfo($event,'acc',playerAcc,false)" @mouseleave="closeItemInfo">
-        <div class="title" v-if="playerAcc">
-          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerAcc.quality.color}">
-            <img :src="playerAcc.type.iconSrc" alt="">
+      <div class="neck" @mouseover="showItemInfo($event,'neck',palyerNeck,false)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="palyerNeck">
+          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+palyerNeck.quality.color}">
+            <img :src="palyerNeck.type.iconSrc" alt="">
           </div>
-          <div class='name' :style="{color:playerAcc.quality.color}">{{playerAcc.type.name}} {{playerAcc.enchantlvl?'(+'+playerAcc.enchantlvl+')':''}}</div>
+          <div class='name' :style="{color:palyerNeck.quality.color}">{{palyerNeck.type.name}} {{palyerNeck.enchantlvl?'(+'+palyerNeck.enchantlvl+')':''}}</div>
+        </div>
+      </div>
+      <div class="ring" @mouseover="showItemInfo($event,'ring',palyerRing,false)" @mouseleave="closeItemInfo">
+        <div class="title" v-if="palyerRing">
+          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+palyerRing.quality.color}">
+            <img :src="palyerRing.type.iconSrc" alt="">
+          </div>
+          <div class='name' :style="{color:palyerRing.quality.color}">{{palyerRing.type.name}} {{palyerRing.enchantlvl?'(+'+palyerRing.enchantlvl+')':''}}</div>
         </div>
       </div>
     </div>
@@ -183,7 +206,7 @@
         <div class="eventEnd button" @click='eventEnd'>结束挑战</div>
       </div>
       <div class="dungeons-Info" v-if="dungeons&&!inDungeons">
-        <i class="dungeons-re" @click="resetEndlessLv"></i>
+        <i class="dungeons-re" v-if="dungeons.type=='endless'" @click="resetEndlessLv"></i>
         <i class="dungeons-close" @click="closeDungeonsInfo"></i>
         <div class="dungeons-title">{{dungeons.name}}</div>
         <div class="jjj">
@@ -207,10 +230,10 @@
         </div>
 
       </div>
-      <div class="event-icon low-level" @click="showDungeonsInfo(0)" v-show='!inDungeons' style="    top: 48%;left: 10%;">
-        <span>lv1</span>
+      <div class="event-icon" :class="{'low-level':v.difficulty==1,'h-level':v.difficulty==2,'boss':v.difficulty==3}" v-for="(v,k) in dungeonsArr" :key="k" @click="showDungeonsInfo(k)" v-show='!inDungeons' :style="{top: v.top,left: v.left}">
+        <span>lv{{v.lv}}</span>
       </div>
-      <div class="event-icon low-level" @click="showDungeonsInfo(1)" v-show='!inDungeons' style="top: 38%;left: 17%;"><span>lv5</span></div>
+      <!-- <div class="event-icon low-level" @click="showDungeonsInfo(1)" v-show='!inDungeons' style="top: 38%;left: 17%;"><span>lv5</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(2)" v-show='!inDungeons' style="top: 54%;left: 30%;"><span>lv10</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 28%;left: 43%;"><span>lv15</span></div>
       <div class="event-icon low-level" @click="showDungeonsInfo(4)" v-show='!inDungeons' style="top: 39%;left: 48%;"><span>lv20</span></div>
@@ -225,7 +248,7 @@
       <div class="event-icon h-level" @click="showDungeonsInfo(13)" v-show='!inDungeons' style="top: 71%;left: 40%;"><span>lv70</span></div>
       <div class="event-icon h-level" @click="showDungeonsInfo(14)" v-show='!inDungeons' style="top: 75%;left: 20%;"><span>lv80</span></div>
       <div class="event-icon boss" @click="showDungeonsInfo(15)" v-show='!inDungeons' style="top: 56%;left: 51%;"><span>lv90</span></div>
-      <div class="event-icon boss" @click="showDungeonsInfo(16)" v-show='!inDungeons' style="top: 90%;left: 88%;"><span>lv100</span></div>
+      <div class="event-icon boss" @click="showDungeonsInfo(16)" v-show='!inDungeons' style="top: 90%;left: 88%;"><span>lv100</span></div> -->
       <div class="event-icon endless" v-if="endlessLv" @click="showDungeonsInfo(17)" v-show='!inDungeons' style="top: 10%;left: 18%;"><span>无尽</span></div>
     </div>
     <div class="menu">
@@ -259,9 +282,11 @@
       <weaponPanel :item="playerWeapon" v-show="weaponShow&&needComparison"></weaponPanel>
       <armorPanel :item="armor" v-show="armorShow"></armorPanel>
       <armorPanel :item="playerArmor" v-show="armorShow&&needComparison"></armorPanel>
-      <accPanel :item="acc" v-show="accShow"></accPanel>
-      <accPanel :item="playerAcc" v-show="accShow&&needComparison"></accPanel>
-      <div class="item-close" @click="closeItemInfo" v-if="(armorShow||accShow||weaponShow)&&needComparison&&operatorSchemaIsMobile">
+      <ringPanel :item="ring" v-show="ringShow"></ringPanel>
+      <ringPanel :item="palyerRing" v-show="ringShow&&needComparison"></ringPanel>
+      <neckPanel :item="neck" v-show="neckShow"></neckPanel>
+      <neckPanel :item="palyerNeck" v-show="neckShow&&needComparison"></neckPanel>
+      <div class="item-close" @click="closeItemInfo" v-if="(armorShow||ringShow||weaponShow||neckShow)&&needComparison&&operatorSchemaIsMobile">
         关闭对比
       </div>
     </div>
@@ -332,7 +357,8 @@
 <script>
 import weaponPanel from './component/weaponPanel'
 import armorPanel from './component/armorPanel'
-import accPanel from './component/accPanel'
+import ringPanel from './component/ringPanel'
+import neckPanel from './component/neckPanel'
 import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
 import strengthenEquipment from './component/strengthenEquipment'
@@ -343,7 +369,7 @@ import qa from './component/qa'
 import cTooltip from './uiComponent/tooltip'
 import { assist } from '../assets/js/assist';
 import { Base64 } from 'js-base64';
-import '../assets/js/handle';
+import handle from '../assets/js/handle'
 export default {
   name: "index",
   mixins: [assist],
@@ -354,7 +380,8 @@ export default {
       sysInfo: {},
       weaponShow: false,
       armorShow: false,
-      accShow: false,
+      ringShow: false,
+      neckShow: false,
       equiShow: false,
       autoHealthRecovery: '',
       weapon: {},
@@ -363,7 +390,9 @@ export default {
       upEChallenge: false,
       reEChallenge: false,
       dungeons: '',
-      acc: {},
+      dungeonsArr: [],
+      ring: {},
+      neck: {},
       armor: {},
       backpackPanelOpened: false,
       shopPanelOpened: false,
@@ -373,7 +402,7 @@ export default {
       itemDialogStyle: {},
       GMEquipLv: '',
       GMEquipQu: '',
-      GMGold: '',
+      GMGold: 0,
       GMOpened: false,
       needComparison: true,
       saveData: {},
@@ -381,7 +410,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, accPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment, extras, qa, setting },
+  components: { weaponPanel, armorPanel, ringPanel, neckPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment, extras, qa, setting },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -404,17 +433,25 @@ export default {
     var sd = localStorage.getItem('_sd')
     try {
       if (sd) {
-        this.saveData = JSON.parse(Base64.decode(Base64.decode(sd)))
+        //兼容存档
+        var saveDataStr = Base64.decode(Base64.decode(sd))
+        saveDataStr = saveDataStr.replace(/playerAcc/gi, 'playerRing')
+        saveDataStr = saveDataStr.replace(/acc/gi, "ring")
+        this.saveData = JSON.parse(saveDataStr)
+
         this.$store.commit('set_player_weapon', this.$deepCopy(this.saveData.playerEquipment.playerWeapon))
         this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
-        this.$store.commit('set_player_acc', this.$deepCopy(this.saveData.playerEquipment.playerAcc))
+        this.$store.commit('set_player_ring', this.$deepCopy(this.saveData.playerEquipment.palyerRing))
+        this.$store.commit('set_player_neck', this.$deepCopy(this.saveData.playerEquipment.palyerNeck))
         this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
+        this.$store.commit('set_player_lv', parseInt(this.saveData.lv) || 0)
       }
       else {
         this.$store.commit('set_player_weapon', this.$deepCopy(this.playerWeapon))
         this.$store.commit('set_player_armor', this.$deepCopy(this.playerArmor))
-        this.$store.commit('set_player_acc', this.$deepCopy(this.playerAcc))
+        this.$store.commit('set_player_ring', this.$deepCopy(this.palyerRing))
+        this.$store.commit('set_player_neck', this.$deepCopy(this.palyerNeck))
       }
 
     } catch (error) {
@@ -434,6 +471,8 @@ export default {
       this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
     }, 1000)
 
+    //生成随机副本
+    this.createdDungeons()
     // 自动保存
     setInterval(() => {
       this.saveGame()
@@ -442,13 +481,15 @@ export default {
     this.sysInfo = this.$store.state.sysInfo
     this.weapon = this.playerWeapon
     this.armor = this.playerArmor
-    this.acc = this.playerAcc
+    this.ring = this.palyerRing
+    this.neck = this.palyerNeck
 
     //TODO:重新装备一次来解决不显示装备对比信息不显示的bug，不是最好但是是最快的
     {
       this.$store.commit('set_player_weapon', this.$deepCopy(this.playerWeapon))
       this.$store.commit('set_player_armor', this.$deepCopy(this.playerArmor))
-      this.$store.commit('set_player_acc', this.$deepCopy(this.playerAcc))
+      this.$store.commit('set_player_ring', this.$deepCopy(this.palyerRing))
+      this.$store.commit('set_player_neck', this.$deepCopy(this.palyerNeck))
     }
   },
   computed: {
@@ -457,8 +498,10 @@ export default {
     userGold() { return this.$store.state.playerAttribute.GOLD },
     playerWeapon() { return this.$store.state.playerAttribute.weapon },
     playerArmor() { return this.$store.state.playerAttribute.armor },
-    playerAcc() { return this.$store.state.playerAttribute.acc },
+    palyerRing() { return this.$store.state.playerAttribute.ring },
+    palyerNeck() { return this.$store.state.playerAttribute.neck },
     endlessLv() { return this.$store.state.playerAttribute.endlessLv },
+    playerLv() { return this.$store.state.playerAttribute.lv },
     operatorSchemaIsMobile() { return this.$store.state.operatorSchemaIsMobile }
   },
   watch: {
@@ -488,6 +531,11 @@ export default {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
+    createdDungeons(){
+      for(let i = this.playerLv;i<this.playerLv+6;i++){
+        this.dungeonsArr.push(handle.createRandomDungeons(i,Math.floor(Math.random()*3+1)))
+      }
+    },
     copySavaData() {
       var imSavadataTextArea = document.getElementById("imSavedata");
       imSavadataTextArea.select(); // 选中文本
@@ -513,8 +561,10 @@ export default {
         playerEquipment: {
           playerWeapon: this.$store.state.playerAttribute.weapon,
           playerArmor: this.$store.state.playerAttribute.armor,
-          playerAcc: this.$store.state.playerAttribute.acc,
+          palyerRing: this.$store.state.playerAttribute.ring,
+          palyerNeck: this.$store.state.playerAttribute.neck,
         },
+        lv:this.$store.state.playerAttribute.lv,
         backpackEquipment: backpackPanel.grid,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
@@ -531,13 +581,49 @@ export default {
         });
       }
       try {
-        this.saveData = JSON.parse(Base64.decode(Base64.decode(this.saveDateString)))
+        var saveDataStr = Base64.decode(Base64.decode(this.saveDateString))
+        saveDataStr = saveDataStr.replace(/playerAcc/gi, 'playerRing')
+        saveDataStr = saveDataStr.replace(/acc/gi, "ring")
+        this.saveData = JSON.parse(saveDataStr)
+        if (!this.saveData.playerEquipment.playerNeck) {
+          this.saveData.playerEquipment.playerNeck = {
+            "lv": 1,
+            itemType: 'neck',
+            "quality": {
+              name: '破旧',
+              qualityCoefficient: 0.7,
+              probability: '0.25',
+              color: '#a1a1a1',
+              extraEntryNum: 1,
+            },
+            "type": {
+              "name": "新手项坠",
+              "des": "一个普通的指环",
+              "iconSrc": "./icons/Ac_3.png",
+              "entry": [{
+                "valCoefficient": 0.9,
+                "value": 20,
+                "showVal": "+20",
+                "type": "HP",
+                "name": "生命值"
+              }]
+            },
+            "extraEntry": [{
+              "type": "CRIT",
+              "value": 10,
+              "showVal": "+10%",
+              "name": "暴击率"
+            }]
+          }
+        }
+        // this.saveData = JSON.parse(Base64.decode(Base64.decode(this.saveDateString)))
         this.$store.commit('set_player_weapon', this.$deepCopy(this.saveData.playerEquipment.playerWeapon))
         this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
-        this.$store.commit('set_player_acc', this.$deepCopy(this.saveData.playerEquipment.playerAcc))
-
+        this.$store.commit('set_player_ring', this.$deepCopy(this.saveData.playerEquipment.playerRing))
+        this.$store.commit('set_player_neck', this.$deepCopy(this.saveData.playerEquipment.playerNeck))
         this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
+        this.$store.commit('set_player_lv', parseInt(this.saveData.lv) || 0)
         var backpackPanel = this.findComponentDownward(this, 'backpackPanel')
         backpackPanel.grid = this.saveData.backpackEquipment
         this.$store.commit("set_sys_info", {
@@ -579,9 +665,11 @@ export default {
         playerEquipment: {
           playerWeapon: this.$store.state.playerAttribute.weapon,
           playerArmor: this.$store.state.playerAttribute.armor,
-          playerAcc: this.$store.state.playerAttribute.acc,
+          palyerRing: this.$store.state.playerAttribute.ring,
+          palyerNeck: this.$store.state.playerAttribute.neck,
         },
         backpackEquipment: backpackPanel.grid,
+        lv:this.$store.state.playerAttribute.lv,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
       }
@@ -594,25 +682,6 @@ export default {
             `,
         type: 'win'
       });
-
-      // try {
-      //   let data = await this.$api.post(
-      //     "v1/userInfo/add",
-      //     {
-      //       name:'couy',
-      //       password:'123456',
-      //       endlessLv:'2',
-      //       playtime:'12分11秒',
-      //       saveData:saveData,
-      //     }
-      //   );
-      //   console.log(data)
-      //   if (data.status == 200) {
-
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      // }
     },
     clearSysInfo() {
       this.$store.commit('clear_sys_info')
@@ -645,7 +714,21 @@ export default {
           break;
         }
       }
-      var b = this.findComponentDownward(this, "accPanel");
+      var b = this.findComponentDownward(this, "ringPanel");
+      var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
+      item = JSON.parse(item);
+      var backpackPanel = this.findComponentDownward(
+        this,
+        "backpackPanel",
+      );
+      for (let i = 0; i < backpackPanel.grid.length; i++) {
+        if (JSON.stringify(backpackPanel.grid[i]).length < 3) {
+          this.$set(backpackPanel.grid, i, item);
+          break;
+        }
+      }
+
+      var b = this.findComponentDownward(this, "neckPanel");
       var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
       var backpackPanel = this.findComponentDownward(
@@ -662,8 +745,8 @@ export default {
       this.GMOpened = false
     },
     showDungeonsInfo(k) {
-      var b = this.findComponentDownward(this, 'dungeons')
-      this.dungeons = b.dungeonsArr[k]
+      // var b = this.findComponentDownward(this, 'dungeons')
+      this.dungeons = this.dungeonsArr[k]
       if (this.dungeons.type == 'endless') {
         this.reChallenge = false
         this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
@@ -786,9 +869,13 @@ export default {
           this.armor = item
           this.armorShow = true
           break;
-        case 'acc':
-          this.acc = item
-          this.accShow = true
+        case 'ring':
+          this.ring = item
+          this.ringShow = true
+          break;
+        case 'neck':
+          this.neck = item
+          this.neckShow = true
           break;
         default:
           break;
@@ -796,7 +883,7 @@ export default {
     },
     closeItemInfo() {
       this.needComparison = true;
-      this.weaponShow = this.armorShow = this.accShow = false
+      this.weaponShow = this.armorShow = this.ringShow = this.neckShow = false
     },
     setSysInfo() {
       this.$store.commit("set_sys_info", {
@@ -838,7 +925,7 @@ a {
     border: 2px solid #ccc;
     height: 4rem;
     width: 4rem;
-    padding: 0.2rem;
+    padding: 0.1rem;
     display: flex;
     flex-direction: column;
     .hp {
@@ -849,6 +936,7 @@ a {
       border: 2px solid #ccc;
       align-items: center;
       padding-left: 0.2rem;
+      margin-bottom: 0.1rem;
       img {
         width: 0.5rem;
         height: 0.5rem;
@@ -860,6 +948,30 @@ a {
         flex: 1;
       }
     }
+    .lv{
+      cursor: pointer;
+      height: 0.7rem;
+      width: 100%;
+      display: flex;
+      border: 2px solid #ccc;
+      align-items: center;
+      padding-left: 0.2rem;
+      margin-bottom: 0.1rem;
+      img {
+        width: 0.5rem;
+        height: 0.5rem;
+        
+      }
+      .value {
+        display: flex;
+        justify-content: space-around;
+        font-size: 0.26rem;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+        align-items: center;
+      }
+    }
     .other {
       img {
         width: 0.35rem !important;
@@ -869,7 +981,6 @@ a {
       flex: 1;
       padding: 0.1rem;
       border: 2px solid #ccc;
-      margin-top: 0.2rem;
       flex-wrap: wrap;
       & > div,
       .item {
@@ -879,7 +990,7 @@ a {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding-top: 0.1rem;
+        padding-top: 0.05rem;
         flex-direction: column;
         .value {
           margin-top: 0.06rem;
@@ -907,7 +1018,7 @@ a {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
-    padding: 0.4rem 0;
+    padding: 0.2rem 0;
     padding-top: 0.1rem;
     cursor: pointer;
     & > div {
@@ -942,7 +1053,7 @@ a {
     }
     .title {
       display: flex;
-      padding: 0.1rem;
+      padding: 0.05rem;
       width: 100%;
       .icon {
         width: 0.56rem;
@@ -954,7 +1065,7 @@ a {
         border-radius: 0.04rem;
       }
       .name {
-        font-size: 0.22rem;
+        font-size: 0.20rem;
         height: 0.46rem;
         margin-left: 0.2rem;
         line-height: 0.46rem;
@@ -1101,7 +1212,7 @@ a {
   left: 7.98rem;
   display: flex;
 }
-.accShow {
+.ringShow {
   top: 2.77rem;
   left: 7.98rem;
   display: flex;
