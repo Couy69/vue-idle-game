@@ -17,6 +17,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-service": "^3.9.0",
+    "compression-webpack-plugin": "^6.1.1",
     "compressorjs": "^1.0.6",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
