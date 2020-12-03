@@ -1,7 +1,7 @@
 <template>
   <div class="main" @contextmenu.prevent="contextmenu($event)">
     <div class="user-status">
-      
+
       <cTooltip placement="bottom">
         <template v-slot:content>
           <div class="lv">
@@ -208,19 +208,25 @@
       <div class="dungeons-Info" v-if="dungeons&&!inDungeons">
         <i class="dungeons-re" v-if="dungeons.type=='endless'" @click="resetEndlessLv"></i>
         <i class="dungeons-close" @click="closeDungeonsInfo"></i>
-        <div class="dungeons-title">{{dungeons.name}}</div>
+        <div class="dungeons-title">当前副本：lv{{dungeons.lv}}_{{dungeons.difficultyName}}</div>
         <div class="jjj">
           <div class="dungeons-dps" v-if="dungeons.type=='endless'">推荐DPS：???</div>
           <div class="dungeons-dps" v-else>推荐DPS：{{dungeons.needDPS}}</div>
           <div class="dungeons-lv" v-if="dungeons.type=='endless'">无尽层数:{{dungeons.lv}}</div>
           <div class="dungeons-lv" v-else>副本等级:{{dungeons.lv}}</div>
         </div>
-        <div class="dese"> -{{dungeons.name}}:{{dungeons.desc||'副本介绍'}}</div>
-        <!-- <div class="dese"> -{{dungeons.name}}:{{'副本介绍'}}</div> -->
-        <!-- <div class="dungeons-lv"> </div> -->
+        <div class="jjj">
+          <div class="dungeons-difficulty">当前副本难度等级：{{dungeons.difficultyName}}</div>
+        </div>
+        <div class="info">
+          <p>- 副本难度等级分为：普通，困难，极难</p>
+          <p>- 难度越高装备爆率也相应提升</p>
+          <p>- 极难难度下有几率出现套装装备</p>
+          <p>- 高难度仅能挑战一次</p>
+        </div>
         <div class="handle">
           <div v-if="dungeons.type!='endless'">
-            <input type="checkbox" name="" v-model="reChallenge"> 重复挑战
+            <p v-if="dungeons.difficulty==1"><input type="checkbox" name="" v-model="reChallenge"> 重复挑战</p>
           </div>
           <div class="handle-column" style="display:flex;flex-direction:column" v-else>
             <p><input type="checkbox" name="" v-model="upEChallenge"> 向上挑战</p>
@@ -233,49 +239,100 @@
       <div class="event-icon" :class="{'low-level':v.difficulty==1,'h-level':v.difficulty==2,'boss':v.difficulty==3}" v-for="(v,k) in dungeonsArr" :key="k" @click="showDungeonsInfo(k)" v-show='!inDungeons' :style="{top: v.top,left: v.left}">
         <span>lv{{v.lv}}</span>
       </div>
-      <!-- <div class="event-icon low-level" @click="showDungeonsInfo(1)" v-show='!inDungeons' style="top: 38%;left: 17%;"><span>lv5</span></div>
-      <div class="event-icon low-level" @click="showDungeonsInfo(2)" v-show='!inDungeons' style="top: 54%;left: 30%;"><span>lv10</span></div>
-      <div class="event-icon low-level" @click="showDungeonsInfo(3)" v-show='!inDungeons' style="top: 28%;left: 43%;"><span>lv15</span></div>
-      <div class="event-icon low-level" @click="showDungeonsInfo(4)" v-show='!inDungeons' style="top: 39%;left: 48%;"><span>lv20</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(5)" v-show='!inDungeons' style="top: 9%;left: 61%;"><span>lv25</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(6)" v-show='!inDungeons' style="top: 10%;left: 71%;"><span>lv30</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(7)" v-show='!inDungeons' style="top: 21%;left: 88%;"><span>lv35</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(8)" v-show='!inDungeons' style="top: 32%;left: 78%;"><span>lv40</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(9)" v-show='!inDungeons' style="top: 42%;left: 88%;"><span>lv45</span></div>
-      <div class="event-icon m-level" @click="showDungeonsInfo(10)" v-show='!inDungeons' style="top: 56%;left: 80%;"><span>lv50</span></div>
-      <div class="event-icon h-level" @click="showDungeonsInfo(11)" v-show='!inDungeons' style="top: 79%;left: 73%;"><span>lv55</span></div>
-      <div class="event-icon h-level" @click="showDungeonsInfo(12)" v-show='!inDungeons' style="top: 85%;left: 61%;"><span>lv60</span></div>
-      <div class="event-icon h-level" @click="showDungeonsInfo(13)" v-show='!inDungeons' style="top: 71%;left: 40%;"><span>lv70</span></div>
-      <div class="event-icon h-level" @click="showDungeonsInfo(14)" v-show='!inDungeons' style="top: 75%;left: 20%;"><span>lv80</span></div>
-      <div class="event-icon boss" @click="showDungeonsInfo(15)" v-show='!inDungeons' style="top: 56%;left: 51%;"><span>lv90</span></div>
-      <div class="event-icon boss" @click="showDungeonsInfo(16)" v-show='!inDungeons' style="top: 90%;left: 88%;"><span>lv100</span></div> -->
       <div class="event-icon endless" v-if="endlessLv" @click="showDungeonsInfo(17)" v-show='!inDungeons' style="top: 10%;left: 18%;"><span>无尽</span></div>
     </div>
     <div class="menu">
-      <div class="Backpack" @click="openMenuPanel('backpack')">
-        <img src="../assets/icons/menu/quest_icon_02.png" alt="">
-        <span>背 包</span>
-      </div>
-      <div class="Backpack" @click="openMenuPanel('shop')">
-        <img src="../assets/icons/menu/quest_icon_03.png" alt="">
-        <span>商 店</span>
-      </div>
-      <div class="Backpack" @click="saveGame">
-        <img src="../assets/icons/menu/icon_save.png" alt="">
-        <span>保 存</span>
-      </div>
-      <div class="Backpack" @click="exportSavedata">
-        <img src="../assets/icons/menu/icon-export.png" alt="">
-        <span class="compact">导出</span>
-      </div>
-      <div class="Backpack" @click="importSaveDataPanelOpened =true">
-        <img src="../assets/icons/menu/icon-import.png" alt="">
-        <span class="compact">导入</span>
-      </div>
-      <div class="Backpack" v-if="GMmodel" @click="GMOpened = true">
-        <img src="../assets/icons/menu/icon_85.png" alt="">
-        <span>GM</span>
-      </div>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="openMenuPanel('backpack')">
+            <img src="../assets/icons/menu/quest_icon_02.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 背包</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="openMenuPanel('shop')">
+            <img src="../assets/icons/menu/quest_icon_03.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 商 店</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="createdDungeons()">
+            <img src="../assets/icons/menu/refresh_de.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 刷新当前世界副本</p>
+          <p class="info">* 刷新时有较低概率同时刷新出高难度副本</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="">
+            <img src="../assets/icons/menu/quest_icon_00.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 角色转生</p>
+          <p class="info">* 打不过了？尝试转生来提升基础属性</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="saveGame">
+            <img src="../assets/icons/menu/icon_save.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 保存游戏</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="exportSavedata">
+            <img src="../assets/icons/menu/icon-export.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 导出游戏存档</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" @click="importSaveDataPanelOpened =true">
+            <img src="../assets/icons/menu/icon-import.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* 导入游戏存档</p>
+        </template>
+      </cTooltip>
+
+      <cTooltip :placement="'top'">
+        <template v-slot:content>
+          <div class="Backpack" v-if="GMmodel" @click="GMOpened = true">
+            <img src="../assets/icons/menu/icon_85.png" alt="">
+          </div>
+        </template>
+        <template v-slot:tip>
+          <p class="info">* GM模式</p>
+        </template>
+      </cTooltip>
+
     </div>
     <div class="dialog" :style='itemDialogStyle'>
       <weaponPanel :item="weapon" v-show="weaponShow"></weaponPanel>
@@ -375,7 +432,7 @@ export default {
   mixins: [assist],
   data() {
     return {
-      GMmodel: false,
+      GMmodel: true,
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
@@ -400,9 +457,9 @@ export default {
       exportSaveDataPanelOpened: false,
       strengthenEquipmentPanelOpened: false,
       itemDialogStyle: {},
-      GMEquipLv: '',
-      GMEquipQu: '',
-      GMGold: 0,
+      GMEquipLv: 110,
+      GMEquipQu: 4,
+      GMGold: 10000000,
       GMOpened: false,
       needComparison: true,
       saveData: {},
@@ -531,9 +588,24 @@ export default {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
-    createdDungeons(){
-      for(let i = this.playerLv;i<this.playerLv+6;i++){
-        this.dungeonsArr.push(handle.createRandomDungeons(i,Math.floor(Math.random()*3+1)))
+    createdDungeons() {
+      this.dungeonsArr = []
+      let Co = [0.85, 0.1, 0.05]
+      for (let i = this.playerLv; i < this.playerLv + 6; i++) {
+        let difficulty = 1, r = Math.random()
+        if (r <= Co[0]) {
+          // 获得破旧装备
+          difficulty = 1
+        } else if (r < Co[1] + Co[0] && r >= Co[0]) {
+          // 获得普通装备
+          difficulty = 2
+        } else {
+          difficulty = 3
+        }
+        this.dungeonsArr.push(handle.createRandomDungeons(i, 1))
+        if (difficulty != 1) {
+          this.dungeonsArr.push(handle.createRandomDungeons(i, difficulty))
+        }
       }
     },
     copySavaData() {
@@ -564,7 +636,7 @@ export default {
           palyerRing: this.$store.state.playerAttribute.ring,
           palyerNeck: this.$store.state.playerAttribute.neck,
         },
-        lv:this.$store.state.playerAttribute.lv,
+        lv: this.$store.state.playerAttribute.lv,
         backpackEquipment: backpackPanel.grid,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
@@ -669,7 +741,7 @@ export default {
           palyerNeck: this.$store.state.playerAttribute.neck,
         },
         backpackEquipment: backpackPanel.grid,
-        lv:this.$store.state.playerAttribute.lv,
+        lv: this.$store.state.playerAttribute.lv,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
       }
@@ -948,7 +1020,7 @@ a {
         flex: 1;
       }
     }
-    .lv{
+    .lv {
       cursor: pointer;
       height: 0.7rem;
       width: 100%;
@@ -960,7 +1032,6 @@ a {
       img {
         width: 0.5rem;
         height: 0.5rem;
-        
       }
       .value {
         display: flex;
@@ -1065,7 +1136,7 @@ a {
         border-radius: 0.04rem;
       }
       .name {
-        font-size: 0.20rem;
+        font-size: 0.2rem;
         height: 0.46rem;
         margin-left: 0.2rem;
         line-height: 0.46rem;
@@ -1174,16 +1245,15 @@ a {
       }
     }
     .low-level {
+      background-image: url(../assets/icons/menu/d1.png);
       background-color: rgba(100, 255, 36, 0.7);
     }
-    .m-level {
-      background-color: rgba(0, 159, 245, 0.7);
-    }
     .h-level {
+      background-image: url(../assets/icons/menu/d2.png);
       background-color: rgba(245, 241, 0, 0.7);
     }
     .boss {
-      background-image: url(../assets/icons/icon_83.png);
+      background-image: url(../assets/icons/menu/d3.png);
     }
     .endless {
       background-image: url(../assets/icons/endless.png);
@@ -1338,12 +1408,17 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 3rem;
+  width: 3.5rem;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 4px;
   border: 2px solid #ccc;
-  height: 4rem;
+  height: 3.5rem;
   padding: 0.1rem;
+  .info{
+    padding: .1rem .2rem;
+    font-size: .12rem;
+    color:#999;
+  }
   .dungeons-close {
     cursor: pointer;
     position: absolute;
@@ -1368,7 +1443,8 @@ a {
   }
   .dungeons-title {
     margin-top: 0.1rem;
-    font-size: 0.2rem;
+    font-size: 0.22rem;
+    margin-bottom: 0.2rem;
   }
   .handle {
     display: flex;
@@ -1376,7 +1452,12 @@ a {
     justify-content: space-between;
     white-space: nowrap;
     font-size: 0.14rem;
+    margin-top: 0.1rem;
     & > div {
+      display: flex;
+      align-items: center;
+    }
+    p{
       display: flex;
       align-items: center;
     }
@@ -1397,23 +1478,26 @@ a {
     }
   }
   .jjj {
-    font-size: 0.14rem;
+    font-size: 0.16rem;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
     display: flex;
-    padding: 0.15rem;
+    padding: 0.15rem 0.25rem;
     align-items: center;
     .dungeons-dps {
       color: #f90202;
       text-shadow: 0px 0px 2px rgba(245, 54, 54, 0.7);
     }
+    .dungeons-difficulty {
+      text-align: right;
+    }
   }
-  .dese {
+  .desc {
     width: 100%;
-    height: 2rem;
+    height: 1.5rem;
     font-size: 0.14rem;
     border-top: 1px solid #ccc;
-    padding: 0.2rem;
+    padding: 0.1rem;
     color: #999;
   }
   .dungeons-btn {

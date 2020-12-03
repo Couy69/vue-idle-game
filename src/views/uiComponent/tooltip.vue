@@ -3,7 +3,7 @@
     <div class="c-tooltip-content" @mouseover="showTips($event)" @mouseleave="closeTips">
       <slot name="content"></slot>
     </div>
-    <div class="c-tooltip-tip" v-if="tipsShow" :style='tipsStyle'>
+    <div class="c-tooltip-tip" :class="placement" v-if="tipsShow" :style='tipsStyle'>
       <slot name="tip"></slot>
     </div>
   </div>
@@ -72,5 +72,10 @@ export default {
     background-image: url(../../assets/icons/tips.png);
     background-size: cover;
   }
+}
+.top{
+  top:-1.25rem;
+  transform: translateX(-50%);
+  bottom: initial;
 }
 </style>

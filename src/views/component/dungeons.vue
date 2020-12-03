@@ -245,14 +245,14 @@ export default {
     },
     // 计算战斗过程
     battleCom(event) {
-      var playerAttribute = this.$store.state.playerAttribute.attribute,
+      let playerAttribute = this.$store.state.playerAttribute.attribute,
         battleTime,
         healthRecoverySpeed = this.$store.state.playerAttribute.healthRecoverySpeed,
         reducedDamage = this.$store.state.playerAttribute.attribute.REDUCDMG,
         playerDPS = playerAttribute.DPS,
         playerBLOC = playerAttribute.BLOC.value,
-        monsterAttribute = this.$deepCopy(event.attribute) //HP: 100,ATK: 1,
-
+        monsterAttribute = this.$deepCopy(event.attribute), //HP: 100,ATK: 1,
+        p = this.findComponentUpward(this, 'index')
       // 战斗伤害计算公式 
       // 1 - 0.06 * armor / (1 + (0.06 * armor))
 
@@ -295,9 +295,15 @@ export default {
             type: 'win'
           });
         }
+        // 计算战利品获取
         this.caculateTrophy(event)
-        if(this.dungeons.lv>this.$store.state.playerAttribute.lv){
+        // 副本战斗成功时提升玩家等级
+        if(this.dungeons.lv>this.$store.state.playerAttribute.lv&&this.dungeons.eventType.type=='boss'){
           this.$store.commit('set_player_lv', this.dungeons.lv)
+        }
+        // 高难度副本只可以挑战一次
+        if(this.dungeons.difficulty!=1){
+          p.dungeonsArr = p.dungeonsArr.filter(({ id }) => id !== this.dungeons.id);
         }
       } else {
         // 玩家死亡
@@ -308,7 +314,6 @@ export default {
         this.timeOut = {}
         this.left = 0
         this.nextEvent = 1
-        var p = this.findComponentUpward(this, 'index')
         p.inDungeons = false
         this.dungeons = {}
         var takeDmg = monsterDeadTime * Number(monsterAttribute.ATK)
@@ -331,7 +336,7 @@ export default {
       var lv = this.dungeons.lv
       // 获取独特装备
       if (event.type == 'boss' && this.dungeons.type != 'endless') {
-        var randow = 0.96
+        var randow = 1 - 0.04*this.dungeons.difficulty
         if (this.dungeons.name == '黑色火山') {
           randow = 0.92
         }

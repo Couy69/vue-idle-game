@@ -71,12 +71,14 @@ function createRandomDungeons(lv, difficulty) {
   lv = lv||1,difficulty = difficulty||1;
   var df = difficulty/2+0.5
   var dungeonsConfig = {
+    id:lv+''+difficulty,
     battleTime: 2000,
-    name: 'dungeon_name',
+    name: 'LV'+lv+'_'+(difficulty==1?'普通':difficulty==2?'困难':'极难'),
     eventNum: '5',
     lv: lv,
-    needDPS: lv*lv*2,
+    needDPS: lv*lv*2*difficulty,
     difficulty:difficulty,
+    difficultyName:difficulty==1?'普通':difficulty==2?'困难':'极难',
     top:Math.random()*70+10+'%',
     left:Math.random()*70+10+'%',
     eventType: [{
@@ -146,7 +148,7 @@ function createRandomDungeons(lv, difficulty) {
       trophy: {
         gold: parseInt(lv*(Math.random()*50+15)*df),
         equip: [
-          0.25, 0.55, 0.15*df, 0.05*df
+          0.25-0.05*df, 0.55-0.15*df, 0.15+0.15*df, 0.05+0.05*df
         ],
       }
     }, ]
