@@ -74,8 +74,8 @@ export default {
   }
 }
 .top{
-  top:-1.25rem;
-  transform: translateX(-50%);
+  top:-0.25rem;
+  transform: translate(-50%,-100%);
   bottom: initial;
 }
 </style>

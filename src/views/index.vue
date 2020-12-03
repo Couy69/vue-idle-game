@@ -7,7 +7,7 @@
           <div class="lv">
             <div class="value">
               <span>lv {{playerLv}}</span>
-              <span style="font-size:0.16rem">转生次数：0</span>
+              <span style="font-size:0.16rem">转生次数：{{$store.state.reincarnation.count}}</span>
             </div>
           </div>
         </template>
@@ -234,7 +234,6 @@
           </div>
           <div class="dungeons-btn" @click="eventBegin()">开始挑战</div>
         </div>
-
       </div>
       <div class="event-icon" :class="{'low-level':v.difficulty==1,'h-level':v.difficulty==2,'boss':v.difficulty==3}" v-for="(v,k) in dungeonsArr" :key="k" @click="showDungeonsInfo(k)" v-show='!inDungeons' :style="{top: v.top,left: v.left}">
         <span>lv{{v.lv}}</span>
@@ -279,13 +278,13 @@
 
       <cTooltip :placement="'top'">
         <template v-slot:content>
-          <div class="Backpack" @click="">
+          <div class="Backpack" @click="openMenuPanel('rein')">
             <img src="../assets/icons/menu/quest_icon_00.png" alt="">
           </div>
         </template>
         <template v-slot:tip>
           <p class="info">* 角色转生</p>
-          <p class="info">* 打不过了？尝试转生来提升基础属性</p>
+          <p class="info">* 淦不过了？尝试转生来提升基础属性</p>
         </template>
       </cTooltip>
 
@@ -361,6 +360,13 @@
       </div>
       <shopPanel></shopPanel>
     </div>
+    <div class="dialog-backpackPanel" v-show="reinPanelOpened">
+      <div class="title">
+        <span>角色转生</span>
+        <i class="close" @click="closePanel"></i>
+      </div>
+      <reinPanel></reinPanel>
+    </div>
     <div class="dialog-backpackPanel" v-show="strengthenEquipmentPanelOpened">
       <div class="title">
         <span>强化装备</span>
@@ -418,6 +424,7 @@ import ringPanel from './component/ringPanel'
 import neckPanel from './component/neckPanel'
 import backpackPanel from './component/backpackPanel'
 import shopPanel from './component/shopPanel'
+import reinPanel from './component/reincarnationPanel'
 import strengthenEquipment from './component/strengthenEquipment'
 import dungeons from './component/dungeons'
 import extras from './component/extras'
@@ -452,6 +459,7 @@ export default {
       neck: {},
       armor: {},
       backpackPanelOpened: false,
+      reinPanelOpened: false,
       shopPanelOpened: false,
       importSaveDataPanelOpened: false,
       exportSaveDataPanelOpened: false,
@@ -467,7 +475,7 @@ export default {
       debounceTime: {},  //防抖计时器
     };
   },
-  components: { weaponPanel, armorPanel, ringPanel, neckPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment, extras, qa, setting },
+  components: { weaponPanel, armorPanel, ringPanel, neckPanel, dungeons, backpackPanel, shopPanel, cTooltip, strengthenEquipment, extras, qa, setting ,reinPanel },
   created() {
     // 窗口自适应
     window.onresize = () => {
@@ -500,6 +508,8 @@ export default {
         this.$store.commit('set_player_armor', this.$deepCopy(this.saveData.playerEquipment.playerArmor))
         this.$store.commit('set_player_ring', this.$deepCopy(this.saveData.playerEquipment.palyerRing))
         this.$store.commit('set_player_neck', this.$deepCopy(this.saveData.playerEquipment.palyerNeck))
+        this.saveData.rA&&this.$store.commit('set_player_rein_attribute', this.$deepCopy(this.saveData.rA))
+        this.saveData.r&&this.$store.commit('set_player_rein', this.$deepCopy(this.saveData.r))
         this.$store.commit('reset_player_gold', parseInt(this.saveData.gold) || 0)
         this.$store.commit('set_endless_lv', parseInt(this.saveData.endlessLv) || 0)
         this.$store.commit('set_player_lv', parseInt(this.saveData.lv) || 0)
@@ -524,9 +534,9 @@ export default {
   },
   mounted() {
     // 自动回血
-    this.autoHealthRecovery = setInterval(() => {
-      this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
-    }, 1000)
+    // this.autoHealthRecovery = setInterval(() => {
+    //   this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
+    // }, 1000)
 
     //生成随机副本
     this.createdDungeons()
@@ -640,6 +650,11 @@ export default {
         backpackEquipment: backpackPanel.grid,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
+        rA:this.$store.state.reincarnationAttribute,
+        r:{
+          count:this.$store.state.reincarnation.count,
+          point:this.$store.state.reincarnation.point,
+        }
       }
       this.saveDateString = Base64.encode(Base64.encode(JSON.stringify(data)))
     },
@@ -744,6 +759,11 @@ export default {
         lv: this.$store.state.playerAttribute.lv,
         gold: this.$store.state.playerAttribute.GOLD,
         endlessLv: this.$store.state.playerAttribute.endlessLv,
+        rA:this.$store.state.reincarnationAttribute,
+        r:{
+          count:this.$store.state.reincarnation.count,
+          point:this.$store.state.reincarnation.point,
+        }
       }
       var saveData = Base64.encode(Base64.encode(JSON.stringify(data)))
       localStorage.setItem('_sd', saveData)
@@ -877,13 +897,16 @@ export default {
         case 'shop':
           this.shopPanelOpened = !this.shopPanelOpened
           break;
+        case 'rein':
+          this.reinPanelOpened = !this.reinPanelOpened
+          break;
         default:
           break;
       }
 
     },
     closePanel() {
-      this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = this.strengthenEquipmentPanelOpened = false
+      this.backpackPanelOpened = this.shopPanelOpened = this.importSaveDataPanelOpened = this.exportSaveDataPanelOpened = this.strengthenEquipmentPanelOpened = this.reinPanelOpened = false
       this.GMOpened = false
       this.saveDateString = ''
 

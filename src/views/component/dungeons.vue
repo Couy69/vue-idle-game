@@ -26,7 +26,7 @@ export default {
       battleComTime: {},
       nextEvent: 1,
       dungeons: {
-        battleTime: 2000,
+        battleTime: 500,
         name: '史莱姆森林',
         time: '60',
         id: '1',
@@ -114,12 +114,12 @@ export default {
             this.timeOut = setTimeout(() => {
               this.pro = setInterval(() => {
                 startEnent()
-              }, 50)
-            }, 2000)
+              }, 10)
+            }, 500)
           } else {
             setTimeout(() => {
               this.eventEnd()
-            }, 2000)
+            }, 500)
           }
 
           clearInterval(this.pro)
@@ -130,7 +130,7 @@ export default {
       this.eventBegin()
       this.pro = setInterval(() => {
         startEnent()
-      }, 50)
+      }, 10)
     },
     eventBegin() {
       this.$store.commit("set_sys_info", {
@@ -160,7 +160,7 @@ export default {
           });
           this.battleComTime = setTimeout(() => {
             this.battleCom(event)
-          }, 2000)
+          }, 500)
           break;
 
         default:
@@ -298,7 +298,14 @@ export default {
         // 计算战利品获取
         this.caculateTrophy(event)
         // 副本战斗成功时提升玩家等级
-        if(this.dungeons.lv>this.$store.state.playerAttribute.lv&&this.dungeons.eventType.type=='boss'){
+        console.log(event.attribute.ATK,event.attribute.HP)
+        if(this.dungeons.lv>this.$store.state.playerAttribute.lv&&event.type=='boss'){
+          this.$store.commit("set_sys_info", {
+            msg: `
+              你升级了，可以挑战更高等级的副本了。
+            `,
+            type: 'win'
+          });
           this.$store.commit('set_player_lv', this.dungeons.lv)
         }
         // 高难度副本只可以挑战一次
