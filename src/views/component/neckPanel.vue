@@ -118,7 +118,7 @@ export default {
           'name': '生命值'
         }]
       }, {
-        name: '伟大单身部队成员的项链',
+        name: '伟大单身成员的项链',
         des: '真棒，真帅。有了这条帅气的项链，一辈子单身都不会孤独',
         iconSrc: './icons/U_neck03.png',
         entry: [{

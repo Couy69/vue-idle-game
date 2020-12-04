@@ -23,6 +23,7 @@ import Message from './views/uiComponent/message/index'
 Vue.prototype.$message = Message
 
 Vue.prototype.$deepCopy = function(data){
+  data = JSON.stringify(data).length>1?data:{}
   return JSON.parse(JSON.stringify(data))
 }
 

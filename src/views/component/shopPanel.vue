@@ -125,7 +125,7 @@ export default {
         var ringlv = Number(this.$store.state.playerAttribute.ring.lv);
       var necklv = Number(this.$store.state.playerAttribute.neck.lv);
         for (let i = 0; i < 5; i++) {
-          var lv = parseInt((wlv + alv + ringlv + necklv) / 3 + Math.random() * 6);
+          var lv = parseInt(this.$store.state.playerAttribute.lv) + Math.random() * 3;
           //装备等级最高110
           lv = lv > 110 ? 110 : lv
           this.createShopItem(lv);

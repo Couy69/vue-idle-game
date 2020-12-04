@@ -25,8 +25,10 @@ export default {
       timeOut: {},
       battleComTime: {},
       nextEvent: 1,
+      battleTime:2000,
+      moveTime:50,
       dungeons: {
-        battleTime: 500,
+        battleTime: 2000,
         name: '史莱姆森林',
         time: '60',
         id: '1',
@@ -100,6 +102,9 @@ export default {
       }
     };
   },
+  computed: {
+    reincarnationAttribute() { return this.$store.state.reincarnationAttribute },
+  },
   mounted() {
     // this.evenHandle()
 
@@ -114,12 +119,12 @@ export default {
             this.timeOut = setTimeout(() => {
               this.pro = setInterval(() => {
                 startEnent()
-              }, 10)
-            }, 500)
+              }, this.moveTime+this.reincarnationAttribute.MOVESPEED)
+            }, this.battleTime+this.reincarnationAttribute.BATTLESPEED)
           } else {
             setTimeout(() => {
               this.eventEnd()
-            }, 500)
+            }, this.battleTime+this.reincarnationAttribute.BATTLESPEED)
           }
 
           clearInterval(this.pro)
@@ -130,7 +135,7 @@ export default {
       this.eventBegin()
       this.pro = setInterval(() => {
         startEnent()
-      }, 10)
+      }, this.moveTime+this.reincarnationAttribute.MOVESPEED)
     },
     eventBegin() {
       this.$store.commit("set_sys_info", {
@@ -160,7 +165,7 @@ export default {
           });
           this.battleComTime = setTimeout(() => {
             this.battleCom(event)
-          }, 500)
+          }, this.battleTime+this.reincarnationAttribute.BATTLESPEED)
           break;
 
         default:
@@ -343,7 +348,7 @@ export default {
       var lv = this.dungeons.lv
       // 获取独特装备
       if (event.type == 'boss' && this.dungeons.type != 'endless') {
-        var randow = 1 - 0.04*this.dungeons.difficulty
+        var randow = 1 - 0.04*((this.dungeons.difficulty-1)*2+1)
         if (this.dungeons.name == '黑色火山') {
           randow = 0.92
         }

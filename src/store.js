@@ -4,6 +4,123 @@ import vueInstance from './main'
 import handle from './assets/js/handle'
 Vue.use(Vuex)
 
+var initial_weapon= {
+  "lv": 1,
+  itemType: 'weapon',
+  "quality": {
+    name: '破旧',
+    qualityCoefficient: 0.7,
+    probability: '0.25',
+    color: '#a1a1a1',
+    extraEntryNum: 1,
+  },
+  "type": {
+    "name": "新手短剑",
+    "des": "新手菜鸡使用的短剑",
+    "iconSrc": "./icons/W_Sword001.png",
+    "entry": [{
+      "valCoefficient": 0.9,
+      "value": 1,
+      "showVal": "+1",
+      "type": "ATK",
+      "name": "攻击力"
+    }]
+  },
+  "extraEntry": [{
+    "value": 1,
+    "showVal": "+1",
+    "type": "ATK",
+    "name": "攻击力"
+  }]
+},
+initial_armor= {
+  "lv": 1,
+  itemType: 'armor',
+  "quality": {
+    name: '破旧',
+    qualityCoefficient: 0.7,
+    probability: '0.25',
+    color: '#a1a1a1',
+    extraEntryNum: 1,
+  },
+  "type": {
+    "name": "新手布衣",
+    "des": "新手菜鸡穿的普通衣物",
+    "iconSrc": "./icons/A_A3.png",
+    "entry": [{
+      "valCoefficient": 0.9,
+      "value": 1,
+      "showVal": "+1",
+      "type": "DEF",
+      "name": "防御力"
+    }]
+  },
+  "extraEntry": [{
+    "type": "HP",
+    "value": 10,
+    "showVal": "+10",
+    "name": "生命值"
+  }, ]
+},
+initial_neck= {
+  "lv": 1,
+  itemType: 'neck',
+  "quality": {
+    name: '破旧',
+    qualityCoefficient: 0.7,
+    probability: '0.25',
+    color: '#a1a1a1',
+    extraEntryNum: 1,
+  },
+  "type": {
+    "name": "新手项坠",
+    "des": "一个普通的指环",
+    "iconSrc": "./icons/Ac_3.png",
+    "entry": [{
+      "valCoefficient": 0.9,
+      "value": 20,
+      "showVal": "+20",
+      "type": "HP",
+      "name": "生命值"
+    }]
+  },
+  "extraEntry": [{
+    "type": "CRIT",
+    "value": 10,
+    "showVal": "+10%",
+    "name": "暴击率"
+  }]
+},
+initial_ring= {
+  "lv": 1,
+  itemType: 'ring',
+  "quality": {
+    name: '破旧',
+    qualityCoefficient: 0.7,
+    probability: '0.25',
+    color: '#a1a1a1',
+    extraEntryNum: 1,
+  },
+  "type": {
+    "name": "新手指环",
+    "des": "一个普通的指环",
+    "iconSrc": "./icons/Ac_10.png",
+    "entry": [{
+      "valCoefficient": 0.9,
+      "value": 20,
+      "showVal": "+20",
+      "type": "HP",
+      "name": "生命值"
+    }]
+  },
+  "extraEntry": [{
+    "type": "CRIT",
+    "value": 10,
+    "showVal": "+10%",
+    "name": "暴击率"
+  }]
+};
+
 export default new Vuex.Store({
   state: {
     needStrengthenEquipment: {}, //设定当前需要强化的装备
@@ -23,7 +140,7 @@ export default new Vuex.Store({
     },
     reincarnation:{
       count:0,
-      point:100,
+      point:0,
     },
     playerAttribute: {
       lv: 1,
@@ -68,122 +185,10 @@ export default new Vuex.Store({
           showValue: '',
         },
       },
-      weapon: {
-        "lv": 1,
-        itemType: 'weapon',
-        "quality": {
-          name: '破旧',
-          qualityCoefficient: 0.7,
-          probability: '0.25',
-          color: '#a1a1a1',
-          extraEntryNum: 1,
-        },
-        "type": {
-          "name": "新手短剑",
-          "des": "新手菜鸡使用的短剑",
-          "iconSrc": "./icons/W_Sword001.png",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "value": 1,
-            "showVal": "+1",
-            "type": "ATK",
-            "name": "攻击力"
-          }]
-        },
-        "extraEntry": [{
-          "value": 1,
-          "showVal": "+1",
-          "type": "ATK",
-          "name": "攻击力"
-        }]
-      },
-      armor: {
-        "lv": 1,
-        itemType: 'armor',
-        "quality": {
-          name: '破旧',
-          qualityCoefficient: 0.7,
-          probability: '0.25',
-          color: '#a1a1a1',
-          extraEntryNum: 1,
-        },
-        "type": {
-          "name": "新手布衣",
-          "des": "新手菜鸡穿的普通衣物",
-          "iconSrc": "./icons/A_A3.png",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "value": 1,
-            "showVal": "+1",
-            "type": "DEF",
-            "name": "防御力"
-          }]
-        },
-        "extraEntry": [{
-          "type": "HP",
-          "value": 10,
-          "showVal": "+10",
-          "name": "生命值"
-        }, ]
-      },
-      neck: {
-        "lv": 1,
-        itemType: 'neck',
-        "quality": {
-          name: '破旧',
-          qualityCoefficient: 0.7,
-          probability: '0.25',
-          color: '#a1a1a1',
-          extraEntryNum: 1,
-        },
-        "type": {
-          "name": "新手项坠",
-          "des": "一个普通的指环",
-          "iconSrc": "./icons/Ac_3.png",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "value": 20,
-            "showVal": "+20",
-            "type": "HP",
-            "name": "生命值"
-          }]
-        },
-        "extraEntry": [{
-          "type": "CRIT",
-          "value": 10,
-          "showVal": "+10%",
-          "name": "暴击率"
-        }]
-      },
-      ring: {
-        "lv": 1,
-        itemType: 'ring',
-        "quality": {
-          name: '破旧',
-          qualityCoefficient: 0.7,
-          probability: '0.25',
-          color: '#a1a1a1',
-          extraEntryNum: 1,
-        },
-        "type": {
-          "name": "新手指环",
-          "des": "一个普通的指环",
-          "iconSrc": "./icons/Ac_10.png",
-          "entry": [{
-            "valCoefficient": 0.9,
-            "value": 20,
-            "showVal": "+20",
-            "type": "HP",
-            "name": "生命值"
-          }]
-        },
-        "extraEntry": [{
-          "type": "CRIT",
-          "value": 10,
-          "showVal": "+10%",
-          "name": "暴击率"
-        }]
-      },
+      weapon:initial_weapon,
+      armor:initial_armor,
+      ring:initial_ring,
+      neck:initial_neck,
     }
   },
   mutations: {
@@ -200,14 +205,14 @@ export default new Vuex.Store({
       vueInstance.$store.commit('set_player_attribute')
     },
     set_player_neck(state, data) {
-      this.state.playerAttribute.neck = data
+      this.state.playerAttribute.neck = data||initial_neck
       vueInstance.$store.commit('set_player_attribute')
     },
     set_player_rein_attribute(state, data){
       this.state.reincarnationAttribute= data
       vueInstance.$store.commit('set_player_attribute')
     },
-    set_player_rein(){
+    set_player_rein(state, data){
       this.state.reincarnation= data
     },
     set_player_attribute(state, data) {
@@ -381,6 +386,13 @@ export default new Vuex.Store({
     },
     reset_player_gold(state, data) {
       this.state.playerAttribute.GOLD = parseInt(data);
+    },
+    reset_player_equi(){
+      vueInstance.$store.commit('set_player_weapon',initial_weapon)
+      vueInstance.$store.commit('set_player_armor',initial_armor)
+      vueInstance.$store.commit('set_player_ring',initial_ring)
+      vueInstance.$store.commit('set_player_neck',initial_neck)
+      vueInstance.$store.commit('set_player_lv',1)
     },
     set_endless_lv(state, data) {
       this.state.playerAttribute.endlessLv = parseInt(data);

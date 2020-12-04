@@ -168,6 +168,9 @@ export default {
       this.grid = this.$deepCopy(tem)
       tem = []
     },
+    clear(){
+      this.grid = new Array(32).fill({});
+    },
     // 一键出售
     sell() {
       this.grid.map((item, index) => {
