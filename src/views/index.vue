@@ -449,7 +449,7 @@ export default {
   mixins: [assist],
   data() {
     return {
-      GMmodel: true,
+      GMmodel: false,
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
