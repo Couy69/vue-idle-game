@@ -54,11 +54,18 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'JetBrainsMono';
+  src:
+    url('../fonts/JetBrainsMono-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 #app {
   font-family: 'NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }
-div,button,span,p,h1,h2,h3,h4,h5,b,input{
-  font-family:'sarasa','NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
+div,button,span,p,h1,h2,h3,h4,h5,b,input,textarea{
+  font-family:'sarasa','JetBrainsMono','NotoSansSC','Noto Sans','Source Sans Pro','Avenir', Helvetica, Arial, sans-serif !important;
 }
 
 input,textarea{
@@ -192,7 +199,8 @@ input,textarea{
 
         .hp {
           padding-left: .08rem;
-
+          border:none;
+          height:.25rem;
           img {
             width: .35rem;
             height: .35rem;
@@ -202,13 +210,29 @@ input,textarea{
             font-size: .18rem;
           }
         }
+        .lv {
+          padding-left: .08rem;
+          border:none;
+          height:.25rem;
+          
+          img {
+            width: .35rem;
+            height: .35rem;
+          }
+
+          .value {
+            font-size: .18rem;
+            justify-content: space-between;
+            padding-right: .1rem;
+          }
+        }
 
         .other {
-          margin-top: .08rem;
-          padding: .06rem;
-
+          margin-top: .02rem;
+          padding: .04rem;
+          border: 1px solid #ccc;
           &>div {
-            padding-left: .08rem;
+            padding-top: 0.02rem;
           }
 
           img {
@@ -218,10 +242,11 @@ input,textarea{
 
           .value {
             font-size: .18rem;
-            margin-left: .05rem;
-
+            margin-top: .04rem;
             span {
               font-size: .12rem !important;
+              transform: scale(0.8);
+              margin-top: -.02rem;
             }
           }
         }
@@ -344,7 +369,7 @@ input,textarea{
         top: 52%;
 
         &>div {
-          margin: 0;
+          margin: 0.03rem;
 
           img {
             width: .35rem;

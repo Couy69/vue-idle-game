@@ -3,7 +3,7 @@
     <div class="equimentPanel" v-if="JSON.stringify(equiment)!='{}'">
       <cTooltip placement="bottom">
         <template v-slot:content>
-          <div class="panel-title">- 强化 -</div>
+          <div class="panel-title">- 强化 i -</div>
         </template>
         <template v-slot:tip>
           <p class="info">* 花费金币强化装备</p>
@@ -50,10 +50,11 @@
       </div>
       <cTooltip placement="bottom">
         <template v-slot:content>
-          <div class="panel-title">- 词条重铸 -</div>
+          <div class="panel-title">- 词条重铸 i -</div>
         </template>
         <template v-slot:tip>
           <p class="info">* 花费金币重铸装备词条</p>
+          <p class="info">* 重铸时词条颜色与百分比值显示了该词条的等级</p>
         </template>
       </cTooltip>
 

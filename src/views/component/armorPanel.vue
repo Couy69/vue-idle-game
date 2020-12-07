@@ -76,19 +76,19 @@ export default {
         des: '',
         iconSrc: './icons/U_Armor06.png',
         entry: [{
-          'valCoefficient': 1.1,
+          'valCoefficient': 1.2,
           'value': '11',
           'showVal': '+11',
           type: 'DEF',
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.2,
+          'valCoefficient': 1.3,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 0.8,
+          'valCoefficient': 0.9,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -105,12 +105,18 @@ export default {
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 2.8,
+          'valCoefficient': 2.6,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
           'name': '攻击力'
-        }]
+        },{
+          'valCoefficient': 1.2,
+          'value': '11',
+          'showVal': '+11',
+          type: 'BLOC',
+          'name': '格挡'
+        },]
       }, {
         name: '争执连身衣',
         des: '',
@@ -123,7 +129,7 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.1,
+          'valCoefficient': 1.2,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -163,7 +169,7 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.0,
+          'valCoefficient': 1.1,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -197,6 +203,29 @@ export default {
           type: 'ATK',
           'name': '攻击力'
         }]
+      },{
+        name: '先代狂龙战士盔甲',
+        des: '',
+        iconSrc: './icons/U_Armor07.png',
+        entry: [{
+          'valCoefficient': 1.5,
+          'value': '11',
+          'showVal': '+11',
+          type: 'DEF',
+          'name': '防御力'
+        }, {
+          'valCoefficient': 1.2,
+          'value': '11',
+          'showVal': '+11',
+          type: 'BLOC',
+          'name': '格挡'
+        },{
+          type: 'HP',
+          'valCoefficient': 1.3,
+          'value': '8',
+          'showVal': '8',
+          'name': '生命值'
+        },]
       },],
       category: [
         {
@@ -393,6 +422,13 @@ export default {
             random = parseInt(random * armor.quality.qualityCoefficient)
             item.value = random
             item.showVal = '+' + random + '%'
+            break;
+          case 'BLOC':
+            var random = parseInt((lv * 1.3 + (Math.random() * lv / 2 + 1)))
+            random = parseInt(random * armor.quality.qualityCoefficient)
+            random = random || 1
+            item.value = random
+            item.showVal = '+' + random
             break;
           default:
             break;

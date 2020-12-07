@@ -126,7 +126,10 @@ export default new Vuex.Store({
     needStrengthenEquipment: {}, //设定当前需要强化的装备
     sysInfo: [{
       type: '',
-      msg: "欢迎你，菜鸟勇士。"
+      msg: "欢迎你勇士，点击地图上的副本开始战斗。"
+    },{
+      type: '',
+      msg: "菜单栏可以刷新当前世界副本。"
     }],
     reincarnationAttribute: {
       'HP': 0,
@@ -340,7 +343,7 @@ export default new Vuex.Store({
       attribute.EVA.showValue = ((1 - HitChance) * 100).toFixed(1) + '%'
 
       // console.log(vueInstance.$store.state)
-      attribute.MAXHP.value += 100
+      attribute.MAXHP.value += 200
       if (hpP) {
 
         attribute.CURHP.value = parseInt(attribute.MAXHP.value * hpP)
@@ -363,7 +366,8 @@ export default new Vuex.Store({
       var armor = attribute.DEF.value
 
       //承受伤害比例
-      attribute.REDUCDMG = 1 - 0.06 * armor / (1 + (0.06 * armor))
+      // attribute.REDUCDMG = 1 - 0.06 * armor / (1 + (0.06 * armor))
+      attribute.REDUCDMG =1 -  0.05 * armor/ (1 + (0.0525 * armor))
 
       // state.playerAttribute.attribute=attribute
       // vueInstance.$store.commit("set_player_attribute", attribute);

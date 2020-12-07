@@ -13,6 +13,8 @@
         </template>
         <template v-slot:tip>
           <p class="info">* 玩家当前等级与转生次数</p>
+          <p class="info">* 成功挑战首领时会提升等级</p>
+          <p class="info">* 超过30级时可以转生获取更强力的初始属性</p>
         </template>
 
       </cTooltip>
@@ -148,7 +150,7 @@
         </cTooltip>
         <cTooltip placement="bottom">
           <template v-slot:content>
-            <div class="gold" :style="{fontSize:userGold>=1000000?'.18rem':'.22rem'}">金币: <span :style="{fontSize:userGold>=1000000?'.14rem':'.16rem'}">{{userGold}}</span></div>
+            <div class="gold" :style="{fontSize:userGold>=1000000?'.18rem':'.22rem'}">金币: <span :style="{fontSize:userGold>=1000000?'.14rem':'.16rem'}">{{(userGold || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')}}</span></div>
           </template>
           <template v-slot:tip>
             <p class="info">* 你拥有的金币数量</p>
@@ -208,7 +210,8 @@
       <div class="dungeons-Info" v-if="dungeons&&!inDungeons">
         <i class="dungeons-re" v-if="dungeons.type=='endless'" @click="resetEndlessLv"></i>
         <i class="dungeons-close" @click="closeDungeonsInfo"></i>
-        <div class="dungeons-title">当前副本：lv{{dungeons.lv}}_{{dungeons.difficultyName}}</div>
+        <div class="dungeons-title" v-if="dungeons.type=='endless'">当前副本：无尽</div>
+        <div class="dungeons-title" v-else>当前副本：lv{{dungeons.lv}}_{{dungeons.difficultyName}}</div>
         <div class="jjj">
           <div class="dungeons-dps" v-if="dungeons.type=='endless'">推荐DPS：???</div>
           <div class="dungeons-dps" v-else>推荐DPS：{{dungeons.needDPS}}</div>
@@ -218,11 +221,16 @@
         <div class="jjj">
           <div class="dungeons-difficulty">当前副本难度等级：{{dungeons.difficultyName}}</div>
         </div>
-        <div class="info">
+        <div class="info" v-if="dungeons.type=='endless'">
+          <p>- 无尽难度大致为层数*10的极难副本难度</p>
+          <p>- 无尽模式下仅能获得金币，将不会有装备</p>
+          <p>- 无尽模式挑战成功会回满血</p>
+        </div>
+        <div class="info" v-else>
           <p>- 副本难度等级分为：普通，困难，极难</p>
           <p>- 难度越高装备爆率也相应提升</p>
-          <!-- <p>- 极难难度下有几率出现套装装备</p> -->
           <p>- 高难度仅能挑战一次</p>
+          <p>- 高难度下有几率出现套装装备(下个版本加入)</p>
         </div>
         <div class="handle">
           <div v-if="dungeons.type!='endless'">
@@ -238,7 +246,7 @@
       <div class="event-icon" :class="{'low-level':v.difficulty==1,'h-level':v.difficulty==2,'boss':v.difficulty==3}" v-for="(v,k) in dungeonsArr" :key="k" @click="showDungeonsInfo(k)" v-show='!inDungeons' :style="{top: v.top,left: v.left}">
         <span>lv{{v.lv}}</span>
       </div>
-      <div class="event-icon endless" v-if="endlessLv" @click="showDungeonsInfo(17)" v-show='!inDungeons' style="top: 10%;left: 18%;"><span>无尽</span></div>
+      <div class="event-icon endless" v-if="endlessLv" @click="showEndlessDungeonsInfo()" v-show='!inDungeons' style="top: 10%;left: 18%;"><span>无尽</span></div>
     </div>
     <div class="menu">
 
@@ -272,6 +280,7 @@
         </template>
         <template v-slot:tip>
           <p class="info">* 刷新当前世界副本</p>
+          <p class="info">* 刷新有30秒钟的间隔</p>
           <p class="info">* 刷新时有较低概率同时刷新出高难度副本</p>
         </template>
       </cTooltip>
@@ -408,6 +417,7 @@
           lv:<input v-model="GMEquipLv" type="number" placeholder="装备等级1~110">
           稀有度：<input v-model="GMEquipQu" type="number" placeholder="装备质量0~4">
           增加金币：<input v-model="GMGold" type="number" placeholder="增加金币">
+          玩家等级：<input v-model="GMPlayerLv" type="number" placeholder="玩家等级：">
           <div class="button" @click="createGMEquip">确定</div>
         </div>
       </div>
@@ -439,7 +449,7 @@ export default {
   mixins: [assist],
   data() {
     return {
-      GMmodel: false,
+      GMmodel: true,
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
@@ -455,6 +465,8 @@ export default {
       reEChallenge: false,
       dungeons: '',
       dungeonsArr: [],
+      dungeonsTime: '', //刷新副本计时器
+      dungeonsTimeO: 30, //刷新副本时间间隔 单位：S
       ring: {},
       neck: {},
       armor: {},
@@ -468,6 +480,7 @@ export default {
       GMEquipLv: 110,
       GMEquipQu: 4,
       GMGold: 10000000,
+      GMPlayerLv: 1,
       GMOpened: false,
       needComparison: true,
       saveData: {},
@@ -565,15 +578,49 @@ export default {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
     createdDungeons() {
+      if (this.dungeonsTime) {
+        this.$store.commit("set_sys_info", {
+          msg: `
+                刚刚才刷新过了，需要等待${this.dungeonsTimeO}秒才能刷新哦。
+              `,
+          type: 'wrning'
+        });
+        return
+      }
+      this.dungeonsTime = setInterval(()=>{
+        this.dungeonsTimeO -- 
+        if(this.dungeonsTimeO <=0){
+          clearInterval(this.dungeonsTime)
+          this.dungeonsTime = ''
+          this.dungeonsTimeO = 30
+        }
+      },1000)
       this.dungeonsArr = []
       let Co = [0.85, 0.1, 0.05]
-      for (let i = this.playerLv; i < this.playerLv + 6; i++) {
+      for (let i = this.playerLv - 1; i > this.playerLv - 4; i--) {
+        if (i < 1) {
+          break
+        }
         let difficulty = 1, r = Math.random()
+        // 生成普通副本时有几率刷新高难度副本
         if (r <= Co[0]) {
-          // 获得破旧装备
           difficulty = 1
         } else if (r < Co[1] + Co[0] && r >= Co[0]) {
-          // 获得普通装备
+          difficulty = 2
+        } else {
+          difficulty = 3
+        }
+        this.dungeonsArr.push(handle.createRandomDungeons(i, 1))
+        if (difficulty != 1) {
+          this.dungeonsArr.push(handle.createRandomDungeons(i, difficulty))
+        }
+      }
+      for (let i = this.playerLv; i < this.playerLv + 6; i++) {
+        let difficulty = 1, r = Math.random()
+        // 生成普通副本时有几率刷新高难度副本
+        if (r <= Co[0]) {
+          difficulty = 1
+        } else if (r < Co[1] + Co[0] && r >= Co[0]) {
           difficulty = 2
         } else {
           difficulty = 3
@@ -638,10 +685,16 @@ export default {
     },
     windowVisibilitychange() {
       if (!this.inDungeons) {
+        if (!this.autoHealthRecovery) {
+          this.autoHealthRecovery = setInterval(() => {
+            this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
+          }, 1000)
+        }
         return
       }
       if (document.hidden) {
         clearInterval(this.autoHealthRecovery)
+        this.autoHealthRecovery = ''
       } else {
         this.autoHealthRecovery = setInterval(() => {
           this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
@@ -765,6 +818,7 @@ export default {
       var b = this.findComponentDownward(this, "weaponPanel");
       var item = b.createNewItem(this.GMEquipQu, this.GMEquipLv);
       item = JSON.parse(item);
+      this.$store.commit('set_player_lv', this.GMPlayerLv)
       var backpackPanel = this.findComponentDownward(
         this,
         "backpackPanel",
@@ -821,10 +875,12 @@ export default {
     showDungeonsInfo(k) {
       // var b = this.findComponentDownward(this, 'dungeons')
       this.dungeons = this.dungeonsArr[k]
-      if (this.dungeons.type == 'endless') {
-        this.reChallenge = false
-        this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
-      }
+    },
+    showEndlessDungeonsInfo(){
+      this.reChallenge = false
+      this.dungeons = handle.createRandomDungeons(this.$store.state.playerAttribute.endlessLv*10, 3)
+      this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
+      this.dungeons.type = 'endless'
     },
     closeDungeonsInfo() {
       this.dungeons = ''
@@ -1240,6 +1296,7 @@ a {
       background-position: center;
       background-color: rgba(245, 54, 54, 0.7);
       box-shadow: 0 0 4px 4px rgba(184, 171, 255, 70%);
+      background-size: 30px 29px;
       span {
         position: absolute;
         top: 100%;
