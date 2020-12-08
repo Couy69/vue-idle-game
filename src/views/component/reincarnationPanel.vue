@@ -135,7 +135,7 @@ export default {
         case 'ATK':
           var p = this.attr.filter(({ name }) => name == 'ATK')[0];
           p.oldValue = p.currentValue = item
-          p.hasPoint = item / 4
+          p.hasPoint = item / 3
           break;
         case 'CRIT':
           var p = this.attr.filter(({ name }) => name == 'CRIT')[0];
@@ -340,7 +340,7 @@ export default {
             data.HP = item.currentValue
             break;
           case 'ATK':
-            item.currentValue = item.point * 4 + item.oldValue
+            item.currentValue = item.point * 3 + item.oldValue
             data.ATK = item.currentValue
             break;
           case 'CRIT':

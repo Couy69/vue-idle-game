@@ -134,20 +134,20 @@ export default {
       ],
     };
     // this.$set(this.grid,0,item)
-    try {
-      var p = this.findComponentUpward(this, 'index')
-      if (JSON.stringify(p.saveData) != '{}') {
-        this.grid = p.saveData.backpackEquipment
-      }
-    } catch (error) {
-      console.log(error)
-      this.$store.commit("set_sys_info", {
-        msg: `
-              糟糕，存档坏了！
-            `,
-        type: 'warning'
-      });
-    }
+    // try {
+    //   var p = this.findComponentUpward(this, 'index')
+    //   if (JSON.stringify(p.saveData) != '{}') {
+    //     this.grid = p.saveData.backpackEquipment
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    //   this.$store.commit("set_sys_info", {
+    //     msg: `
+    //           糟糕，存档坏了！
+    //         `,
+    //     type: 'warning'
+    //   });
+    // }
 
   },
   methods: {

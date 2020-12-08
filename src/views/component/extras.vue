@@ -13,7 +13,8 @@
           <div class="info" v-for="(item,index) in update" :key="index">
             <h1> {{item.title}}</h1>
             <span v-if="item.desc"> {{item.desc}}</span>
-            <h2>功能调整</h2>
+            <h2 class="vision"  v-for="(v) in item.vision" :key="v.id" v-if="item.vision">{{v.vision}}:<a :href="v.href" target="_blank"> {{v.href}}</a></h2>
+            <h2 v-if="item.adjust">功能调整</h2>
             <p v-for="(v) in item.adjust" :key="v.id">{{v}}</p>
             <h2 v-if="item.majorization">优化</h2>
             <p v-for="(v) in item.majorization" :key="v.id">{{v}}</p>
@@ -62,7 +63,18 @@ export default {
       reKeyCode: [],
       update: [
         {
-          title: '2020-12-07 (1.3.0)',
+          title: '历史版本',
+          vision: [{
+            vision:'测试服',
+            href: 'http://couy.xyz/rpg'
+          },{
+            vision:'1.2.2',
+            href: 'http://couy.xyz/v1.2.2'
+          }],
+          desc: '- 这里保留了历史版本，你仍然可以导入存档到旧版本游玩,测试服版本不保证可玩性',
+        },
+        {
+          title: '2020-12-08 (1.3.0)',
           desc: '- 遇到了bug或者平衡性方面的问题希望大家可以反馈一下。',
           adjust: [
             '-  添加人物转生，转生时会获得转生点数来强化人物基础属性',
@@ -79,6 +91,7 @@ export default {
           ],
           bug: [
             '- 修复后台挑战副本失败时自动回血失效的bug',
+            '- 自动出售价格低于预期',
           ]
         },
         {
@@ -308,8 +321,17 @@ export default {
   padding: 0.2rem;
   z-index: 10;
   .scroll {
-    height: calc(100% - 0.5rem);
+    height: calc(100% - 2rem);
     overflow-y: auto;
+    .vision{
+      font-size: .16rem;
+    }
+    a{
+      color: #fff;
+      text-decoration: underline;
+      font-size: .14rem;
+      user-select:initial;
+    }
   }
   .close {
     cursor: pointer;
@@ -400,6 +422,9 @@ export default {
       display: flex;
       margin: 0.1rem;
       justify-content: space-between;
+    }
+    span{
+      text-align: center;
     }
   }
 }

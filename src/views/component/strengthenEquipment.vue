@@ -60,14 +60,14 @@
 
       <div class="extraEntry">
         <div class="extraEntry-item" v-for="(v,k) in equiment.extraEntry" :key="v.id" @click="recastTheEquiment(v,k)" @mouseover="changeRecastStatus(v,k,true)" @mouseleave="changeRecastStatus(v,k,false)">
-          <button class="btn btn-snake-border"  :class="qualityClass">
+          <button class="btn btn-snake-border" :class="qualityClass">
             <div class="btn-borders">
               <div class="border-top"></div>
               <div class="border-right"></div>
               <div class="border-bottom"></div>
               <div class="border-left"></div>
             </div>
-            <div v-if="v.recastStatus" class="recast-info" ><span :class="{red:userGold<recastNeedGold}"></span>点击花费{{recastNeedGold}}金币重铸</div>
+            <div v-if="v.recastStatus" class="recast-info"><span :class="{red:userGold<recastNeedGold}"></span>点击花费{{recastNeedGold}}金币重铸</div>
             <div v-else>{{v.name}} : {{v.showVal}} <span style="font-size:.12rem;margin-left:.06rem" v-if="v.EntryLevel"> ({{v.EntryLevel}})</span> </div>
           </button>
 
@@ -88,6 +88,8 @@ export default {
   data() {
     return {
       equiment: {},
+      strengTime: '', //刷新副本计时器
+      strengTimeO: 60, //刷新副本时间间隔 单位：S
       autoStrengModel: false,
       autoStrengLv: 12,
       autoStrengTime: '',
@@ -119,6 +121,14 @@ export default {
     };
   },
   mounted() {
+    this.strengTime = setInterval(() => {
+      this.strengTimeO--
+      if (this.strengTimeO <= 0) {
+        clearInterval(this.strengTime)
+        this.strengTime = ''
+        this.strengTimeO = 60
+      }
+    }, 1000)
   },
   computed: {
 
@@ -150,6 +160,17 @@ export default {
     },
     // 强化装备
     startStreng(auto) {
+      if (this.strengTime&&this.equiment.enchantlvl>=12) {
+        this.$store.commit("set_sys_info", {
+          msg: `
+          刷新页面时需要等待60S才能强化+12以上，仍需等待${this.strengTimeO}秒。
+        `,
+          type: 'wrning'
+        });
+        this.autoStrengModel = false
+        clearInterval(this.autoStrengTime)
+        return
+      }
       var ra = auto ? 2 : 1
       var needGold = this.strengthenNeedGold * ra
       if (this.$store.state.playerAttribute.GOLD < needGold) {
@@ -472,8 +493,6 @@ $blue: #ccc;
     transform: translateY(100%);
   }
 }
-
-
 
 .cameraPosition {
   height: calc(100%);

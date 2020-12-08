@@ -14,10 +14,9 @@
 </template>
 <script>
 import { assist } from '../../assets/js/assist';
-import { dungeonsConfig } from '../../assets/js/dungeonsConfig';
 export default {
   name: "dungeons",
-  mixins: [assist, dungeonsConfig],
+  mixins: [assist],
   data() {
     return {
       left: 0,
@@ -215,7 +214,7 @@ export default {
           });
         }
 
-        if(this.dungeons.lv>=10){
+        if(this.dungeons.lv>=10&&!this.$store.state.playerAttribute.endlessLv){
           this.$store.commit("set_sys_info", {
             msg: "开启了无尽挑战，可点击地图右上角副本图标进入",
             type: 'warning'
@@ -261,9 +260,6 @@ export default {
         playerBLOC = playerAttribute.BLOC.value,
         monsterAttribute = this.$deepCopy(event.attribute), //HP: 100,ATK: 1,
         p = this.findComponentUpward(this, 'index')
-      // 战斗伤害计算公式 
-      // 1 - 0.06 * armor / (1 + (0.06 * armor))
-
 
       var playerDeadTime = (playerAttribute.CURHP.value+playerBLOC) / reducedDamage / monsterAttribute.ATK,
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
@@ -277,7 +273,6 @@ export default {
         takeDmg = takeDmg>-1?-1:takeDmg
         this.$store.commit('set_player_curhp', takeDmg)
 
-        // 无尽模式下怪物加强
         if (this.dungeons.type == 'endless') {
           this.$store.commit("set_sys_info", {
             msg: `
@@ -416,13 +411,14 @@ export default {
         if (this.dungeons.type == 'endless') {
           var endlessLv = this.$store.state.playerAttribute.endlessLv
           goldObtainRatio = 1.5
+          items = []
         }
         this.$store.commit("set_sys_info", {
           msg: `
               获得了:金币${parseInt(event.trophy.gold * goldObtainRatio)}
             `,
           type: 'trophy',
-          equip: []
+          equip: items
         });
         this.$store.commit("set_player_gold", parseInt(event.trophy.gold * goldObtainRatio));
         if(this.dungeons.type == 'endless'){
@@ -431,7 +427,7 @@ export default {
         items.map(item => {
           // 当开启了自动出售并且新获得的装备品质低于史诗时，自动出售
           if (backpackPanel.autoSell[equipQua]&&item.quality.name!="独特") {
-            var gold = item.lv * item.quality.qualityCoefficient * 10
+            var gold = item.lv * item.quality.qualityCoefficient * 30
             this.$store.commit("set_player_gold", parseInt(gold));
             this.$store.commit("set_sys_info", {
               msg: `
@@ -453,7 +449,7 @@ export default {
         var goldObtainRatio = 1
         if (this.dungeons.type == 'endless') {
           var endlessLv = this.$store.state.playerAttribute.endlessLv
-          goldObtainRatio = 2
+          goldObtainRatio = 2.6
         }
         this.$store.commit("set_sys_info", {
           msg: `

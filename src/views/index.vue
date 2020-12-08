@@ -244,9 +244,10 @@
         </div>
       </div>
       <div class="event-icon" :class="{'low-level':v.difficulty==1,'h-level':v.difficulty==2,'boss':v.difficulty==3}" v-for="(v,k) in dungeonsArr" :key="k" @click="showDungeonsInfo(k)" v-show='!inDungeons' :style="{top: v.top,left: v.left}">
+        <i class="icon-image"></i>
         <span>lv{{v.lv}}</span>
       </div>
-      <div class="event-icon endless" v-if="endlessLv" @click="showEndlessDungeonsInfo()" v-show='!inDungeons' style="top: 10%;left: 18%;"><span>无尽</span></div>
+      <div class="event-icon endless" v-if="endlessLv&&playerLv>=10" @click="showEndlessDungeonsInfo()" v-show='!inDungeons' style="top: 6%;left: 16%;"><i class="icon-image"></i><span>无尽</span></div>
     </div>
     <div class="menu">
 
@@ -282,6 +283,7 @@
           <p class="info">* 刷新当前世界副本</p>
           <p class="info">* 刷新有30秒钟的间隔</p>
           <p class="info">* 刷新时有较低概率同时刷新出高难度副本</p>
+          <p class="info">* 刷新规则[lv-5,lv+6]</p>
         </template>
       </cTooltip>
 
@@ -292,7 +294,7 @@
           </div>
         </template>
         <template v-slot:tip>
-          <p class="info">* 角色转生</p>
+          <p class="info">* 角色转生菜单</p>
           <p class="info">* 淦不过了？尝试转生来提升基础属性</p>
         </template>
       </cTooltip>
@@ -508,8 +510,6 @@ export default {
       this.windowVisibilitychange()
     });
 
-    var sd = localStorage.getItem('_sd')
-    this.loadGame(sd)
   },
   mounted() {
     // 自动回血
@@ -517,8 +517,7 @@ export default {
       this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
     }, 1000)
 
-    //生成随机副本
-    this.createdDungeons()
+    
     // 自动保存
     setInterval(() => {
       this.saveGame()
@@ -537,6 +536,10 @@ export default {
       this.$store.commit('set_player_armor', this.$deepCopy(this.playerArmor))
       this.$store.commit('set_player_neck', this.$deepCopy(this.playerNeck))
     }
+    var sd = localStorage.getItem('_sd')
+    this.loadGame(sd)
+    //生成随机副本
+    this.createdDungeons()
   },
   computed: {
     attribute() { return this.$store.state.playerAttribute.attribute },
@@ -587,17 +590,18 @@ export default {
         });
         return
       }
-      this.dungeonsTime = setInterval(()=>{
-        this.dungeonsTimeO -- 
-        if(this.dungeonsTimeO <=0){
+      this.dungeonsTime = setInterval(() => {
+        this.dungeonsTimeO--
+        if (this.dungeonsTimeO <= 0) {
           clearInterval(this.dungeonsTime)
           this.dungeonsTime = ''
           this.dungeonsTimeO = 30
         }
-      },1000)
+      }, 1000)
       this.dungeonsArr = []
       let Co = [0.85, 0.1, 0.05]
-      for (let i = this.playerLv - 1; i > this.playerLv - 4; i--) {
+      console.log(this.playerLv)
+      for (let i = this.playerLv - 1; i > this.playerLv - 5; i--) {
         if (i < 1) {
           break
         }
@@ -742,6 +746,14 @@ export default {
           saveDataStr = saveDataStr.replace(/playerAcc/gi, 'playerRing')
           saveDataStr = saveDataStr.replace(/acc/gi, "ring")
           this.saveData = JSON.parse(saveDataStr)
+
+          var backpackPanel = this.findComponentDownward(
+            this,
+            "backpackPanel",
+          );
+          if(JSON.stringify(this.saveData) != '{}'){
+            backpackPanel.grid = this.saveData.backpackEquipment
+          }
           if (!this.saveData.playerEquipment.playerNeck) {
             this.saveData.playerEquipment.playerNeck = {
               "lv": 1,
@@ -875,10 +887,13 @@ export default {
     showDungeonsInfo(k) {
       // var b = this.findComponentDownward(this, 'dungeons')
       this.dungeons = this.dungeonsArr[k]
+      if(this.dungeons.difficulty!=1){
+        this.reChallenge = false
+      }
     },
-    showEndlessDungeonsInfo(){
+    showEndlessDungeonsInfo() {
       this.reChallenge = false
-      this.dungeons = handle.createRandomDungeons(this.$store.state.playerAttribute.endlessLv*10, 3)
+      this.dungeons = handle.createRandomDungeons(this.$store.state.playerAttribute.endlessLv * 10, 3)
       this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
       this.dungeons.type = 'endless'
     },
@@ -1287,40 +1302,82 @@ a {
       position: absolute;
       cursor: pointer;
       width: 0.55rem;
-      height: 0.55rem;
-      background-image: url(../assets/icons/icon_81.png);
-      border-radius: 50%;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-color: rgba(245, 54, 54, 0.7);
-      box-shadow: 0 0 4px 4px rgba(184, 171, 255, 70%);
-      background-size: 30px 29px;
+      height: 0.75rem;
+      border: 1px solid #111;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 4px;
+      box-shadow: 0 0 4px 4px rgba(100, 255, 36, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      // transform: translate(-50%, -50%);
+      // background-image: url(../assets/icons/icon_81.png);
+      // background-repeat: no-repeat;
+      // background-position: top center;
+      // background-color: rgba(245, 54, 54, 0.7);
+      // background-size: 30px 29px;
+      .icon-image {
+        width: .45rem;
+        height:.45rem;
+        border-radius: 50%;
+        background-image: url(../assets/icons/menu/d1.png);
+        background-color: rgba(100, 255, 36, 0.6);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 30px 29px;
+      }
       span {
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
+        // position: absolute;
+        // top: 100%;
+        // left: 50%;
+        // transform: translateX(-50%);
         text-shadow: 1px 1px 3px rgb(0, 0, 0);
         white-space: nowrap;
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid rgba(100, 255, 36, 0.6);
+        margin-top: .03rem;
+        font-size: .14rem;
       }
     }
     .low-level {
-      background-image: url(../assets/icons/menu/d1.png);
-      background-color: rgba(100, 255, 36, 0.7);
+      // background-image: url(../assets/icons/menu/d1.png);
+      // background-color: rgba(100, 255, 36, 0.7);
     }
     .h-level {
-      background-image: url(../assets/icons/menu/d2.png);
-      background-color: rgba(245, 241, 0, 0.7);
+      box-shadow: 0 0 4px 4px rgba(245, 241, 0, 0.5);
+      .icon-image{
+        background-image: url(../assets/icons/menu/d2.png);
+        background-color: rgba(245, 241, 0, 0.6);
+      }
+      span{
+
+        border-top: 1px solid rgba(245, 241, 0, 0.6)
+      }
+      // background-image: url(../assets/icons/menu/d2.png);
+      // background-color: rgba(245, 241, 0, 0.7);
     }
     .boss {
-      background-image: url(../assets/icons/menu/d3.png);
+      box-shadow: 0 0 4px 4px rgba(245, 54, 54, 0.5);
+      .icon-image{
+        background-image: url(../assets/icons/menu/d3.png);
+        background-color: rgba(245, 54, 54, 0.6);
+      }
+      span{
+        border-top: 1px solid rgba(245, 54, 54, 0.6);
+      }
+      // background-image: url(../assets/icons/menu/d3.png);
     }
     .endless {
-      background-image: url(../assets/icons/endless.png);
-      background-color: rgba(245, 69, 0, 0.7);
-      ox-shadow: 0 0 4px 4px #ffabab;
+      box-shadow: 0 0 4px 4px rgba(245, 69, 0, 0.5);
+      .icon-image{
+        background-image: url(../assets/icons/endless.png);
+        background-color: rgba(245, 69, 0, 0.6);
+      }
+      span{
+        border-top: 1px solid rgba(245, 69, 0, 0.6);
+      }
     }
   }
 }

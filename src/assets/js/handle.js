@@ -82,57 +82,57 @@ function createRandomDungeons(lv, difficulty) {
     top:Math.random()*70+15+'%',
     left:Math.random()*70+10+'%',
     eventType: [{
-      name: 'moster',
+      name: 'monster',
       type: 'monster',
       eventType: 'battle',
       attribute: {
-        HP: parseInt(lv*lv**1.1*(Math.random()*5+15)*df),
+        HP: parseInt(lv*lv**1.1*(Math.random()*5+16)*df),
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+8)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
       }
     }, {
-      name: 'moster',
+      name: 'monster',
       type: 'monster',
       eventType: 'battle',
       attribute: {
-        HP: parseInt(lv*lv**1.1*(Math.random()*5+15)*df),
+        HP: parseInt(lv*lv**1.1*(Math.random()*5+16)*df),
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+8)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
       }
     }, {
-      name: 'moster',
+      name: 'monster',
       type: 'monster',
       eventType: 'battle',
       attribute: {
-        HP: parseInt(lv*lv**1.1*(Math.random()*5+15)*df),
+        HP: parseInt(lv*lv**1.1*(Math.random()*5+16)*df),
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+8)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
       }
     }, {
-      name: 'moster',
+      name: 'monster',
       type: 'monster',
       eventType: 'battle',
       attribute: {
-        HP: parseInt(lv*lv**1.1*(Math.random()*5+15)*df),
+        HP: parseInt(lv*lv**1.1*(Math.random()*5+16)*df),
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+8)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -142,11 +142,11 @@ function createRandomDungeons(lv, difficulty) {
       type: 'boss',
       eventType: 'battle',
       attribute: {
-        HP: parseInt(lv*lv**1.1*(Math.random()*5+35)*df),
+        HP: parseInt(lv*lv**1.1*(Math.random()*5+30)*df),
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+3)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*10+25)*df),
+        gold: parseInt(lv**1.15*(Math.random()*10+27)*df),
         equip: [
           0.25-0.05*df, 0.55-0.15*df, 0.15+0.15*df, 0.05+0.05*df
         ],

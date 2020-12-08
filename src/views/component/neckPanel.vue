@@ -198,7 +198,13 @@ export default {
             'showVal': '+11',
             type: 'HP',
             'name': '生命值'
-          }]
+          },{
+          'valCoefficient': 0.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'BLOC',
+          'name': '格挡'
+        }]
         },
         {
           name: '冰龙凝雪',
@@ -229,7 +235,7 @@ export default {
           des: '银魂之眼',
           iconSrc: './icons/Ac_5.png',
           entry: [{
-            'valCoefficient': 1.5,
+            'valCoefficient': 1.1,
             'value': '11',
             'showVal': '+11',
             type: 'CRIT',
@@ -240,7 +246,13 @@ export default {
             'showVal': '+11',
             type: 'HP',
             'name': '生命值'
-          }]
+          }, {
+          'valCoefficient': 0.6,
+          'value': '11',
+          'showVal': '+11',
+          type: 'ATK',
+          'name': '攻击力'
+        }]
         }
       ],
       extraEntry: [{
