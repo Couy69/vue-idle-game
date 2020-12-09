@@ -245,6 +245,7 @@ export default {
   .info {
     padding: 0.2rem;
     text-align: left;
+    user-select:text;
     h1 {
       margin: 0.06rem 0;
       font-size: 0.23rem;

@@ -222,7 +222,7 @@
           <div class="dungeons-difficulty">当前副本难度等级：{{dungeons.difficultyName}}</div>
         </div>
         <div class="info" v-if="dungeons.type=='endless'">
-          <p>- 无尽难度大致为层数*10的极难副本难度</p>
+          <p>- 无尽难度大致为层数*5的极难副本难度</p>
           <p>- 无尽模式下仅能获得金币，将不会有装备</p>
           <p>- 无尽模式挑战成功会回满血</p>
         </div>
@@ -893,7 +893,7 @@ export default {
     },
     showEndlessDungeonsInfo() {
       this.reChallenge = false
-      this.dungeons = handle.createRandomDungeons(this.$store.state.playerAttribute.endlessLv * 10, 3)
+      this.dungeons = handle.createRandomDungeons(this.$store.state.playerAttribute.endlessLv * 5, 3)
       this.dungeons.lv = this.$store.state.playerAttribute.endlessLv
       this.dungeons.type = 'endless'
     },

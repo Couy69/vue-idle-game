@@ -204,7 +204,7 @@ export default {
         des: '大师大冒险家之剑',
         iconSrc: './icons/U_Sword07.png',
         entry: [{
-          'valCoefficient': 2.2,
+          'valCoefficient': 2.4,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -221,7 +221,7 @@ export default {
         des: '六翼天使武刃',
         iconSrc: './icons/U_Sword08.png',
         entry: [{
-          'valCoefficient': 2.1,
+          'valCoefficient': 2.6,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -557,21 +557,21 @@ export default {
             item.showVal = '+' + random
             break;
           case 'ATKPERCENT':
-            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 10 + 4)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
             random = random || 1
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'DEFPERCENT':
-            var random = parseFloat(lv * 0.1 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            var random = parseFloat(lv * 0.1 + (Math.random() * lv / 10 + 4)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
             random = random || 1
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'HPPERCENT':
-            var random = parseFloat(lv * 0.13 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            var random = parseFloat(lv * 0.13 + (Math.random() * lv / 10 + 4)).toFixed(2)
             random = parseFloat(random * weapon.quality.qualityCoefficient).toFixed(2)
             random = random || 1
             item.value = random

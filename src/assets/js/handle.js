@@ -54,6 +54,11 @@ function CalculateStrAttr(entry, lv) {
         item.value = value
         item.showValue = '+' + value + '%'
         break;
+      case 'BLOC':
+          value = Math.round(a * item.value)
+          item.value = value
+          item.showValue = '+' + value
+          break;
       default:
         break;
     }
@@ -90,7 +95,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -104,7 +109,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -118,7 +123,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -132,7 +137,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+10)*df),
+        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -146,7 +151,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+3)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*10+27)*df),
+        gold: parseInt(lv**1.15*(Math.random()*10+28)*df),
         equip: [
           0.25-0.05*df, 0.55-0.15*df, 0.15+0.15*df, 0.05+0.05*df
         ],
@@ -246,21 +251,21 @@ function createRandomEntry(lv, qualityCoefficient) {
       entry.showVal = '+' + random
       break;
     case 'ATKPERCENT':
-      var random = parseFloat(lv * 0.11 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.11 + (randomCoefficient  * lv / 10 + 4)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'DEFPERCENT':
-      var random = parseFloat(lv * 0.1 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.1 + (randomCoefficient  * lv / 10 + 4)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
     case 'HPPERCENT':
-      var random = parseFloat(lv * 0.13 + (randomCoefficient  * lv / 8 + 1)).toFixed(2)
+      var random = parseFloat(lv * 0.13 + (randomCoefficient  * lv / 10 + 4)).toFixed(2)
       random = parseFloat(random * qualityCoefficient).toFixed(2)
       random = random || 1
       entry.value = random

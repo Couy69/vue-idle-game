@@ -83,12 +83,12 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.3,
+          'valCoefficient': 1.5,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 0.9,
+          'valCoefficient': 1.2,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -100,12 +100,12 @@ export default {
         iconSrc: './icons/U_Armor05.png',
         entry: [{
           type: 'HP',
-          'valCoefficient': 1.8,
+          'valCoefficient': 1.6,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 2.6,
+          'valCoefficient': 2.4,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -129,12 +129,12 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.2,
+          'valCoefficient': 1.4,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
         }, {
-          'valCoefficient': 1.2,
+          'valCoefficient': 1.4,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -152,7 +152,7 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 2.3,
+          'valCoefficient': 2.6,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -169,7 +169,7 @@ export default {
           'name': '防御力'
         }, {
           type: 'HP',
-          'valCoefficient': 1.1,
+          'valCoefficient': 1.7,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -197,7 +197,7 @@ export default {
           type: 'CRITDMG',
           'name': '暴击伤害'
         }, {
-          'valCoefficient': 1.0,
+          'valCoefficient': 1.7,
           'value': '11',
           'showVal': '+11',
           type: 'ATK',
@@ -221,7 +221,7 @@ export default {
           'name': '格挡'
         },{
           type: 'HP',
-          'valCoefficient': 1.3,
+          'valCoefficient': 1.4,
           'value': '8',
           'showVal': '8',
           'name': '生命值'
@@ -258,7 +258,7 @@ export default {
             'name': '防御力'
           }, {
             type: 'HP',
-            'valCoefficient': 0.7,
+            'valCoefficient': 0.8,
             'value': '8',
             'showVal': '8',
             'name': '生命值'
@@ -500,14 +500,14 @@ export default {
             item.showVal = '+' + random + '%'
             break;
           case 'DEFPERCENT':
-            var random = parseFloat(lv * 0.12 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            var random = parseFloat(lv * 0.12 + (Math.random() * lv / 10 + 4)).toFixed(2)
             random = parseFloat(random * armor.quality.qualityCoefficient).toFixed(2)
             random = random || 1
             item.value = random
             item.showVal = '+' + random + '%'
             break;
           case 'HPPERCENT':
-            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 8 + 1)).toFixed(2)
+            var random = parseFloat(lv * 0.11 + (Math.random() * lv / 10 + 4)).toFixed(2)
             random = parseFloat(random * armor.quality.qualityCoefficient).toFixed(2)
             random = random || 1
             item.value = random
