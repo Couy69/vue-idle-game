@@ -399,7 +399,7 @@ export default new Vuex.Store({
       vueInstance.$store.commit('set_player_lv',1)
     },
     set_endless_lv(state, data) {
-      this.state.playerAttribute.endlessLv = parseInt(data);
+      this.state.playerAttribute.endlessLv = parseInt(data)<1?1:parseInt(data);
     },
     set_player_lv(state, data) {
       this.state.playerAttribute.lv = parseInt(data || 1);

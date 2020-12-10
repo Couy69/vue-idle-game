@@ -251,7 +251,7 @@ export default {
       } else {
         neckPonit = 0
       }
-      this.willGetreincarnationPoint = (lvPoint + weaponPonit + armorPonit + ringPonit + neckPonit)
+      this.willGetreincarnationPoint = parseInt((lvPoint + weaponPonit + armorPonit + ringPonit + neckPonit)*1.2)
     },
     subtract(v, e) {
       let num = 1

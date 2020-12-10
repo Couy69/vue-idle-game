@@ -229,10 +229,10 @@ export default {
         let backpackPanelSign = backpackPanel.itemNum / backpackPanel.grid.length < 0.8
         if (p.reChallenge && backpackPanelSign) {
           p.eventBegin()
-        } else if (p.reEChallenge) {
+        } else if (p.reEChallenge&&p.dungeons.type=='endless') {
           this.$store.commit("set_endless_lv", this.$store.state.playerAttribute.endlessLv - 1);
           p.eventBegin()
-        } else if (p.upEChallenge) {
+        } else if (p.upEChallenge&&p.dungeons.type=='endless') {
           p.endlessLv = this.$store.state.playerAttribute.endlessLv
           p.dungeons.lv = this.$store.state.playerAttribute.endlessLv
           p.showEndlessDungeonsInfo()

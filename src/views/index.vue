@@ -568,7 +568,7 @@ export default {
       this.upEChallenge = !this.reEChallenge
     },
     GMEquipLv() {
-      this.GMEquipLv = this.GMEquipLv > 110 ? 110 : this.GMEquipLv
+      this.GMEquipLv = this.GMEquipLv > 210 ? 210 : this.GMEquipLv
       this.GMEquipLv = this.GMEquipLv < 1 ? 1 : this.GMEquipLv
     },
     GMEquipQu() {
@@ -600,7 +600,6 @@ export default {
       }, 1000)
       this.dungeonsArr = []
       let Co = [0.85, 0.1, 0.05]
-      console.log(this.playerLv)
       for (let i = this.playerLv - 1; i > this.playerLv - 5; i--) {
         if (i < 1) {
           break

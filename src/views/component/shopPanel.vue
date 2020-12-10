@@ -104,8 +104,8 @@ export default {
       var necklv = Number(this.$store.state.playerAttribute.neck.lv);
       for (let i = 0; i < 5; i++) {
         var lv = Math.floor(this.$store.state.playerAttribute.lv + Math.random() * 3);
-        //装备等级最高10
-        lv = lv > 100 ? 100 : lv
+        //装备等级最高200
+        lv = lv > 200 ? 200 : lv
         this.createShopItem(lv);
       }
     },
@@ -123,18 +123,18 @@ export default {
         var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
         var alv = Number(this.$store.state.playerAttribute.armor.lv);
         var ringlv = Number(this.$store.state.playerAttribute.ring.lv);
-      var necklv = Number(this.$store.state.playerAttribute.neck.lv);
+        var necklv = Number(this.$store.state.playerAttribute.neck.lv);
         for (let i = 0; i < 5; i++) {
           var lv = Math.floor(this.$store.state.playerAttribute.lv + Math.random() * 3);
-          //装备等级最高100
-          lv = lv > 100 ? 100 : lv
+          //装备等级最高200
+          lv = lv > 200 ? 200 : lv
           this.createShopItem(lv);
         }   
       }
      
     },
     createShopItem(lv) {
-      var equip = [0.4, 0.345, 0.25,0.005];
+      var equip = [0.4, 0.342, 0.25,0.008];
       // var equip = [0, 0, 0,1];
       var equipQua = -1;
       var r = Math.random();
