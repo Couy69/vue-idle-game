@@ -212,6 +212,12 @@ function createRandomEntry(lv, qualityCoefficient) {
     {
       'value': '11%',
       'showVal': '+11%',
+      type: 'BLOCPERCENT',
+      'name': '格挡'
+    },
+    {
+      'value': '11%',
+      'showVal': '+11%',
       type: 'BLOC',
       'name': '格挡'
     },
@@ -271,6 +277,13 @@ function createRandomEntry(lv, qualityCoefficient) {
       entry.value = random
       entry.showVal = '+' + random + '%'
       break;
+    case 'BLOCPERCENT':
+        var random = parseFloat(lv * 0.1 + (randomCoefficient  * lv / 10 + 4)).toFixed(2)
+        random = parseFloat(random * qualityCoefficient).toFixed(2)
+        random = random || 1
+        entry.value = random
+        entry.showVal = '+' + random + '%'
+        break;
     case 'CRIT':
       var random = parseInt(randomCoefficient  * 5 + 5)
       random = parseInt(random * qualityCoefficient)

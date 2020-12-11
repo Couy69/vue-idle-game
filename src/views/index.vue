@@ -123,7 +123,7 @@
             <div class="item">
               <img src="../assets/icons/S_BLOC.png" alt="">
               <div class="value">
-                {{attribute.BLOC.showValue}}
+                {{attribute.BLOC.value}}
               </div>
             </div>
           </template>
@@ -229,8 +229,8 @@
         <div class="info" v-else>
           <p>- 副本难度等级分为：普通，困难，极难</p>
           <p>- 难度越高装备爆率也相应提升</p>
-          <p>- 高难度仅能挑战一次</p>
-          <p>- 高难度下有几率出现套装装备(下个版本加入)</p>
+          <p>- 困难，极难仅能挑战一次</p>
+          <p>- 困难，极难下有几率出现套装装备(下个版本加入)</p>
         </div>
         <div class="handle">
           <div v-if="dungeons.type!='endless'">
@@ -517,7 +517,7 @@ export default {
       this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
     }, 1000)
 
-    
+
     // 自动保存
     setInterval(() => {
       this.saveGame()
@@ -580,24 +580,30 @@ export default {
     navToGithub() {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
-    createdDungeons() {
-      if (this.dungeonsTime) {
-        this.$store.commit("set_sys_info", {
-          msg: `
-                刚刚才刷新过了，需要等待${this.dungeonsTimeO}秒才能刷新哦。
-              `,
-          type: 'wrning'
-        });
-        return
-      }
-      this.dungeonsTime = setInterval(() => {
-        this.dungeonsTimeO--
-        if (this.dungeonsTimeO <= 0) {
-          clearInterval(this.dungeonsTime)
-          this.dungeonsTime = ''
-          this.dungeonsTimeO = 30
+    /**
+     * constraint 强制刷新
+     */
+    createdDungeons(constraint) {
+      if (!constraint) {
+        if (this.dungeonsTime) {
+          this.$store.commit("set_sys_info", {
+            msg: `
+                    刚刚才刷新过了，需要等待${this.dungeonsTimeO}秒才能刷新哦。
+                  `,
+            type: 'wrning'
+          });
+          return
         }
-      }, 1000)
+        this.dungeonsTime = setInterval(() => {
+          this.dungeonsTimeO--
+          if (this.dungeonsTimeO <= 0) {
+            clearInterval(this.dungeonsTime)
+            this.dungeonsTime = ''
+            this.dungeonsTimeO = 30
+          }
+        }, 1000)
+      }
+
       this.dungeonsArr = []
       let Co = [0.85, 0.1, 0.05]
       for (let i = this.playerLv - 1; i > this.playerLv - 5; i--) {
@@ -613,7 +619,12 @@ export default {
         } else {
           difficulty = 3
         }
-        this.dungeonsArr.push(handle.createRandomDungeons(i, 1))
+        if (i > 100) {
+          var lv = Math.floor(this.playerLv * (100 - (this.playerLv - i)) / 100)
+        } else {
+          var lv = i
+        }
+        this.dungeonsArr.push(handle.createRandomDungeons(lv, 1))
         if (difficulty != 1) {
           this.dungeonsArr.push(handle.createRandomDungeons(i, difficulty))
         }
@@ -628,9 +639,14 @@ export default {
         } else {
           difficulty = 3
         }
-        this.dungeonsArr.push(handle.createRandomDungeons(i, 1))
+        if (i > 100) {
+          var lv = Math.floor(this.playerLv * (100 + (i - this.playerLv)) / 100)
+        } else {
+          var lv = i
+        }
+        this.dungeonsArr.push(handle.createRandomDungeons(lv, 1))
         if (difficulty != 1) {
-          this.dungeonsArr.push(handle.createRandomDungeons(i, difficulty))
+          this.dungeonsArr.push(handle.createRandomDungeons(lv, difficulty))
         }
       }
     },
@@ -745,12 +761,30 @@ export default {
           saveDataStr = saveDataStr.replace(/playerAcc/gi, 'playerRing')
           saveDataStr = saveDataStr.replace(/acc/gi, "ring")
           this.saveData = JSON.parse(saveDataStr)
-
+          if (!this.saveData.r) {
+            this.saveData.r = {
+              count: 0,
+              point: 0,
+            }
+          }
+          if (!this.saveData.ra) {
+            this.saveData.ra = {
+              'HP': 0,
+              'ATK': 0,
+              'CRIT': 0,
+              'CRITDMG': 0,
+              'DEF': 0,
+              'BLOC': 0,
+              'MOVESPEED': 0,
+              'BATTLESPEED': 0,
+            }
+          }
+          this.saveData.lv = this.saveData.lv ? this.saveData.lv : 1
           var backpackPanel = this.findComponentDownward(
             this,
             "backpackPanel",
           );
-          if(JSON.stringify(this.saveData) != '{}'){
+          if (JSON.stringify(this.saveData) != '{}') {
             backpackPanel.grid = this.saveData.backpackEquipment
           }
           if (!this.saveData.playerEquipment.playerNeck) {
@@ -886,7 +920,7 @@ export default {
     showDungeonsInfo(k) {
       // var b = this.findComponentDownward(this, 'dungeons')
       this.dungeons = this.dungeonsArr[k]
-      if(this.dungeons.difficulty!=1){
+      if (this.dungeons.difficulty != 1) {
         this.reChallenge = false
       }
     },
@@ -1317,8 +1351,8 @@ a {
       // background-color: rgba(245, 54, 54, 0.7);
       // background-size: 30px 29px;
       .icon-image {
-        width: .45rem;
-        height:.45rem;
+        width: 0.45rem;
+        height: 0.45rem;
         border-radius: 50%;
         background-image: url(../assets/icons/menu/d1.png);
         background-color: rgba(100, 255, 36, 0.6);
@@ -1336,8 +1370,8 @@ a {
         width: 100%;
         text-align: center;
         border-top: 1px solid rgba(100, 255, 36, 0.6);
-        margin-top: .03rem;
-        font-size: .14rem;
+        margin-top: 0.03rem;
+        font-size: 0.14rem;
       }
     }
     .low-level {
@@ -1346,35 +1380,34 @@ a {
     }
     .h-level {
       box-shadow: 0 0 4px 4px rgba(245, 241, 0, 0.5);
-      .icon-image{
+      .icon-image {
         background-image: url(../assets/icons/menu/d2.png);
         background-color: rgba(245, 241, 0, 0.6);
       }
-      span{
-
-        border-top: 1px solid rgba(245, 241, 0, 0.6)
+      span {
+        border-top: 1px solid rgba(245, 241, 0, 0.6);
       }
       // background-image: url(../assets/icons/menu/d2.png);
       // background-color: rgba(245, 241, 0, 0.7);
     }
     .boss {
       box-shadow: 0 0 4px 4px rgba(245, 54, 54, 0.5);
-      .icon-image{
+      .icon-image {
         background-image: url(../assets/icons/menu/d3.png);
         background-color: rgba(245, 54, 54, 0.6);
       }
-      span{
+      span {
         border-top: 1px solid rgba(245, 54, 54, 0.6);
       }
       // background-image: url(../assets/icons/menu/d3.png);
     }
     .endless {
       box-shadow: 0 0 4px 4px rgba(245, 69, 0, 0.5);
-      .icon-image{
+      .icon-image {
         background-image: url(../assets/icons/endless.png);
         background-color: rgba(245, 69, 0, 0.6);
       }
-      span{
+      span {
         border-top: 1px solid rgba(245, 69, 0, 0.6);
       }
     }

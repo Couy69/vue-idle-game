@@ -6,6 +6,7 @@
       <div class="info">
         <p>- 转生后会失去金币与装备</p>
         <p>- 转生会获得转生点数</p>
+        <p>- 转生点数根据人物等级，身上装备品质强化等级计算，持有金币与背包装备不会纳入计算</p>
       </div>
       <div class='btn-div'>
         <div class="button" @click="reincarnationConfirm">确认转生</div>
@@ -215,6 +216,8 @@ export default {
       this.$store.commit('reset_player_equi', {})
       var backpackPanel = this.findBrothersComponents(this, 'backpackPanel', false)[0]
       backpackPanel.clear()
+      var p = this.findComponentUpward(this, 'index')
+      p.createdDungeons(true)
     },
     caculateWillGetreincarnationPoint() {
       let lv = this.$store.state.playerAttribute.lv, lvPoint

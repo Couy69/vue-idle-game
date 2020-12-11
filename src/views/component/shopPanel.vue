@@ -105,7 +105,7 @@ export default {
       for (let i = 0; i < 5; i++) {
         var lv = Math.floor(this.$store.state.playerAttribute.lv + Math.random() * 3);
         //装备等级最高200
-        lv = lv > 200 ? 200 : lv
+        // lv = lv > 200 ? 200 : lv
         this.createShopItem(lv);
       }
     },
@@ -127,7 +127,7 @@ export default {
         for (let i = 0; i < 5; i++) {
           var lv = Math.floor(this.$store.state.playerAttribute.lv + Math.random() * 3);
           //装备等级最高200
-          lv = lv > 200 ? 200 : lv
+          // lv = lv > 200 ? 200 : lv
           this.createShopItem(lv);
         }   
       }
