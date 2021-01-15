@@ -15,11 +15,15 @@ let Message = (options = {}) => {
 
   let id = 'message_' + seed++
   let userOnClose = options.onClose
+  let userOnCancle = options.onCancle
   
   // 组件关闭的时候执行close方法
   // 主要用来数组中移出实例，并重新计算偏移量
   options.onClose = function () {
     Message.close(id, userOnClose)
+  }
+  options.onCancle = function () {
+    Message.cancle(id, userOnCancle)
   }
   // 计算每个组件的偏移
   let verticalOffset = options.offset || 16
@@ -52,6 +56,28 @@ Message.close = function (id, userOnClose) {
   const removedHeight = instances[index].$el.offsetHeight
   if (typeof userOnClose === 'function') {
     userOnClose(instances[index])
+  }
+  instances.splice(index, 1)
+  
+  // 重新计算偏移量
+  if (len <= 1 || index > instances.length - 1) return
+  for (let i = index; i < len - 1; i++) {
+    let dom = instances[i].$el
+    dom.style['top'] =
+      parseInt(dom.style['top'], 10) - removedHeight - 16 + 'px'
+  }
+}
+
+Message.cancle = function (id,userOnCancle) {
+  let len = instances.length
+  let index = -1
+  index = instances.findIndex(item => {
+    return item.id === id
+  })
+  if (index === -1) return
+  const removedHeight = instances[index].$el.offsetHeight
+  if (typeof userOnCancle === 'function') {
+    userOnCancle(instances[index])
   }
   instances.splice(index, 1)
   

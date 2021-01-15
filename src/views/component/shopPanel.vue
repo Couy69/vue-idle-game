@@ -17,8 +17,8 @@
         <span>剩余刷新次数：{{refreshTime}}次。</span>
       </div>
 
-      <div class="button" @click="goldRefreshShopItems">10000金币刷新</div>
-      <div class="button" @click="refreshShopItems">免费刷新</div>
+      <div class="button" @click="goldRefreshShopItems()">10000金币刷新</div>
+      <div class="button" @click="refreshShopItems()">免费刷新</div>
       <!-- <div class="button" @click="sell">一键出售</div> -->
     </div>
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
@@ -44,6 +44,8 @@ export default {
       timeStart: false,
       timeInterval: '',
       isTouch: false,
+      tipsFlag: false,
+      tipsFlagComfirm: false,
     };
   },
   mixins: [assist],
@@ -80,10 +82,36 @@ export default {
     }
   },
   mounted() {
-    this.refreshShopItems();
+    this.refreshShopItems(true);
   },
   methods: {
-    refreshShopItems() {
+    /**
+     * 刷新商店
+     * constraint 是否跳过独特装备检测强制刷新
+     */
+    refreshShopItems(constraint) {
+      this.tipsFlag = !constraint && this.grid.find(item => {
+        return item.quality && item.quality.name == '独特'
+      })
+      if (this.tipsFlagComfirm) {
+        return
+      }
+      if (this.tipsFlag && !constraint) {
+        this.tipsFlagComfirm = true
+        this.$message({
+          message: '刷到了独特装备哦，不看看嘛？',
+          closeBtnText: '看看',
+          confirmBtnText: '辣鸡我不要',
+          onCancle: () => {
+            this.tipsFlagComfirm = false
+          },
+          onClose: () => {
+            this.tipsFlagComfirm = false
+            this.refreshShopItems(true)
+          }
+        })
+        return
+      }
       if (this.refreshTime > 5) {
         this.refreshTime = 5
       }
@@ -109,7 +137,33 @@ export default {
         this.createShopItem(lv);
       }
     },
-    goldRefreshShopItems(){
+    /**
+     * 金币刷新商店
+     * constraint 是否跳过独特装备检测强制刷新
+     */
+    goldRefreshShopItems(constraint) {
+      this.tipsFlag = !constraint && this.grid.find(item => {
+        return item.quality && item.quality.name == '独特'
+      })
+      if (this.tipsFlagComfirm) {
+        return
+      }
+      if (this.tipsFlag && !constraint) {
+        this.tipsFlagComfirm = true
+        this.$message({
+          message: '刷到了独特装备哦，不看看嘛？',
+          closeBtnText: '看看',
+          confirmBtnText: '辣鸡我不要',
+          onCancle: () => {
+            this.tipsFlagComfirm = false
+          },
+          onClose: () => {
+            this.tipsFlagComfirm = false
+            this.goldRefreshShopItems(true)
+          }
+        })
+        return
+      }
       if (this.$store.state.playerAttribute.GOLD < 10000) {
         this.$store.commit("set_sys_info", {
           msg: `
@@ -117,7 +171,7 @@ export default {
             `,
           type: "warning",
         });
-      }else{
+      } else {
         this.$store.commit("set_player_gold", -10000);
         this.grid = new Array(5).fill({});
         var wlv = Number(this.$store.state.playerAttribute.weapon.lv);
@@ -126,15 +180,13 @@ export default {
         var necklv = Number(this.$store.state.playerAttribute.neck.lv);
         for (let i = 0; i < 5; i++) {
           var lv = Math.floor(this.$store.state.playerAttribute.lv + Math.random() * 3);
-          //装备等级最高200
-          // lv = lv > 200 ? 200 : lv
           this.createShopItem(lv);
-        }   
+        }
       }
-     
     },
     createShopItem(lv) {
-      var equip = [0.4, 0.342, 0.25,0.008];
+      var equip = [0.4, 0.342, 0.25, 0.008];
+      // var equip = [0.4, 0.30, 0.25, 0.05];
       // var equip = [0, 0, 0,1];
       var equipQua = -1;
       var r = Math.random();
@@ -192,9 +244,9 @@ export default {
       const offsetLeft = this.$el.getBoundingClientRect().left; // container margin left
       const offsetWidth = this.$el.offsetWidth; // container width
       const maxLeft = offsetWidth - menuMinWidth; // left boundary
-      if(e.type ==  'touchstart'){
+      if (e.type == 'touchstart') {
         var left = e.changedTouches[0].clientX - offsetLeft + 15; // 15: margin right
-      }else{
+      } else {
         var left = e.clientX - offsetLeft + 15; // 15: margin right
       }
 
@@ -210,7 +262,7 @@ export default {
     closeMenu() {
       this.visible = false;
     },
-    showItemInfo($event, type, item,SchemaIsMobile) {
+    showItemInfo($event, type, item, SchemaIsMobile) {
       if (SchemaIsMobile != 'touch' && this.$store.state.operatorSchemaIsMobile) {
         return
       }

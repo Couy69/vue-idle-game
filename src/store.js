@@ -420,9 +420,12 @@ export default new Vuex.Store({
     set_player_curhp(state, data) {
       var CURHP = this.state.playerAttribute.attribute.CURHP,
         MAXHP = this.state.playerAttribute.attribute.MAXHP
-      if (data == 'full') {
+      if (data == 'dead') {
         CURHP.value = 1
-      } else {
+      }else if(data == 'full'){
+        CURHP.value = MAXHP.value
+      }
+       else {
         CURHP.value += Number(data);
         CURHP.value = parseInt(CURHP.value)
         if (CURHP.value > MAXHP.value) {

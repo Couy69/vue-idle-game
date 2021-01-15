@@ -16,7 +16,7 @@
 
       <div class="title">
 
-        <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+equiment.quality.color}">
+        <div class='icon' :class="{'red-flash':equiment.enchantlvl>=13}"  :style="{'box-shadow':'inset 0 0 7px 2px '+equiment.quality.color}">
           <img :src="equiment.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:equiment.quality.color}">{{equiment.type.name}} {{equiment.enchantlvl?'(+'+equiment.enchantlvl+')':''}}</div>

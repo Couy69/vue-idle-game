@@ -23,7 +23,7 @@
         <template v-slot:content>
           <div class="hp">
             <img src="../assets/icons/S_Holy01.png" alt="">
-            <div class="value">
+            <div class="value" :style="{fontSize:attribute.MAXHP.value>=100000000?'.20rem':'.26rem'}">
               {{attribute.CURHP.value}}/{{attribute.MAXHP.value}}
             </div>
           </div>
@@ -48,7 +48,7 @@
           <template v-slot:content>
             <div class="item" title="攻击力">
               <img src="../assets/icons/ATK.png" alt="">
-              <div class="value">
+              <div class="value" :style="{fontSize:attribute.ATK.value>=100000?'.18rem':'.23rem'}">
                 {{attribute.ATK.value}}
               </div>
             </div>
@@ -90,7 +90,7 @@
           <template v-slot:content>
             <div class="item">
               <img src="../assets/icons/icon_11.png" alt="">
-              <div class="value">
+              <div class="value" :style="{fontSize:attribute.DEF.value>=100000?'.18rem':'.23rem'}">
                 {{attribute.DEF.value}} <span style="font-size:.12rem;">({{((1-attribute.REDUCDMG)*100).toFixed(2)}}%)</span>
               </div>
             </div>
@@ -122,7 +122,7 @@
           <template v-slot:content>
             <div class="item">
               <img src="../assets/icons/S_BLOC.png" alt="">
-              <div class="value">
+              <div class="value" :style="{fontSize:attribute.BLOC.value>=100000?'.18rem':'.23rem'}">
                 {{attribute.BLOC.value}}
               </div>
             </div>
@@ -162,7 +162,7 @@
 
       <div class="weapon" @mouseover="showItemInfo($event,'weapon',playerWeapon,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerWeapon">
-          <div class='icon' :class="{unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
+          <div class='icon' :class="{'red-flash':playerWeapon.enchantlvl>=13,unique:playerWeapon.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerWeapon.quality.color}">
             <img :src="playerWeapon.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerWeapon.quality.color}">{{playerWeapon.type.name}} {{playerWeapon.enchantlvl?'(+'+playerWeapon.enchantlvl+')':''}}</div>
@@ -170,7 +170,7 @@
       </div>
       <div class="armor" @mouseover="showItemInfo($event,'armor',playerArmor,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerArmor">
-          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
+          <div class='icon' :class="{'red-flash':playerArmor.enchantlvl>=13,unique:playerArmor.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px  '+playerArmor.quality.color}">
             <img :src="playerArmor.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerArmor.quality.color}">{{playerArmor.type.name}} {{playerArmor.enchantlvl?'(+'+playerArmor.enchantlvl+')':''}}</div>
@@ -178,7 +178,7 @@
       </div>
       <div class="neck" @mouseover="showItemInfo($event,'neck',playerNeck,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerNeck">
-          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerNeck.quality.color}">
+          <div class='icon' :class="{'red-flash':playerNeck.enchantlvl>=13,unique:playerNeck.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerNeck.quality.color}">
             <img :src="playerNeck.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerNeck.quality.color}">{{playerNeck.type.name}} {{playerNeck.enchantlvl?'(+'+playerNeck.enchantlvl+')':''}}</div>
@@ -186,7 +186,7 @@
       </div>
       <div class="ring" @mouseover="showItemInfo($event,'ring',playerRing,false)" @mouseleave="closeItemInfo">
         <div class="title" v-if="playerRing">
-          <div class='icon' :style="{'box-shadow':'inset 0 0 7px 2px '+playerRing.quality.color}">
+          <div class='icon' :class="{'red-flash':playerRing.enchantlvl>=13,unique:playerRing.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+playerRing.quality.color}">
             <img :src="playerRing.type.iconSrc" alt="">
           </div>
           <div class='name' :style="{color:playerRing.quality.color}">{{playerRing.type.name}} {{playerRing.enchantlvl?'(+'+playerRing.enchantlvl+')':''}}</div>
@@ -581,6 +581,7 @@ export default {
       window.open('https://github.com/Couy69/vue-idle-game', '_blank');
     },
     /**
+     * 刷新副本
      * constraint 强制刷新
      */
     createdDungeons(constraint) {
@@ -1238,7 +1239,7 @@ a {
       .icon {
         width: 0.56rem;
         height: 0.56rem;
-        background: #000;
+        background-color: #000;
         display: flex;
         align-items: center;
         justify-content: center;

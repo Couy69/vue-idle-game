@@ -5,7 +5,7 @@
     </div> -->
     <div class="neckPanel" :style="{'box-shadow':' 0 0 5px 5px '+neck.quality.color + 'b8'}" v-if="JSON.stringify(neck)!='{}'">
       <div class="title">
-        <div class='icon' :class="{unique:neck.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+neck.quality.color}">
+        <div class='icon' :class="{'red-flash':neck.enchantlvl>=13,unique:neck.quality.name=='独特'}" :style="{'box-shadow':'inset 0 0 7px 2px '+neck.quality.color}">
           <img :src="neck.type.iconSrc" alt="">
         </div>
         <div class='name' :style="{color:neck.quality.color}">{{neck.type.name}} {{neck.enchantlvl?'(+'+neck.enchantlvl+')':''}}</div>
@@ -38,254 +38,14 @@
   </div>
 </template>
 <script>
+import {equiAttributeNeck} from '@/assets/config/equiAttributeNeck'
 export default {
   name: "neckPanel",
+  mixins:[equiAttributeNeck],
   data() {
     return {
       neck: {},
       qualityProbability: [0.25, 0.55, 0.15, 0.05,],
-      quality: [{
-        name: '破旧',
-        qualityCoefficient: 0.6,
-        probability: '0.25',
-        color: '#a1a1a1',
-        extraEntryNum: 1,
-      }, {
-        name: '普通',
-        qualityCoefficient: 0.9,
-        probability: '0.55',
-        color: '#fff', extraEntryNum: 2,
-      }, {
-        name: '神器',
-        qualityCoefficient: 1.3,
-        probability: '0.15',
-        color: '#ff00ff', extraEntryNum: 3,
-      }, {
-        name: '史诗',
-        qualityCoefficient: 1.6,
-        probability: '0.05',
-        color: '#f78918', extraEntryNum: 4,
-      }, {
-        name: '独特',
-        qualityCoefficient: 2,
-        probability: '0',
-        color: '#ff0000', extraEntryNum: 5,
-      }],
-      uniqueCategory: [{
-        name: '十字旅团降魔项链',
-        des: '',
-        iconSrc: './icons/U_neck01.png',
-        entry: [{
-          'valCoefficient': 0.7,
-          'value': '11',
-          'showVal': '+11',
-          type: 'ATK',
-          'name': '攻击力'
-        }, {
-          'valCoefficient': 0.8,
-          'value': '11',
-          'showVal': '+11',
-          type: 'HP',
-          'name': '生命值'
-        }, {
-          'valCoefficient': 0.9,
-          'value': '11',
-          'showVal': '+11',
-          type: 'DEF',
-          'name': '防御力'
-        }]
-      }, {
-        name: '进阶黑暗龙王项链',
-        des: '',
-        iconSrc: './icons/U_neck02.png',
-        entry: [{
-          'valCoefficient': 1.0,
-          'value': '11',
-          'showVal': '+11',
-          type: 'CRITDMG',
-          'name': '暴击伤害'
-        }, {
-          'valCoefficient': 0.5,
-          'value': '11',
-          'showVal': '+11',
-          type: 'CRIT',
-          'name': '暴击率'
-        }, {
-          'valCoefficient': 0.8,
-          'value': '11',
-          'showVal': '+11',
-          type: 'HP',
-          'name': '生命值'
-        }]
-      }, {
-        name: '伟大单身成员的项链',
-        des: '真棒，真帅。有了这条帅气的项链，一辈子单身都不会孤独',
-        iconSrc: './icons/U_neck03.png',
-        entry: [{
-          'valCoefficient': 1.0,
-          'value': '11',
-          'showVal': '+11',
-          type: 'CRITDMG',
-          'name': '暴击伤害'
-        }, {
-          'valCoefficient': 1.2,
-          'value': '11',
-          'showVal': '+11',
-          type: 'BLOC',
-          'name': '格挡'
-        }, {
-          'valCoefficient': 0.7,
-          'value': '11',
-          'showVal': '+11',
-          type: 'HP',
-          'name': '生命值'
-        }]
-      }, {
-        name: '魔族之翼展',
-        des: '你能看到什么呢',
-        iconSrc: './icons/U_neck04.png',
-        entry: [{
-          'valCoefficient': 1.6,
-          'value': '11',
-          'showVal': '+11',
-          type: 'CRITDMG',
-          'name': '暴击伤害'
-        }, {
-          'valCoefficient': 1.6,
-          'value': '11',
-          'showVal': '+11',
-          type: 'ATK',
-          'name': '攻击力'
-        },]
-      }, {
-        name: '伊帕娅之项链',
-        des: '',
-        iconSrc: './icons/U_neck05.png',
-        entry: [{
-          'valCoefficient': 0.9,
-          'value': '11',
-          'showVal': '+11',
-          type: 'BLOC',
-          'name': '格挡'
-        }, {
-          'valCoefficient': 0.9,
-          'value': '11',
-          'showVal': '+11',
-          type: 'DEF',
-          'name': '防御力'
-        }, {
-          'valCoefficient': 1.3,
-          'value': '11',
-          'showVal': '+11',
-          type: 'HP',
-          'name': '生命值'
-        }]
-      }],
-      category: [
-        {
-          name: '十字军项链',
-          des: '十字军佩戴的项链',
-          iconSrc: './icons/Ac_1.png',
-          entry: [{
-            'valCoefficient': 0.9,
-            'value': '11',
-            'showVal': '+11',
-            type: 'DEF',
-            'name': '防御力'
-          }, {
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          },{
-          'valCoefficient': 0.6,
-          'value': '11',
-          'showVal': '+11',
-          type: 'BLOC',
-          'name': '格挡'
-        }]
-        },
-        {
-          name: '冰龙凝雪',
-          des: '冰龙凝雪',
-          iconSrc: './icons/Ac_7.png',
-          entry: [{
-            'valCoefficient': 0.75,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRITDMG',
-            'name': '暴击伤害'
-          }, {
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          }, {
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }]
-        },
-        {
-          name: '银魂之眼',
-          des: '银魂之眼',
-          iconSrc: './icons/Ac_5.png',
-          entry: [{
-            'valCoefficient': 1.1,
-            'value': '11',
-            'showVal': '+11',
-            type: 'CRIT',
-            'name': '暴击率'
-          }, {
-            'valCoefficient': 0.5,
-            'value': '11',
-            'showVal': '+11',
-            type: 'HP',
-            'name': '生命值'
-          }, {
-          'valCoefficient': 0.6,
-          'value': '11',
-          'showVal': '+11',
-          type: 'ATK',
-          'name': '攻击力'
-        }]
-        }
-      ],
-      extraEntry: [{
-        'value': '11',
-        'showVal': '+11',
-        type: 'ATK',
-        'name': '攻击力'
-      }, {
-        type: 'CRIT',
-        'value': '8',
-        'showVal': '+8%',
-        'name': '暴击率'
-      }, {
-        type: 'CRITDMG',
-        'value': '20',
-        'showVal': '+20%',
-        'name': '暴击伤害'
-      }, {
-        type: 'HP',
-        'value': '20',
-        'showVal': '+20',
-        'name': '生命值'
-      }, {
-        type: 'DEF',
-        'value': '8',
-        'showVal': '+8%',
-        'name': '防御力'
-      }, {
-        'value': '11%',
-        'showVal': '+11%',
-        type: 'BLOC',
-        'name': '格挡'
-      }]
     };
   },
   props: ['item'],
@@ -300,7 +60,7 @@ export default {
     createNewItem(qualityIndex, lv) {
       var neck = {}
       neck.itemType = 'neck'
-      neck.quality = qualityIndex > -1 ? this.quality[qualityIndex] : this.createQua()
+      neck.quality = qualityIndex > -1 ? this.qualityNeck[qualityIndex] : this.createQua()
       neck.lv = lv || this.createLv()
       neck.type = this.createType(neck)
       neck.extraEntry = this.createExtraEntry(neck)
@@ -311,11 +71,11 @@ export default {
     },
     createType(neck) {
       if (neck.quality.name == '独特') {
-        var index = Math.floor((Math.random() * this.uniqueCategory.length));
-        var type = this.uniqueCategory[index], lv = neck.lv
+        var index = Math.floor((Math.random() * this.uniqueCategoryNeck.length));
+        var type = this.uniqueCategoryNeck[index], lv = neck.lv
       } else {
-        var index = Math.floor((Math.random() * this.category.length));
-        var type = this.category[index], lv = neck.lv
+        var index = Math.floor((Math.random() * this.categoryNeck.length));
+        var type = this.categoryNeck[index], lv = neck.lv
       }
       type.entry.map(item => {
         switch (item.type) {
@@ -390,8 +150,8 @@ export default {
     createExtraEntry(neck) {
       var n = neck.quality.extraEntryNum, extraEntry = [], lv = neck.lv
       for (let i = 0; i < n; i++) {
-        var index = Math.floor((Math.random() * this.extraEntry.length));
-        extraEntry.push(this.extraEntry[index])
+        var index = Math.floor((Math.random() * this.extraEntryNeck.length));
+        extraEntry.push(this.extraEntryNeck[index])
       }
       var b = this.$deepCopy(extraEntry)
       b.map(item => {

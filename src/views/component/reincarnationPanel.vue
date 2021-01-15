@@ -101,6 +101,15 @@ export default {
           currentValue: 0,
           maxPoint: null,
         },
+        // {
+        //   name: 'GOLD',
+        //   showName: '金币获取倍率',
+        //   img: require('../../assets/icons/S_BLOC.png'),
+        //   oldValue: 0,
+        //   point: 0, unity: '',
+        //   currentValue: 0,
+        //   maxPoint: null,
+        // },
         {
           name: 'MOVESPEED',
           showName: '副本行进速度',

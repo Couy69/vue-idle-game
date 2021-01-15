@@ -25,6 +25,7 @@ export default {
       message: '',
       closed: false,
       onClose: null,
+      onCancle:null,
       verticalOffset: 0,
       closeBtnText:'取消',
       confirmBtnText:'确认',
@@ -42,6 +43,9 @@ export default {
     close() {
       this.visible = false
       this.closed = true
+      if (typeof this.onCancle === 'function') {
+        this.onCancle(this)
+      }
     }
     ,handleClick(){
       this.visible = false 

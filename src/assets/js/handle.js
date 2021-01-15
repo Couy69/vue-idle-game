@@ -10,7 +10,7 @@ function deepCopy(data) {
 function CalculateStrAttr(entry, lv) {
   var a = 1
   // 确定强化系数
-  a = (1.05 ** lv ** 1.1)
+  a = (1.055 ** lv ** 1.1)
   entry.map((item) => {
     let value
     switch (item.type) {
@@ -95,7 +95,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
+        gold: parseInt(lv**1.16*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -109,7 +109,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
+        gold: parseInt(lv**1.16*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -123,7 +123,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
+        gold: parseInt(lv**1.16*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -137,7 +137,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+2)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*5+11)*df),
+        gold: parseInt(lv**1.16*(Math.random()*5+11)*df),
         equip: [
           0.2*df, 0.08*df, 0.03*df, 0*df
         ],
@@ -151,7 +151,7 @@ function createRandomDungeons(lv, difficulty) {
         ATK: parseInt(lv*lv**1.1*(Math.random()*1+3)*df),
       },
       trophy: {
-        gold: parseInt(lv**1.15*(Math.random()*10+28)*df),
+        gold: parseInt(lv**1.16*(Math.random()*10+28)*df),
         equip: [
           0.25-0.05*df, 0.55-0.15*df, 0.15+0.15*df, 0.05+0.05*df
         ],

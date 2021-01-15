@@ -13,7 +13,7 @@
           <div class="info" v-for="(item,index) in update" :key="index">
             <h1> {{item.title}}</h1>
             <span v-if="item.desc"> {{item.desc}}</span>
-            <h2 class="vision"  v-for="(v) in item.vision" :key="v.id" v-if="item.vision">{{v.vision}}:<a :href="v.href" target="_blank"> {{v.href}}</a></h2>
+            <h2 class="vision" v-for="(v) in item.vision" :key="v.id" v-if="item.vision">{{v.vision}}:<a :href="v.href" target="_blank"> {{v.href}}</a></h2>
             <h2 v-if="item.adjust">功能调整</h2>
             <p v-for="(v) in item.adjust" :key="v.id">{{v}}</p>
             <h2 v-if="item.majorization">优化</h2>
@@ -65,13 +65,25 @@ export default {
         {
           title: '历史版本',
           vision: [{
-            vision:'测试服',
+            vision: '测试服',
             href: 'http://couy.xyz/rpg'
-          },{
-            vision:'1.2.2',
+          }, {
+            vision: '1.2.2',
             href: 'http://couy.xyz/v1.2.2'
           }],
           desc: '- 这里保留了历史版本，你仍然可以导入存档到旧版本游玩,测试服版本不保证可玩性',
+        },
+        {
+          title: '2021-1-15 (1.3.3)',
+          adjust: [
+            '- 略微调高了强化带来的的基础属性加成',
+            '- 商店刷新到独特装备时新增提示',
+            '- 略微调高了一点杀怪金币获取',
+            '- 添加了看上去很牛x的 + 13特效',
+          ],
+          bug: [
+            '- 已修复：特定情况下无尽挑战成功后并没有回复满血',
+          ]
         },
         {
           title: '2020-12-11 (1.3.2)',
@@ -351,14 +363,14 @@ export default {
   .scroll {
     height: calc(100% - 2rem);
     overflow-y: auto;
-    .vision{
-      font-size: .16rem;
+    .vision {
+      font-size: 0.16rem;
     }
-    a{
+    a {
       color: #fff;
       text-decoration: underline;
-      font-size: .14rem;
-      user-select:initial;
+      font-size: 0.14rem;
+      user-select: initial;
     }
   }
   .close {
@@ -451,7 +463,7 @@ export default {
       margin: 0.1rem;
       justify-content: space-between;
     }
-    span{
+    span {
       text-align: center;
     }
   }
