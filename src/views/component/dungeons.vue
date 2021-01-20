@@ -260,7 +260,7 @@ export default {
         playerBLOC = playerAttribute.BLOC.value,
         monsterAttribute = this.$deepCopy(event.attribute), //HP: 100,ATK: 1,
         p = this.findComponentUpward(this, 'index')
-
+      console.log(reducedDamage)
       var playerDeadTime = (playerAttribute.CURHP.value+playerBLOC) / reducedDamage / monsterAttribute.ATK,
         monsterDeadTime = (monsterAttribute.HP / playerDPS)
 

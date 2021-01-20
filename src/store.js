@@ -374,7 +374,11 @@ export default new Vuex.Store({
       //承受伤害比例
       // attribute.REDUCDMG = 1 - 0.06 * armor / (1 + (0.06 * armor))
       attribute.REDUCDMG = 1 - 0.05 * armor / (1 + (0.0525 * armor))
-
+      if(armor>7600){
+        armor = armor - 7600
+        attribute.REDUCDMG = 0.95+ 0.05*(0.00001 * armor / (1 + (0.00001 * armor)))
+        attribute.REDUCDMG=1-attribute.REDUCDMG
+      }
       // state.playerAttribute.attribute=attribute
       // vueInstance.$store.commit("set_player_attribute", attribute);
       this.state.playerAttribute.attribute = attribute

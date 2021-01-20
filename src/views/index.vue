@@ -451,7 +451,7 @@ export default {
   mixins: [assist],
   data() {
     return {
-      GMmodel: false,
+      GMmodel: true,
       time: '00:00:00',
       sysInfo: {},
       weaponShow: false,
@@ -514,8 +514,8 @@ export default {
   mounted() {
     // 自动回血
     this.autoHealthRecovery = setInterval(() => {
-      this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50))
-    }, 1000)
+      this.$store.commit('set_player_curhp', this.healthRecoverySpeed * (this.attribute.MAXHP.value / 50) / 2)
+    }, 500)
 
 
     // 自动保存
@@ -568,7 +568,7 @@ export default {
       this.upEChallenge = !this.reEChallenge
     },
     GMEquipLv() {
-      this.GMEquipLv = this.GMEquipLv > 210 ? 210 : this.GMEquipLv
+      this.GMEquipLv = this.GMEquipLv > 10000 ? 10000 : this.GMEquipLv
       this.GMEquipLv = this.GMEquipLv < 1 ? 1 : this.GMEquipLv
     },
     GMEquipQu() {

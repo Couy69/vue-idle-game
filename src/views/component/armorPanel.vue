@@ -241,6 +241,8 @@ export default {
       border-radius: 0.04rem;
     }
     .name {
+      font-size: .16rem;
+      text-shadow:  0px 0px 1px (255,255,255,0.3);
       height: 0.46rem;
       margin-left: 0.2rem;
       line-height: 0.46rem;
