@@ -133,10 +133,12 @@ export default {
 
     userGold() { return this.$store.state.playerAttribute.GOLD },
     item() { return this.$store.state.needStrengthenEquipment },
+    // 计算强化所需金币
     strengthenNeedGold() {
       var a = parseInt((parseInt(this.equiment.lv) + 1) * (1.1 ** (this.equiment.enchantlvl) ** 1.1) * (10 + parseInt(this.equiment.lv) / 5)) + 100
       return a
     },
+    // 计算重铸所需金币
     recastNeedGold() {
       var a = parseInt(parseInt(this.equiment.lv) * this.equiment.quality.qualityCoefficient * (200 + 10 * parseInt(this.equiment.lv)) / 4)
       return a

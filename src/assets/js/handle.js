@@ -74,7 +74,10 @@ function CalculateStrAttr(entry, lv) {
  */
 function createRandomDungeons(lv, difficulty) {
   lv = lv||1,difficulty = difficulty||1;
-  var df = difficulty==1?1:difficulty==2?1.15:1.4
+  // 此处决定困难与极难的副本难度系数
+  // 困难 1.1
+  // 极难 1.25
+  var df = difficulty==1?1:difficulty==2?1.1:1.25
   var dungeonsConfig = {
     id:lv+''+difficulty,
     battleTime: 2000,
