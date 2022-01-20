@@ -18,7 +18,7 @@
 - 通关后开启无尽挑战
 
 # 授权说明
-- 授权TAPTAP【不会社交的二哈】运营。taptap链接https://www.taptap.com/app/229315，同时也是我在负责更新，感兴趣的可以下载试一下
+- 授权TAPTAP【不会社交的二哈】运营，同时也是我在负责更新，感兴趣的可以下载试一下。taptap链接：https://www.taptap.com/app/229315
 
 # 更新内容
 
