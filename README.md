@@ -19,6 +19,7 @@
 
 # 授权说明
 - 授权TAPTAP【不会社交的二哈】运营，同时也是我在负责更新，感兴趣的可以下载试一下。taptap链接：https://www.taptap.com/app/229315
+- ios 授权id1647594195【juan hou|180****6975】，链接：https://apps.apple.com/cn/app/%E8%BD%AE%E5%9B%9E%E5%8B%87%E8%80%85%E4%BC%A0%E8%AF%B4/id6443720609
 
 # 更新内容
 
